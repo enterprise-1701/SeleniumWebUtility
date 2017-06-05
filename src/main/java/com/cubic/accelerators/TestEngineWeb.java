@@ -1,6 +1,5 @@
 package com.cubic.accelerators;
 
-import java.lang.reflect.Method;
 import java.time.Instant;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
@@ -162,8 +161,10 @@ public class TestEngineWeb {
 	 * Prerequisite setup at test method level(@Test method level). Call to this
 	 * method should be the first line in the test method(i.e. in @Test)
 	 * 
-	 * Ex:  String testCaseName = getClassNameWithMethodName(method, "Rest Sample test");
+	 * Ex:  String testCaseName = "<<TESTCASE ID>> : <<TESTCASE DESCRIPTION>>"
 	 *      ActionEngineWeb actionEngineWeb = setupAutomationTest(context, testCaseName);
+	 * 
+	 * Note: testCaseName(ex: "TC 01 : Sample Test") should be same when you are calling the method 'setupWebTest' and 'teardownWebTest'
 	 * 
 	 * @param context
 	 * @param testCaseName
@@ -193,9 +194,13 @@ public class TestEngineWeb {
 
 	/**
 	 * Closing every associated instances related to the test(i.e. @Test method). 
-	 * Call to this method should be the last line in the test method(i.e. in @Test)
+	 * Call to this method should be the last line in the test method(i.e. in @Test), should be written in finally block.
 	 *	
-	 * Ex:  teardownAutomationTest(context, testCaseName);
+	 * Ex:  
+	 * String testCaseName = "<<TESTCASE ID>> : <<TESTCASE DESCRIPTION>>"
+	 * teardownAutomationTest(context, testCaseName);
+	 * 
+	 * Note: testCaseName(ex: "TC 01 : Sample Test") should be same when you are calling the method 'setupWebTest' and 'teardownWebTest'
 	 * 
 	 * @param context
 	 * @param testCaseName
@@ -252,7 +257,8 @@ public class TestEngineWeb {
 		customReports.generateSummaryReport();
 	}
 	
-	private String[] specialChars = new String[]{"\\", "/", ":", "*", "?", ">", "<", "|", "\""};
+	//TODO need to remove below commented code after executing the scripts
+	/*private String[] specialChars = new String[]{"\\", "/", ":", "*", "?", ">", "<", "|", "\""};
 	protected String getClassNameWithMethodName(Method method, String description) {
 		String className = this.getClass().getName();
 		className = className.substring(className.lastIndexOf(".") + 1, className.length());
@@ -265,7 +271,7 @@ public class TestEngineWeb {
 		}
 		
 		return detailedReportName;
-	}
+	}*/
 	
 	/** Initialize the detailed report for the test case(at test method level @Test) 
 	 * 
