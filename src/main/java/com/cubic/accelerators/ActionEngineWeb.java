@@ -85,25 +85,31 @@ public class ActionEngineWeb {
 		}
 	}
 
-	private void failureReport(String stepName, String description) {
+	public void failureReport(String stepName, String description) {
 		if (customReports != null) {
 			File screenshotFile = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
 			customReports.failureReportWeb(stepName, description, screenshotFile, testCaseName);
 		}
 	}
 
-	private void warningReport(String stepName, String description) {
+	public void warningReport(String stepName, String description) {
 		if (customReports != null) {
 			customReports.warningReport(stepName, description, testCaseName); 
 		}
 	}
 	
-	private void successReport(String stepName, String description) {
+	public void successReport(String stepName, String description) {
 		if (customReports != null) {
 			customReports.successReport(stepName, description, testCaseName);
 		}
 	}
 
+	public void successReportForWeb(String stepName, String description) {
+		if (customReports != null) {
+			File screenshotFile = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
+			customReports.successReportForWeb(stepName, description, screenshotFile, testCaseName);
+		}
+	}	
 	//Don't "getWebDriverForLocal" to public, since this method should not be exposed outside and should be allowed to access with in the package. 
 	static synchronized WebDriver getWebDriverForLocal(String browserName,String seleniumGridUrl) throws IOException, InterruptedException{
 		WebDriver webDriver = null;
