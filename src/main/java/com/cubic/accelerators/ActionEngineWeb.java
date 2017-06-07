@@ -75,7 +75,7 @@ public class ActionEngineWeb {
 		this.testCaseName = testCaseName;
 	}
 	
-	public WebDriver getDriver(){
+	public WebDriver getWebDriver (){
 		return this.webDriver;
 	}
 	
