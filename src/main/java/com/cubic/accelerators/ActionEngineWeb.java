@@ -75,6 +75,10 @@ public class ActionEngineWeb {
 		this.testCaseName = testCaseName;
 	}
 	
+	public WebDriver getDriver(){
+		return this.webDriver;
+	}
+	
 	public static void flush(ActionEngineWeb actionEngineWeb){
 		if(actionEngineWeb.webDriver!=null){
 			actionEngineWeb.webDriver.quit();
