@@ -25,10 +25,10 @@ import com.cubic.reportengine.report.CustomReports;
  * 
  * @since 1.0
  */
-public class TestEngineWeb {
+public class WebDriverEngine {
 
 	private Hashtable<String, WebDriver> wedDriverList = null;
-	private Hashtable<String, ActionEngineWeb> actionEngineWebList = null;
+	private Hashtable<String, WebDriverActions> webDriverActionList = null;
 
 	/**
 	 * This method will be executed before the suite.
@@ -39,13 +39,22 @@ public class TestEngineWeb {
 	 */
 	@BeforeSuite
 	public void beforeSuite(ITestContext context) throws Exception {
+		//LOG.info("Before killing "+browser+" browser");
+		Runtime.getRuntime().exec("taskkill /F /IM chromedriver.exe");
+		Runtime.getRuntime().exec("taskkill /F /IM geckodriver.exe");
+		Runtime.getRuntime().exec("taskkill /F /IM IEDriverServer.exe");
+		Runtime.getRuntime().exec("taskkill /F /IM MicrosoftWebDriver.exe");
+		//LOG.info("After killing "+browser+" browser");		
+		
 		Log4jUtil.configureLog4j(GenericConstants.LOG4J_FILEPATH);
 		
 		// Create custom report folder structure.
 		createFolderStructureForCustomReport(context);
 
 		context.setAttribute("wedDriverList", new Hashtable<String, WebDriver>());
-		context.setAttribute("actionEngineWebList", new Hashtable<String, ActionEngineWeb>());
+		
+		//TODO need to remove below commented code after re-checking
+		//context.setAttribute("webDriverActionList", new Hashtable<String, WebDriverActions>());
 	}
 
 	/**
@@ -63,8 +72,9 @@ public class TestEngineWeb {
 		cleanUpCustomReports();
 		
 		//LOG.info("Before killing "+browser+" browser");
-		Runtime.getRuntime().exec("taskkill /F /IM chromedriver_32Bit.exe");
-		Runtime.getRuntime().exec("taskkill /F /IM IEDriverServer64bit.exe");
+		Runtime.getRuntime().exec("taskkill /F /IM chromedriver.exe");
+		Runtime.getRuntime().exec("taskkill /F /IM geckodriver.exe");
+		Runtime.getRuntime().exec("taskkill /F /IM IEDriverServer.exe");
 		Runtime.getRuntime().exec("taskkill /F /IM MicrosoftWebDriver.exe");
 		//LOG.info("After killing "+browser+" browser");		
 	}
@@ -86,7 +96,7 @@ public class TestEngineWeb {
 		customReportBean.setBrowserName(browser);
 		try {
 			//WebDriver webDriver = getWebDriverForLocal(browser, seleniumgridurl);
-			WebDriver webDriver = ActionEngineWeb.getWebDriverForLocal(browser, seleniumgridurl);
+			WebDriver webDriver = WebDriverActions.getWebDriverForLocal(browser, seleniumgridurl);
 			
 			wedDriverList = (Hashtable<String, WebDriver>) context.getAttribute("wedDriverList");
 
@@ -94,8 +104,8 @@ public class TestEngineWeb {
 			// each class)
 			wedDriverList.put(this.getClass().getName(), webDriver);
 
-			// For storing the action engine instance.
-			actionEngineWebList = new Hashtable<String, ActionEngineWeb>();
+			// For storing the actions instance.
+			webDriverActionList = new Hashtable<String, WebDriverActions>();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Unable to perform browser intialization");
@@ -135,26 +145,26 @@ public class TestEngineWeb {
 	}
 
 	/**
-	 * Creates the actionEngineWeb instance. getActionEngineWeb() method should
+	 * Creates the webDriverActions instance. getWebDriverActions() method should
 	 * not be exposed outside, since each call to this method creates the
-	 * actionEngineWeb instance.
+	 * webDriverActions instance.
 	 * 
 	 * @param testCaseName
-	 * @return ActionEngineWeb
+	 * @return WebDriverActions
 	 * @throws Exception 
 	 */
-	private ActionEngineWeb getActionEngineWeb(String testCaseName) throws Exception {
-		ActionEngineWeb actionEngineWeb = null; 
+	private WebDriverActions getWebDriverActions(String testCaseName) throws Exception {
+		WebDriverActions webDriverActions = null; 
 		try{
 			// Fetch webdriver instance based on class name.
 			WebDriver webDriver = wedDriverList.get(this.getClass().getName());
 
-			actionEngineWeb = new ActionEngineWeb(webDriver, customReports, testCaseName);
+			webDriverActions = new WebDriverActions(webDriver, customReports, testCaseName);
 		}catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception("Unable to execute the method 'getActionEngineWeb'");
+			throw new Exception("Unable to execute the method 'getWebDriverActions'");
 		}
-		return actionEngineWeb;
+		return webDriverActions;
 	}
 	
 	/**
@@ -162,34 +172,34 @@ public class TestEngineWeb {
 	 * method should be the first line in the test method(i.e. in @Test)
 	 * 
 	 * Ex:  String testCaseName = "<<TESTCASE ID>> : <<TESTCASE DESCRIPTION>>"
-	 *      ActionEngineWeb actionEngineWeb = setupAutomationTest(context, testCaseName);
+	 *      WebDriverActions webDriverActions = setupAutomationTest(context, testCaseName);
 	 * 
 	 * Note: testCaseName(ex: "TC 01 : Sample Test") should be same when you are calling the method 'setupWebTest' and 'teardownWebTest'
 	 * 
 	 * @param context
 	 * @param testCaseName
-	 * @return ActionEngineWeb
+	 * @return WebDriverActions
 	 * @throws Exception
 	 */
-	public ActionEngineWeb setupAutomationTest(ITestContext context, String testCaseName) throws Exception {
-		ActionEngineWeb actionEngineWeb = null;
+	public WebDriverActions setupAutomationTest(ITestContext context, String testCaseName) throws Exception {
+		WebDriverActions webDriverActions = null;
 		
 		try{
 			// For generating the detailed report for test case(i.e. test method)
 			setupReport(context, testCaseName);
 
-			actionEngineWeb = getActionEngineWeb(testCaseName);
+			webDriverActions = getWebDriverActions(testCaseName);
 
 			// Action Engine instance is created at test method level and placed in
 			// actionEngineWebList
-			actionEngineWebList.put(testCaseName, actionEngineWeb);
+			webDriverActionList.put(testCaseName, webDriverActions);
 			
 		}catch(Exception e){
 			e.printStackTrace();
 			throw new Exception("Unable to execute the method 'setupWebTest'.");
 		}
 
-		return actionEngineWeb;
+		return webDriverActions;
 	}
 
 	/**
@@ -214,8 +224,8 @@ public class TestEngineWeb {
 			// This details will be used for generating summary report.
 			teardownReport(context, testCaseName);
 		
-			// Remove action engine object, after executing test method.
-			actionEngineWebList.remove(testCaseName);	
+			// Remove actions object, after executing test method.
+			webDriverActionList.remove(testCaseName);	
 		}catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Unable to execute the method 'teardownWebTest'.");

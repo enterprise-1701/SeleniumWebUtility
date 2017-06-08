@@ -42,7 +42,7 @@ import org.testng.Assert;
 import com.cubic.genericutils.GenericConstants;
 import com.cubic.reportengine.report.CustomReports;
 
-public class ActionEngineWeb {
+public class WebDriverActions {
 	private final Logger LOG = Logger.getLogger(this.getClass().getName());
 	private final String msgClickSuccess = "Successfully Clicked On ";
 	private final String msgClickFailure = "Unable To Click On ";
@@ -61,13 +61,13 @@ public class ActionEngineWeb {
 	
 	private int timeValue  = Integer.parseInt(GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("webdriver_dynamicwait_time"));
 	
-	public ActionEngineWeb(WebDriver webDriver, CustomReports customReports, String testCaseName) {
+	public WebDriverActions(WebDriver webDriver, CustomReports customReports, String testCaseName) {
 		this.webDriver = webDriver;
 		this.customReports = customReports;
 		this.testCaseName = testCaseName;
 	}
 	
-	public ActionEngineWeb(CustomReports customReports, String testCaseName, String browserName, String seleniumGridUrl)
+	public WebDriverActions(CustomReports customReports, String testCaseName, String browserName, String seleniumGridUrl)
 			throws IOException, InterruptedException {
 
 		this.webDriver = getWebDriverForLocal(browserName, seleniumGridUrl);
@@ -79,13 +79,13 @@ public class ActionEngineWeb {
 		return this.webDriver;
 	}
 	
-	public static void flush(ActionEngineWeb actionEngineWeb){
-		if(actionEngineWeb.webDriver!=null){
-			actionEngineWeb.webDriver.quit();
+	public static void flush(WebDriverActions webDriverActions){
+		if(webDriverActions.webDriver!=null){
+			webDriverActions.webDriver.quit();
 		}
 		
-		if(actionEngineWeb!=null){
-			actionEngineWeb = null;
+		if(webDriverActions!=null){
+			webDriverActions = null;
 		}
 	}
 
@@ -122,7 +122,7 @@ public class ActionEngineWeb {
 		 
 		switch (browserName) {
 		
-		case GenericConstants.FIREFOX_BROWSER:
+		case WebDriverConstants.FIREFOX_BROWSER:
 			FirefoxProfile firefoxProfile = new FirefoxProfile();
 			String firefoxDownloadDirPath = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("firefox_downloadDir_Path");
 			
@@ -149,7 +149,7 @@ public class ActionEngineWeb {
 			firefoxProfile.setPreference("xpinstall.signatures.required", false);
 			capabilities.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
 			
-			if(seleniumGridUrl == null || seleniumGridUrl.equalsIgnoreCase(GenericConstants.LOCAL)){
+			if(seleniumGridUrl == null || seleniumGridUrl.equalsIgnoreCase(WebDriverConstants.LOCAL)){
 				webDriver = new FirefoxDriver(firefoxProfile);
 			}
 			
@@ -159,7 +159,7 @@ public class ActionEngineWeb {
 			
 			break;
 			
-		case GenericConstants.IE_BROWSER:
+		case WebDriverConstants.IE_BROWSER:
 			String ieDriverPath = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("ie_driver_path");		
 			System.setProperty("webdriver.ie.driver", ieDriverPath);
 			capabilities = DesiredCapabilities.internetExplorer();
@@ -183,7 +183,7 @@ public class ActionEngineWeb {
 			Process p = Runtime.getRuntime().exec("RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 255");
 			p.waitFor();		
 			
-			if(seleniumGridUrl == null || seleniumGridUrl.equalsIgnoreCase(GenericConstants.LOCAL)){
+			if(seleniumGridUrl == null || seleniumGridUrl.equalsIgnoreCase(WebDriverConstants.LOCAL)){
 				webDriver = new InternetExplorerDriver(capabilities);
 			}
 			
@@ -193,7 +193,7 @@ public class ActionEngineWeb {
 			// LOG.info("Driver launch ::" + browser);	
 			break;	
 			
-		case GenericConstants.CHROME_BROWSER:
+		case WebDriverConstants.CHROME_BROWSER:
 			String chromeDriverPath = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("chrome_driver_path");
 			String chromeDownloadDirPath = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("chrome_downloadDir_Path");
 			
@@ -217,7 +217,7 @@ public class ActionEngineWeb {
 			options.addArguments("chrome.switches", "--disable-extensions");
 			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 			
-			if(seleniumGridUrl == null ||seleniumGridUrl.equalsIgnoreCase(GenericConstants.LOCAL)){
+			if(seleniumGridUrl == null ||seleniumGridUrl.equalsIgnoreCase(WebDriverConstants.LOCAL)){
 				webDriver = new ChromeDriver(capabilities);
 			}
 			
@@ -228,12 +228,12 @@ public class ActionEngineWeb {
 			
 			break;
 			
-		case GenericConstants.EDGE_BROWSER:
+		case WebDriverConstants.EDGE_BROWSER:
 			String edgeDriverPath = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("edge_driver_path");
 			System.setProperty("webdriver.edge.driver", edgeDriverPath);
 			capabilities = DesiredCapabilities.edge();		
 			
-			if(seleniumGridUrl == null ||seleniumGridUrl.equalsIgnoreCase(GenericConstants.LOCAL)){
+			if(seleniumGridUrl == null ||seleniumGridUrl.equalsIgnoreCase(WebDriverConstants.LOCAL)){
 				webDriver = new EdgeDriver(capabilities);
 			}
 		
@@ -243,7 +243,7 @@ public class ActionEngineWeb {
 			//LOG.info("Driver launch ::" + browser);
 			break;
 
-		case GenericConstants.SAFARI_BROWSER:
+		case WebDriverConstants.SAFARI_BROWSER:
 
 			for (int i = 1; i <= 10; i++) {
 				try {
@@ -264,7 +264,7 @@ public class ActionEngineWeb {
 			break;			
 		}
 		
-		if(seleniumGridUrl!=null && !seleniumGridUrl.equalsIgnoreCase(GenericConstants.LOCAL)){
+		if(seleniumGridUrl!=null && !seleniumGridUrl.equalsIgnoreCase(WebDriverConstants.LOCAL)){
 			webDriver = new RemoteWebDriver(new URL(seleniumGridUrl), capabilities);
 		}
 		
