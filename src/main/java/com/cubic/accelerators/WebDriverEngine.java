@@ -267,22 +267,6 @@ public class WebDriverEngine {
 		customReports.generateSummaryReport();
 	}
 	
-	//TODO need to remove below commented code after executing the scripts
-	/*private String[] specialChars = new String[]{"\\", "/", ":", "*", "?", ">", "<", "|", "\""};
-	protected String getClassNameWithMethodName(Method method, String description) {
-		String className = this.getClass().getName();
-		className = className.substring(className.lastIndexOf(".") + 1, className.length());
-		String testMethodName = method.getName();
-		String detailedReportName = className + "_" + testMethodName+"-"+description;		
-		for(String specialChar : specialChars){
-			try{
-				detailedReportName = detailedReportName.replaceAll(specialChar, "");	
-			}catch(Exception e){}			
-		}
-		
-		return detailedReportName;
-	}*/
-	
 	/** Initialize the detailed report for the test case(at test method level @Test) 
 	 * 
 	 * @param context
