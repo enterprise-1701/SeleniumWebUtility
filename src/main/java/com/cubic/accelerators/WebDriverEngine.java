@@ -95,7 +95,6 @@ public class WebDriverEngine {
 		CustomReportBean customReportBean = customReports.getCustomReportBean();
 		customReportBean.setBrowserName(browser);
 		try {
-			//WebDriver webDriver = getWebDriverForLocal(browser, seleniumgridurl);
 			WebDriver webDriver = WebDriverActions.getWebDriverForLocal(browser, seleniumgridurl);
 			
 			wedDriverList = (Hashtable<String, WebDriver>) context.getAttribute("wedDriverList");
@@ -190,8 +189,8 @@ public class WebDriverEngine {
 
 			webDriverActions = getWebDriverActions(testCaseName);
 
-			// Action Engine instance is created at test method level and placed in
-			// actionEngineWebList
+			// action instance is created at test method level and placed in
+			// webDriverActionList
 			webDriverActionList.put(testCaseName, webDriverActions);
 			
 		}catch(Exception e){
