@@ -67,13 +67,13 @@
   <distributionManagement>
     <repository>
         <id>central</id>
-        <name>USBALP-ARTFCT01-releases</name>
-        <url>http://usbalp-artfct01.cts.cubic.cub:8085/artifactory/Sample-Release-Virtual</url>
+        <name>UKSALP-ARTFCT01-releases</name>
+        <url>http://artifactory-server:8082/artifactory/SystemTest</url>
     </repository>
     <snapshotRepository>
         <id>snapshots</id>
-        <name>USBALP-ARTFCT01-snapshots</name>
-        <url>http://usbalp-artfct01.cts.cubic.cub:8085/artifactory/Sample-Release-Virtual</url>
+        <name>UKSALP-ARTFCT01-snapshots</name>
+        <url>http://artifactory-server:8082/artifactory/SystemTest</url>
     </snapshotRepository>
-</distributionManagement>
+</distributionManagement> 
 </project>
