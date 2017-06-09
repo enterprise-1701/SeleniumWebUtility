@@ -1,6 +1,7 @@
 package com.cubic.accelerators;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -38,6 +39,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.apache.pdfbox.cos.COSDocument;
+import org.apache.pdfbox.pdfparser.PDFParser;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.util.PDFTextStripper;
 
 import com.cubic.genericutils.GenericConstants;
 import com.cubic.reportengine.report.CustomReports;
@@ -198,6 +203,12 @@ public class WebDriverActions {
 			String chromeDownloadDirPath = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("chrome_downloadDir_Path");
 			
 			HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
+            chromePrefs.put("profile.default_content_settings.popups", 0);
+            chromePrefs.put("credentials_enable_service", false);
+            chromePrefs.put("profile.password_manager_enabled", false);
+            
+          
+
 			chromePrefs.put("profile.default_content_settings.popups", 0);
 
 			//Optional
@@ -215,6 +226,7 @@ public class WebDriverActions {
 
 			options.addArguments("test-type");
 			options.addArguments("chrome.switches", "--disable-extensions");
+			options.addArguments("--disable-web-security");
 			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 			
 			if(seleniumGridUrl == null ||seleniumGridUrl.equalsIgnoreCase(WebDriverConstants.LOCAL)){
@@ -2576,5 +2588,300 @@ public class WebDriverActions {
 
 		}
 	}
+	
+	
+	
+	/**
+	 * assertFalse
+	 * 
+	 * @param condition
+	 *            of (boolean)
+	 * @param message
+	 *            of (String)
+	 * @return boolean
+	 * @throws Throwable
+	 *             the throwable
+	 */
+	public boolean assertFalse(boolean condition, String message) throws Throwable {
+		try {
+			if (!condition)
+				return true;
+			else
+				return false;
+		} catch (Exception e) {
+			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
+			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+			LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
+			return false;
+		} finally
+
+		{
+			if (condition) {
+				failureReport("Expected :: " + message, message);
+			} else {
+				successReport("Expected :: " + message, message);
+			}
+		}
+	}
+	
+	/**
+	 * pressEnter from  KeyBoard
+	 * 
+	 * @param locator
+	 *            of (By)
+	 * @return void
+	 * @throws Throwable
+	 */
+	public void pressEnter(By locator) throws Throwable {
+		try {
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+			LOG.info("Method : " + getCallerMethodName());
+			WebElement element = webDriver.findElement(locator);
+			element.sendKeys(Keys.ENTER);
+			
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		} catch (Exception e) {
+			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
+			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+			e.printStackTrace();
+			LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
+		}
+	}
+	
+	/**
+	 * findWebElements
+	 * 
+	 * @param locator
+	 *            of (By)
+	 * @param locatorName
+	 *            of (String)
+	 * @return WebElement
+	 * @throws Throwable
+	 */
+	public List<WebElement> findWebElements(By locator, String locatorName) throws Throwable {
+		List<WebElement> element;
+		try {
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+			LOG.info("Method : click  ::  Locator : " + locatorName);
+			WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
+			LOG.info("Waiting for element");
+			LOG.info("Locator is Visible :: " + locator);
+			LOG.info("Clicked on the Locator");
+			element = webDriver.findElements(locator);
+			LOG.info("identified the element :: " + locator);
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		} catch (Exception e) {
+			LOG.info(e.getMessage());
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		return element;
+	}
+	
+	/**
+	 * getLatestFilefromDir : Get the latest file from the path provided
+	 * 
+	 * @param locator
+	 *            of (By)
+	 * @param locatorName
+	 *            of (String)
+	 * @return WebElement
+	 * @throws Throwable
+	 */
+	public File getLatestFilefromDir(String dirPath){
+	    File dir = new File(dirPath);
+	    File[] files = dir.listFiles();
+	    if (files == null || files.length == 0) {
+	        return null;
+	    }
+	
+	    File lastModifiedFile = files[0];
+	    for (int i = 1; i < files.length; i++) {
+	       if (lastModifiedFile.lastModified() < files[i].lastModified()) {
+	           lastModifiedFile = files[i];
+	       }
+	    }
+	    return lastModifiedFile;
+	}
+	
+	/**
+	 * getTextFromPDF : Read the pdf file and provide the content as string
+	 * 
+	 * @param locator
+	 *            of (By)
+	 * @param locatorName
+	 *            of (String)
+	 * @return WebElement
+	 * @throws Throwable
+	 */
+	public String getTextFromPDF(String pdfFilePath) throws Throwable {
+		File pdfFile = new File(pdfFilePath);
+
+		PDFParser parser = new PDFParser(new FileInputStream(pdfFile));
+		parser.parse();
+
+		COSDocument cosDoc = parser.getDocument();
+		PDDocument pdDoc = new PDDocument(cosDoc);
+
+		PDFTextStripper pdfStripper = new PDFTextStripper();
+		String parsedText = pdfStripper.getText(pdDoc);
+	//	LOG.info("Text in PDF is: \n" + parsedText);
+		parser.getPDDocument().close();
+		return parsedText;
+		}
 		
+	/**
+	    * waitForInVisibilityOfElement
+	    *
+	    * @param by
+	    *            of (By)
+	    * @param locatorName
+	    *            of (String)
+	    * @return boolean
+	    * @throws Throwable
+	    *             the throwable
+	    */
+	   public boolean waitForInVisibilityOfElement(By by, String locatorName) throws Throwable {
+	      boolean flag = false;
+	      LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+	      LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+	      LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
+	      WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
+	      try {
+	         wait.until(ExpectedConditions.invisibilityOfElementLocated(by));
+	         flag = true;
+	         LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+	         return true;
+	      } catch (Exception e) {
+	         LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
+	         LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+	         e.printStackTrace();
+	         LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
+	         return false;
+	      } finally {
+	         if (!flag) {
+	            failureReport("Invisible of element is false :: ", "Element :: " + locatorName + " is visible");
+	         } else {
+	            successReport("Invisible of element is true :: ", "Element :: " + locatorName + "  is not visible");
+	         }
+	      }
+	   }
+	   
+	   /**
+	    * isItemPresentInLocalStorage
+	    *
+	    * @param item
+	    *            of (String)
+	    * @return boolean
+	    * @throws Throwable
+	    *             the throwable
+	    */
+	   public boolean isItemPresentInLocalStorage(String item) throws Throwable {
+	      boolean flag = false;
+	      try {
+	         LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+	         LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+	         LOG.info("Method : " + getCallerMethodName() + "  ::  StorageItem : " + item);
+	         String javaScript = String.format("return window.localStorage.getItem('%s');", item);
+	        JavascriptExecutor js = (JavascriptExecutor) webDriver;
+	         flag = true;
+	         LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+	         return !(js.executeScript(javaScript) == null);
+	      } catch (Exception e) {
+	         LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
+	         LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+	         LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
+	         flag = false;
+	         throw new RuntimeException(e);
+	      } finally {
+	         if (!flag) {
+	            failureReport("StorageItem :: ", "Read from local storage action failed on :: " + item);
+	         } else {
+	            successReport("StorageItem :: ", "Read from local storage action is done on :: " + item);
+	         }
+	      }
+	   }
+	   
+	   /**
+	     * getCurrentURL
+	     *
+	     * @return String
+	     * @throws Throwable
+	     *             the throwable
+	     */
+	public String getCurrentURL() throws Throwable {
+		String text = webDriver.getCurrentUrl();
+		{
+			successReport("Current URL :: ", "Current URL of the page is :: " + text);
+		}
+		return text;
+	}
+	
+	   /**
+	    * isVisible
+	    *
+	    * @param locator
+	    *            of (By)
+	    * @param locatorName
+	    *            of (String)
+	    * @return boolean
+	    * @throws Throwable
+	    *             the throwable
+	    */
+	   public boolean isNotVisible(By locator, String locatorName) throws Throwable {
+	      boolean flag = false;
+	      try {
+	         // added loggers
+	         LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+	         LOG.info("Class name :: " + getCallerClassName() + " Method name :: " + getCallerMethodName());
+	         LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
+	         // value = driver.findElement(locator).isDisplayed();
+	         flag = !webDriver.findElement(locator).isDisplayed();
+	         // value = true;
+	         LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+	      } catch (Exception e) {
+	         flag = false;
+	      } finally {
+	         if (!flag) {
+	            failureReport("IsVisible : ", locatorName + " Element is Not Visible : ");
+	         } else {
+	            successReport("IsVisible : ", locatorName + " Element is Visible : ");
+	         }
+	      }
+	      return flag;
+	   }
+	   
+	   /**
+	    * nextOccuranceOfDay, Returns the date of the next occurrence of that day
+	    * e.g if nextOccuranceOfDay("dd/MM/YYYY, "tuesday") was called and today was Wednesday then the date returned would be today plus 6 days
+	    * format
+	    *
+	    * @return : String
+	    * @param dateTimeFormat
+	    *            of (String), format to get date and time (e.g: dd/MM/yyyy)
+	    * @param dayOfWeek
+	    *            of (String), the day of the week to find the next occurrence of
+	    */
+	   public String nextOccurrenceOfDay(String dateTimeFormat, String dayOfWeek) throws Throwable {
+	      int dayNum=0;
+	      switch (dayOfWeek.toLowerCase()){
+	         case "monday":{dayNum=1;break;}
+	         case "tuesday":{dayNum=2;break;}
+	         case "wednesday":{dayNum=3;break;}
+	         case "thursday":{dayNum=4;break;}
+	         case "friday":{dayNum=5;break;}
+	         case "saturday":{dayNum=6;break;}
+	         case "sunday":{dayNum=7;break;}
+	      }
+	      SimpleDateFormat sdf = new SimpleDateFormat(dateTimeFormat);
+	      Calendar cal = Calendar.getInstance();
+	      int dow = cal.get(Calendar.DAY_OF_WEEK);
+	      dow--; //This is to force Monday to be day 1 rather than Sunday
+	      int numDays = 7 - ((dow - dayNum) % 7 + 7) % 7;
+	      cal.add(Calendar.DAY_OF_YEAR, numDays);
+	      return sdf.format(cal.getTime());
+	   }
+
 }
