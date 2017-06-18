@@ -284,7 +284,13 @@ public class WebDriverActions {
 		return webDriver;			
 	}	
 	
-	public boolean navigateToUrl(String url) {
+	/**
+	 * navigateToUrl : Function is load to Other URL
+	 * @param send the url of type String
+	 * @return boolean           
+	 */
+	
+	public boolean navigateToUrl(String url)throws Throwable {
 		boolean flag = false;
 		try {
 			webDriver.get(url);
@@ -293,22 +299,18 @@ public class WebDriverActions {
 		} catch (Exception e) {
 			failureReport("Navigated to url", "Unable to navigat to url '" + url + "'");
 			flag = false;
+			throw new RuntimeException(e);
 		}
 		return flag;
 	}
 
 	/**
-	 * selectByIndex
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param index
-	 *            of (int)
-	 * @param locatorName
-	 *            of (String)
+	 * navigateToUrl : Function to select the value from dropdown using index
+	 * @param locator of the element of type (By)
+	 * @param index of the element of type (int)
+	 * @param Valid message of type String for to generate a detailed report
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 *            
 	 */
 	public boolean selectByIndex(By locator, int index, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -338,15 +340,11 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * assertTrue
-	 * 
-	 * @param condition
-	 *            of (boolean)
-	 * @param message
-	 *            of (String)
+	 * assertTrue : Function is to assert the condition
+	 * @param condition of type (boolean)
+	 * @param Valid message of type String for to generate a detailed report
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 *        
 	 */
 	public boolean assertTrue(boolean condition, String message) throws Throwable {
 		try {
@@ -371,15 +369,11 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * dynamicWaitByLocator
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param time
-	 *            of (int)
+	 * dynamicWaitByLocator : Function is to  wait for element presence till maximum time interval as defined by user
+	 * @param locator of type (By)
+	 * @param time of type (int)
 	 * @return void
 	 * @throws InterruptedException
-	 *             the throwable
 	 */
 	public void dynamicWaitByLocator(By locator, int time) throws InterruptedException {
 		try {
@@ -391,33 +385,31 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * dynamicWaitByLocator
-	 * 
-	 * @param locator
-	 *            of (By)
+	 * dynamicWaitByLocator : Function is to wait for element presence till maximum time defined globally
+	 * @param locator of type (By)
 	 * @return void
 	 * @throws InterruptedException
-	 *             the throwable
 	 */
 	public void dynamicWaitByLocator(By locator) throws InterruptedException {
 		try {
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			LOG.info("Class name : " + getCallerClassName() + "Method name : " + getCallerMethodName());
+			LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locator);
 			WebDriverWait wait = new WebDriverWait(webDriver,timeValue);
 			wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+			LOG.info(locator + ":: displayed succussfully");
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		} catch (Exception e) {
 			LOG.info(e.getMessage());
 		}
 	}
 
 	/**
-	 * assertElementPresent
-	 * 
-	 * @param by
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
+	 * assertElementPresent : Function is to assert the element presence
+	 * @param locator of type (By)
+	 * @param Valid message of type String for to generate a detailed report
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 * 
 	 */
 	public boolean assertElementPresent(By by, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -442,15 +434,11 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * mouseHoverByJavaScript
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
+	 * mouseHoverByJavaScript :Function to mouse hover on a element using javascript
+	 * @param locator of (By)
+	 * @param Valid message of type String for to generate a detailed report
 	 * @return boolean
 	 * @throws Throwable
-	 *             the throwable
 	 */
 	public boolean mouseHoverByJavaScript(By locator, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -483,15 +471,11 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * waitForVisibilityOfElement
-	 * 
-	 * @param by
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
+	 * waitForVisibilityOfElement: Function to wait for visibility of element 
+	 * @param by of (By)
+	 * @param Valid message of type String for to generate a detailed report
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 * throws Throwable 
 	 */
 	public boolean waitForVisibilityOfElement(By by, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -520,15 +504,11 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * clickUsingJavascriptExecutor
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
+	 * clickUsingJavascriptExecutor:Function is to click the button
+	 * @param locator of (By)
+	 * @param Valid message of type String for to generate a detailed report
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 * @throws Throwable the throwable
 	 */
 	public boolean clickUsingJavascriptExecutor(By locator, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -563,17 +543,12 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * selectByValue
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param value
-	 *            of (String)
-	 * @param locatorName
-	 *            of (String)
+	 * selectByValue :Function to select the value from dropdown by value
+	 * @param locator of (By)
+	 * @param value of (String)
+	 * @param Valid message of type String for to generate a detailed report
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 * @throws Throwable the throwable
 	 */
 	public boolean selectByValue(By locator, String value, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -601,17 +576,12 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * selectByVisibleText
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param visibleText
-	 *            of (String)
-	 * @param locatorName
-	 *            of (String)
+	 * selectByVisibleText :Function to select visible text from dropdown
+	 * @param locator of (By)
+	 * @param visibleText of (String)
+	 * @param Valid message of type String for to generate a detailed report
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 * @throws Throwable the throwable
 	 */
 	public boolean selectByVisibleText(By locator, String visibleText, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -634,15 +604,11 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * isVisible
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
+	 * isVisible : Function to verify the element visbility
+	 * @param locator of (By)
+	 * @param Valid message of type String for to generate a detailed report
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 * @throws Throwable the throwable
 	 */
 	public boolean isVisible(By locator, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -668,10 +634,8 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * getElementsSize
-	 * 
-	 * @param locator
-	 *            of (By)
+	 * getElementsSize Function to get the size of the element 
+	 * @param locator of (By)
 	 * @return int
 	 */
 	public int getElementsSize(By locator) {
@@ -686,17 +650,12 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * assertTextMatching
-	 * 
-	 * @param by
-	 *            of (By)
-	 * @param text
-	 *            of (String)
-	 * @param locatorName
-	 *            of (String)
+	 * assertTextMatching : Function is to assert the text 
+	 * @param by of (By) 
+	 * @param expectedText text of (String)
+	 * @param Valid message of type String for to generate a detailed report
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 * @throws Throwable the throwable
 	 */
 	public boolean assertTextMatching(By by, String text, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -733,17 +692,12 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * assertTextMatchingWithAttribute
-	 * 
-	 * @param by
-	 *            of (By)
-	 * @param text
-	 *            of (String)
-	 * @param locatorName
-	 *            of (String)
+	 * assertTextMatchingWithAttribute : Function is to assert value of attribute
+	 * @param by of (By)
+	 * @param ExpectedText of (String)
+	 * @param Valid message of type String for to generate a detailed report
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 * @throws Throwable the throwable
 	 */
 	public boolean assertTextMatchingWithAttribute(By by, String text, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -779,15 +733,11 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * assertTextStringMatching
-	 * 
-	 * @param actText
-	 *            of (String)
-	 * @param expText
-	 *            of (String)
+	 * assertTextStringMatching: Function to compare two String values
+	 * @param actText of (String)
+	 * @param expText of (String)
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 * @throws Throwable the throwable
 	 */
 	public boolean assertTextStringMatching(String actText, String expText) throws Throwable {
 		boolean flag = false;
@@ -821,15 +771,11 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * click
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
+	 * click : function to click the Element 
+	 * @param locator of type (By)
+	 * @param Valid message of type String for to generate a detailed report
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 * @throws Throwable the throwable
 	 */
 	public boolean click(By locator, String locatorName) throws Throwable {
 		boolean status = false;
@@ -870,17 +816,12 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * isElementPresent
-	 * 
-	 * @param by
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
-	 * @param expected
-	 *            of (boolean)
+	 * isElementPresent : Function to verify the presence of element with report part integration
+	 * @param by of (By)
+	 * @param Valid message of type String for to generate a detailed report
+	 * @param expected of (boolean)
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 * @throws Throwable the throwable
 	 */
 	public boolean isElementPresent(By by, String locatorName, boolean expected) throws Throwable {
 		boolean status = false;
@@ -909,21 +850,18 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * isElementPresent
-	 * 
-	 * @param by
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
+	 * isElementPresent : Function to verify the presence of element without report part integration
+	 * @param by of (By)
+	 * @param Valid message of type String for to generate a detailed report
+	 * @param expected of (boolean)
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 * @throws Throwable the throwable
 	 */
 	public boolean isElementPresent(By by, String locatorName) throws Throwable {
 		boolean status = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			dynamicWait(by);
+			dynamicWaitByLocator(by);
 			highlight(webDriver.findElement(by));
 			((JavascriptExecutor)webDriver).executeScript("arguments[0].scrollIntoView(true)",webDriver.findElement(by));
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -937,15 +875,11 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * scroll
-	 * 
-	 * @param by
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
+	 * scroll : Function is to scroll to the element
+	 * @param by of (By)
+	 * @param Valid message of type String for to generate a detailed report
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 * @throws Throwable the throwable
 	 */
 	public boolean scroll(By by, String locatorName) throws Throwable {
 		boolean status = false;
@@ -967,15 +901,10 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * JSScroll
-	 * 
-	 * @param by
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
+	 * JSScroll :Function is to scroll the element using JavaScript
+	 * @param locator of type (By)
+	 * @param Valid message of type String for to generate a detailed report
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
 	 */
 	public boolean JSScroll(By by, String locatorName) throws Throwable {
 		boolean status = false;
@@ -996,17 +925,11 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * verifyElementPresent
-	 * 
-	 * @param by
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
-	 * @param expected
-	 *            of (boolean)
+	 * verifyElementPresent :Function is to verify the element presence in the page
+	 * @param locator of type (By)
+	 * @param Valid message of type String for to generate a detailed report
+	 * @param expected of (boolean)
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
 	 */
 	public boolean verifyElementPresent(By by, String locatorName, boolean expected) throws Throwable {
 		boolean status = false;
@@ -1032,17 +955,12 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * type
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param testData
-	 *            of (String)
-	 * @param locatorName
-	 *            of (String)
+	 * sendKeys : Function is to send the keys
+	 * @param locator of (By)
+	 * @param testData of (String)
+	 * @param Valid message of type String for to generate a detailed report
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 * @throws Throwable the throwable
 	 */
 	public boolean sendKeys(By locator, String testData, String locatorName) throws Throwable {
 		boolean status = false;
@@ -1075,17 +993,12 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * typeUsingJavaScriptExecutor
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param testData
-	 *            of (String)
-	 * @param locatorName
-	 *            of (String)
+	 * typeUsingJavaScriptExecutor : Function  is to send the keys using JavaScript
+	 * @param locator of (By)
+	 * @param testData of (String)
+	 * @param Valid message of type String for to generate a detailed report
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 * @throws Throwable the throwable
 	 */
 	public boolean typeUsingJavaScriptExecutor(By locator, String testData, String locatorName) throws Throwable {
 		boolean status = false;
@@ -1110,12 +1023,9 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * Moves the mouse to the middle of the element. The element is scrolled
+	 * waitForTitlePresent : Moves the mouse to the middle of the element. The element is scrolled
 	 * into view and its location is calculated using getBoundingClientRect.
-	 *
-	 * @param locator
-	 *            : Action to be performed on element (Get it from Object
-	 *            repository)
+	 * @param locator: Action to be performed on element (Get it from Object repository)
 	 */
 	public boolean waitForTitlePresent(By locator) throws Throwable {
 		boolean flag = false;
@@ -1144,11 +1054,9 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * getTitle
+	 * getTitle : Function is to get the Title of Page.
+	 * @return the title of the page of type (String)
 	 * 
-	 * @return String
-	 * @throws Throwable
-	 *             the throwable
 	 */
 	public String getTitle() throws Throwable {
 		String text = webDriver.getTitle();
@@ -1159,15 +1067,10 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * assertText
-	 * 
-	 * @param by
-	 *            of (By)
-	 * @param text
-	 *            of (String)
+	 * assertText : Function is to assert String Value
+	 * @param by of (By)
+	 * @param Expected text of (String)
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
 	 */
 	public boolean assertText(By by, String text) throws Throwable {
 		boolean flag = false;
@@ -1191,13 +1094,9 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * assertTitle
-	 * 
-	 * @param title
-	 *            of (String)
+	 * assertTitle : Function is To assert tiltle of Page
+	 * @param Expected title of (String)
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
 	 */
 	public boolean assertTitle(String title) throws Throwable {
 		boolean flag = false;
@@ -1228,15 +1127,10 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * getText
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
-	 * @return String
-	 * @throws Throwable
-	 *             the throwable
+	 * getText : Function is to get the value of element
+	 * @param locator of (By)
+	 * @param locatorName of (String)
+	 * @return the value of element of type (String)
 	 */
 	public String getText(By locator, String locatorName) throws Throwable {
 		String text = "";
@@ -1265,15 +1159,10 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * getAttributeByValue
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
-	 * @return String
-	 * @throws Throwable
-	 *             the throwable
+	 * getAttributeByValue : Function is to get the value of Attribute 
+	 * @param locator : Action to be performed on element
+	 * @param locatorName of (String)
+	 * @return the value of attribute of type (String)
 	 */
 	public String getAttributeByValue(By locator, String locatorName) throws Throwable {
 		String text = "";
@@ -1302,17 +1191,12 @@ public class WebDriverActions {
 		}
 		return text;
 	}
-
+	
 	/**
-	 * getAttributeByValue
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
+	 * getAttributeByClass : Function is to get the value class attribute 
+	 * @param locator : Action to be performed on element
+	 * @param locatorName of (String)
 	 * @return String
-	 * @throws Throwable
-	 *             the throwable
 	 */
 	public String getAttributeByClass(By locator, String locatorName) throws Throwable {
 		String text = "";
@@ -1343,14 +1227,11 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * Moves the mouse to the middle of the element. The element is scrolled
+	 * mouseHover : Moves the mouse to the middle of the element. The element is scrolled
 	 * into view and its location is calculated using getBoundingClientRect.
-	 *
-	 * @param locator
-	 *            : Action to be performed on element (Get it from Object
-	 *            repository)
-	 * @param locatorName
-	 *            : Meaningful name to the element (Ex:link,menus etc..)
+	 * @param locator : Action to be performed on element 
+	 * @param locatorName : Meaningful name to the element (Ex:link,menus etc..)
+	 * @return : boolean 
 	 */
 	public boolean mouseHover(By locator, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -1376,15 +1257,11 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * JSClick
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
+	 * JSClick : Function is to click the element using JavaScript
+	 * @param locator : Action to be performed on element of type (By)
+	 * @param locatorName of type (String)
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 * 
 	 */
 	public boolean JSClick(By locator, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -1397,16 +1274,11 @@ public class WebDriverActions {
 			LOG.info("Method : click  ::  Locator : " + locatorName);
 			WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
 			LOG.info("Waiting for element");
-			// internalServerErrorHandler();
-			// wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 			LOG.info("Locator is Visible :: " + locator);
 			wait.until(ExpectedConditions.elementToBeClickable(locator));
-
 			WebElement element = this.webDriver.findElement(locator);
 			JavascriptExecutor executor = (JavascriptExecutor) this.webDriver;
 			executor.executeScript("arguments[0].click();", element);
-			// LOG.info("Successfully clicked on :: " + locatorName);
-			// driver.executeAsyncScript("arguments[0].click();", element);
 			flag = true;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -1423,131 +1295,10 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * JSClickUntil
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param waitLocator
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
+	 * jsMouseHover : Function is to mouse hover on element using JavaScript  
+	 * @param locator of (By)
+	 * @param locatorName of (String)
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
-	 */
-	public boolean JSClickUntil(By locator, By waitLocator, String locatorName) throws Throwable {
-		boolean flag = false;
-		try {
-			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			LOG.info("Class name : " + getCallerClassName() + "Method name : " + getCallerMethodName());
-			LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
-			WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
-			// wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-			wait.until(ExpectedConditions.elementToBeClickable(locator));
-			WebElement element = this.webDriver.findElement(locator);
-			JavascriptExecutor executor = (JavascriptExecutor) this.webDriver;
-			int icounter = 0;
-			do {
-				try {
-					if (isElementPresent(waitLocator, "Wait for Element : " + locatorName)) {
-						flag = true;
-						break;
-					} else {
-						icounter = icounter + 1;
-					}
-					if (icounter >= 3) {
-						flag = false;
-						break;
-					}
-					executor.executeScript("arguments[0].click();", element);
-				} catch (Exception e) {
-					LOG.info("Retrying for the object :: " + waitLocator + " :: Iteration : " + icounter);
-				}
-
-			} while (icounter <= 3);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (!flag) {
-				failureReport("Click : ", "Click action is not perform on : " + locatorName);
-				// return flag;
-			} else {
-				this.successReport("Click : ", "Clicked : " + locatorName);
-				// return flag;
-			}
-		}
-		return flag;
-	}
-
-	/**
-	 * clickUntil
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param waitLocator
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
-	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
-	 */
-	public boolean clickUntil(By locator, By waitLocator, String locatorName) throws Throwable {
-		boolean flag = false;
-		try {
-			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			LOG.info("Class name : " + getCallerClassName() + "Method name : " + getCallerMethodName());
-			LOG.info("Method :" + getCallerMethodName() + "  ::  Locator : " + locatorName);
-			WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
-			LOG.info("Waiting for element");
-			// internalServerErrorHandler();
-			// wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-			LOG.info("Locator is Visible :: " + locator);
-			wait.until(ExpectedConditions.elementToBeClickable(locator));
-			LOG.info("Clicked on the Locator");
-
-			int icounter = 0;
-			do {
-				try {
-					if (isElementPresent(waitLocator, "Wait for Element : " + locatorName)) {
-						flag = true;
-						break;
-					} else {
-						icounter = icounter + 1;
-					}
-					if (icounter >= 3) {
-						flag = false;
-						break;
-					}
-					webDriver.findElement(locator).click();
-				} catch (Exception e) {
-					LOG.info("Retrying for the object :: " + waitLocator + " :: Iteration : " + icounter);
-				}
-
-			} while (icounter <= 3);
-
-			LOG.info("identified the element :: " + locator);
-			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			successReport("Click : " + locatorName, msgClickSuccess + locatorName);
-		} catch (Exception e) {
-			flag = false;
-			LOG.info(e.getMessage());
-			failureReport("Click : " + locatorName, msgClickFailure + locatorName);
-			throw new RuntimeException(e);
-		}
-		return flag;
-	}
-
-	/**
-	 * jsMouseHover
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
-	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
 	 */
 	public boolean jsMouseHover(By locator, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -1566,25 +1317,18 @@ public class WebDriverActions {
 		} finally {
 			if (!flag) {
 				failureReport("MouseOver : ", "MouseOver action is not perform on : " + locatorName);
-				// return flag;
 			} else {
 				this.successReport("MouseOver : ", "MouserOver Action is Done on" + locatorName);
-				// return flag;
 			}
 		}
 		return flag;
 	}
 
 	/**
-	 * getWebElementList
-	 * 
-	 * @param by
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
+	 * getWebElementList : Function is to retrieve list of web elements
+	 * @param by of (By)
+	 * @param locatorName of (String)
 	 * @return List<WebElement>
-	 * @throws Throwable
-	 *             the throwable
 	 */
 	public List<WebElement> getWebElementList(By by, String locatorName) throws Throwable {
 		List<WebElement> elements = null;
@@ -1608,46 +1352,11 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * elementLoadingTime
-	 * 
-	 * @param locator
-	 *            of (By)
+	 * elementLoadingTime : Function is to calculate time of element loading
+	 * @param locator of (By)
 	 * @return float
-	 * @throws Throwable
-	 *             the throwable
 	 */
-	public float elementLoadingTime(By locator) throws Throwable {
-
-		float timeTaken = 0;
-		try {
-			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
-			long start = System.currentTimeMillis();
-			LOG.info("start " + start);
-			WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
-			wait.until(ExpectedConditions.elementToBeClickable(locator));
-			// wait.until(ExpectedConditions.elementToBeClickable(locator));
-			long stop = System.currentTimeMillis();
-			timeTaken = (stop - start);
-			LOG.info("The time taken for the page to load is : " + timeTaken + " milli seconds : ");
-			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return timeTaken;
-	}
-
-	/**
-	 * elementVisibleTime
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @return void
-	 * @throws Throwable
-	 *             the throwable
-	 */
-	public void elementVisibleTime(By locator) throws Throwable {
+	public float elementVisibleTime(By locator) throws Throwable {
 
 		float timeTaken = 0;
 		try {
@@ -1661,21 +1370,19 @@ public class WebDriverActions {
 			LOG.info("Took : " + timeTaken + " secs to display the results : ");
 			successReport("Total time taken for element visible :: ",
 					"Time taken load the element :: " + timeTaken + " seconds");
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return timeTaken;
 	}
 
 	/**
-	 * Moves the mouse to the middle of the element. The element is scrolled
-	 * into view and its location is calculated using getBoundingClientRect.
-	 *
-	 * @param destinationLocator
-	 *            : Action to be performed on element (Get it from Object
-	 *            repository)
-	 * @param locatorName
-	 *            : Meaningful name to the element (Ex:link,menus etc..)
+	 * getAttributeByClass : Function is to get the value class attribute 
+	 * @param locator : Action to be performed on element on source of type (By)
+	 * @param locator : Action to be performed on element on destination of type (By)
+	 * @param locatorName of (String)
+	 * @return boolean
 	 */
 	public boolean dragAndDrop(By souceLocator, By destinationLocator, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -1686,12 +1393,6 @@ public class WebDriverActions {
 			Actions builder = new Actions(this.webDriver);
 			WebElement souceElement = this.webDriver.findElement(souceLocator);
 			WebElement destinationElement = this.webDriver.findElement(destinationLocator);
-			/*
-			 * Action dragAndDrop =
-			 * builder.clickAndHold(souceElement).moveToElement(
-			 * destinationElement) .release(destinationElement).build();
-			 * dragAndDrop.perform();
-			 */
 			builder.dragAndDrop(souceElement, destinationElement).build().perform();
 			flag = true;
 			LOG.info("drag and drop performed ");
@@ -1709,13 +1410,9 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * navigateTo
-	 * 
-	 * @param Url
-	 *            of (String)
+	 * navigateTo : Function to navigate to other URL
+	 * @param Url of type (String)
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
 	 */
 	public boolean navigateTo(String Url) throws Throwable {
 		boolean flag = false;
@@ -1739,11 +1436,8 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * generateRandomNumber
-	 * 
-	 * @return int
-	 * @throws Throwable
-	 *             the throwable
+	 * generateRandomNumber : Function is to generate a random number
+	 * @return random numbers of type (int)
 	 */
 	public int generateRandomNumber() throws Throwable {
 		Random generator = new Random();
@@ -1752,15 +1446,10 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * rightClick
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
+	 * rightClick : Function is to perform the mouse right click
+	 * @param locator of (By)
+	 * @param locatorName of (String)
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
 	 */
 	public boolean rightClick(By locator, String locatorName) throws Throwable {
 		boolean status;
@@ -1785,36 +1474,8 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * dynamicWait
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @return void
-	 * @throws Throwable
-	 *             the throwable
-	 */
-	public void dynamicWait(By locator) throws Throwable {
-		try {
-			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			LOG.info("Class name : " + getCallerClassName() + "Method name : " + getCallerMethodName());
-			LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locator);
-			WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
-			wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-			LOG.info(locator + ":: displayed succussfully");
-			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		} catch (Exception e) {
-			LOG.info(e.getMessage());
-			// failureReport("Unable to find Element :: " + locator,
-			// msgIsElementFoundFailure + locator);
-			// throw new RuntimeException(e);
-
-		}
-	}
-
-	/**
-	 * getCallerClassName
-	 * 
-	 * @return String
+	 * getCallerClassName : function is to retrieve the ClassName
+	 * @return Gives the Respective ClassName of type (String)
 	 */
 	public static String getCallerClassName() {
 		StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
@@ -1822,9 +1483,8 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * getCallerMethodName
-	 * 
-	 * @return String
+	 * getCallerClassName : function is to retrieve the MethodName
+	 * @return Gives the Respective ClassName of type (String)
 	 */
 	public static String getCallerMethodName() {
 		StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
@@ -1832,15 +1492,11 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * Double click the mouse to the middle of the element. The element is
+	 * mouseDoubleClick : Double click the mouse to the middle of the element. The element is
 	 * scrolled into view and its location is calculated using
 	 * getBoundingClientRect.
-	 *
-	 * @param locator
-	 *            : Action to be performed on element (Get it from Object
-	 *            repository)
-	 * @param locatorName
-	 *            : Meaningful name to the element (Ex:link,menus etc..)
+	 * @param locator : Action to be performed on element of type (By)
+	 * @param locatorName: Meaningful name to the element (Ex:link,menus etc..)
 	 */
 	public boolean mouseDoubleClick(By locator, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -1868,12 +1524,8 @@ public class WebDriverActions {
 	/**
 	 * click the mouse to the middle of the element. The element is scrolled
 	 * into view and its location is calculated using getBoundingClientRect.
-	 *
-	 * @param locator
-	 *            : Action to be performed on element (Get it from Object
-	 *            repository)
-	 * @param locatorName
-	 *            : Meaningful name to the element (Ex:link,menus etc..)
+	 * @param locator : Action to be performed on element of type (By)
+	 * @param locatorName : Meaningful name to the element (Ex:link,menus etc..)
 	 */
 	public boolean mouseClick(By locator, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -1899,13 +1551,9 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * getYear, Function to get required year e.g: 0-Current year, 1-Next year,
-	 * 
-	 * @param number
-	 *            of (int) Number to get year (e.g: -1,0,1 etc)
+	 * getYear: Function to get required year e.g: 0-Current year, 1-Next year,
+	 * @param number of type (int) Number to get year (e.g: -1,0,1 etc)
 	 * @return int
-	 * @throws Throwable
-	 *             the throwable
 	 */
 	public int getYear(int number) throws Throwable {
 		Calendar cal = Calendar.getInstance();
@@ -1915,13 +1563,9 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * dateFormatVerification, Function to verify date format by giving actual
-	 * date
-	 * 
-	 * @param actualDate
-	 *            of (String) actual date e.g: 21-11-2015
-	 * @param formatToVerify
-	 *            of (String) format type e.g: dd-MM-yyyy
+	 * dateFormatVerification: Function to verify date format by giving actualdate
+	 * @param actualDate of type (String) actual date e.g: 21-11-2015
+	 * @param formatToVerify of type (String) format type e.g: dd-MM-yyyy
 	 * @return boolean
 	 */
 	public boolean dateFormatVerification(String actualDate, String formatToVerify) {
@@ -1938,14 +1582,10 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * formatVerify, Reusable Function to verify date format by giving actual
-	 * date
-	 * 
+	 * formatVerify: Reusable Function to verify date format by giving actualdate
+	 * @param actualDate of type (String)e.g: 21-11-2015
+	 * @param formatToVerify of type (String) type e.g: dd-MM-yyyy
 	 * @return : boolean
-	 * @param actualDate
-	 *            of (String)e.g: 21-11-2015
-	 * @param formatToVerify
-	 *            of (String) type e.g: dd-MM-yyyy
 	 */
 	public boolean formatVerify(String actualDate, String formatToVerify) {
 		boolean flag = false;
@@ -1966,16 +1606,11 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * replaceAll, Function to replace the regular expression values with client
-	 * required values
-	 * 
+	 * replaceAll: Function to replace the regular expression values with client required values
+	 * @param text of type (String)
+	 * @param pattern of type (String), regular expression of actual value
+	 * @param replaceWith of (String), value to replace the actual
 	 * @return : String
-	 * @param text
-	 *            of (String)
-	 * @param pattern
-	 *            of (String), regular expression of actual value
-	 * @param replaceWith
-	 *            of (String), value to replace the actual
 	 */
 	public String replaceAll(String text, String pattern, String replaceWith) {
 		String flag = null;
@@ -1989,14 +1624,10 @@ public class WebDriverActions {
 
 	/**
 	 * subString, Function to get sub string of given actual string text
-	 * 
+	 * @param text of type (String), Actual text
+	 * @param startIndex of (int), Start index of sub string
+	 * @param endIndex of (int), end index of sub string
 	 * @return : String
-	 * @param text
-	 *            of (String), Actual text
-	 * @param startIndex
-	 *            of (int), Start index of sub string
-	 * @param endIndex
-	 *            of (int), end index of sub string
 	 */
 	public String subString(String text, int startIndex, int endIndex) {
 		String flag = null;
@@ -2009,14 +1640,10 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * getCssValue, Function to get the value of a given CSS property (e.g.
-	 * width)
-	 * 
+	 * getCssValue: Function to get the value of a given CSS property (e.g.width)
+	 * @param locator of type (By)
+	 * @param cssValue of type(String), CSS property
 	 * @return : String
-	 * @param locator
-	 *            of (By)
-	 * @param cssValue
-	 *            of (String), CSS property
 	 */
 	public String getCssValue(By locator, String cssValue) {
 		String result = "";
@@ -2029,14 +1656,10 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * getBackGroundColor, Function to get the background color of a given web
-	 * element (e.g. background-color)
-	 * 
+	 * getBackGroundColor: Function to get the background color of a given webelement (e.g. background-color)
+	 * @param locator of type (By)
+	 * @param cssValue of type (String), CSS property (e.g. background-color)
 	 * @return : String
-	 * @param locator
-	 *            of (By)
-	 * @param cssValue
-	 *            of (String), CSS property (e.g. background-color)
 	 */
 	public String getBackGroundColor(By locator, String cssValue) {
 		String hexColor = "";
@@ -2050,11 +1673,8 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * switchToFrame, Function to switch to frame
-	 * 
-	 * @return : void
-	 * @param locator
-	 *            of (By)
+	 * switchToFrame: Function is to switch to another frame
+	 * @param locator of type (By)
 	 */
 	public void switchToFrame(By locator) {
 		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -2068,11 +1688,8 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * getCurrentDateTime, Function to get current time in client required
-	 * format
-	 * 
-	 * @param dateTimeFormat
-	 *            of (String), format to get date and time (e.g: h:mm)
+	 * getCurrentDateTime, Function to get current time in client required format
+	 * @param dateTimeFormat of type (String), format to get date and time (e.g: h:mm)
 	 * @return : String
 	 */
 	public String getCurrentDateTime(String dateTimeFormat) throws Throwable {
@@ -2082,15 +1699,10 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * getFutureDateTime, Function to get future or past date in client required
-	 * format
-	 * 
+	 * getFutureDateTime: Function to get future or past date in client required format
+	 * @param dateTimeFormat of (String), format to get date and time (e.g: MM/dd/yyyy)
+	 * @param days of (int), number to get date E.g. 1:Tomorrow date, -1:Yesterday date
 	 * @return : String
-	 * @param dateTimeFormat
-	 *            of (String), format to get date and time (e.g: MM/dd/yyyy)
-	 * @param days
-	 *            of (int), number to get date E.g. 1:Tomorrow date, -1:
-	 *            Yesterday date
 	 */
 	public String getFutureDateTime(String dateTimeFormat, int days) throws Throwable {
 		SimpleDateFormat sdf = new SimpleDateFormat(dateTimeFormat);
@@ -2101,15 +1713,10 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * assertTextStringContains, Assert text string matching.
-	 * 
-	 * @param actText
-	 *            of (String)
-	 * @param expText
-	 *            of (String)
+	 * assertTextStringContains :Function to  assert text string contains.
+	 * @param actText of type (String)
+	 * @param expText of type (String)
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
 	 */
 	public boolean assertTextStringContains(String actText, String expText) throws Throwable {
 		boolean flag = false;
@@ -2143,12 +1750,9 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * deleteDirectory, Delete directory from local machine
-	 *
-	 * @param directoryPath
-	 *            of (String), path for the directory to delete
+	 * deleteDirectory: Function to delete directory from local machine
+	 * @param directoryPath of type (String), path for the directory to delete
 	 * @return void
-	 * @throws IOException
 	 */
 	public void deleteDirectory(String directoryPath) throws IOException {
 		FileUtils.deleteDirectory(new File(directoryPath));
@@ -2156,9 +1760,7 @@ public class WebDriverActions {
 
 	/**
 	 * getRandomString, Get random String
-	 *
-	 * @param noOfCharacters
-	 *            of (int), Number of characters to get randomly
+	 * @param noOfCharacters of (int), Number of characters to get randomly
 	 * @return String
 	 * @throws IOException
 	 */
@@ -2167,10 +1769,8 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * getRandomNumeric, Get random Numeric
-	 *
-	 * @param noOfCharacters
-	 *            of (int), Number of characters to get randomly
+	 * getRandomNumeric: Get random Numeric
+	 * @param noOfCharacters of type (int), Number of characters to get randomly
 	 * @return String
 	 * @throws IOException
 	 */
@@ -2179,30 +1779,28 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * getAttributeValue, Function to get the value of a given attribute (e.g.
-	 * class)
-	 * 
+	 * getAttributeValue, Function to get the value of a given attribute (e.g.class)
+	 * @param locator of type (By)
+	 * @param attributeName of (String)
 	 * @return : String
-	 * @param locator
-	 *            of (By)
-	 * @param attributeName
-	 *            of (String)
 	 */
 	public String getAttributeValue(By locator, String attributeName) {
 		String result = "";
+		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+		LOG.info("Method : " + getCallerMethodName());
 		try {
 			result = this.webDriver.findElement(locator).getAttribute(attributeName);
+			LOG.info("Locator is Visible and attribute value is retrieved :: " + result);
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		return result;
 	}
-
 	/**
-	 * refreshPage
-	 * 
+	 * refreshPage : Function to refresh page 
 	 * @return void
-	 * @throws Throwable
 	 */
 	public void refreshPage() throws Throwable {
 		try {
@@ -2220,12 +1818,9 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * clearData, Clear value from textBox
-	 * 
-	 * @param locator
-	 *            of (By)
+	 * clearData : Function to clear value from textBox
+	 * @param locator of (By)
 	 * @return void
-	 * @throws Throwable
 	 */
 	public void clearData(By locator) throws Throwable {
 		try {
@@ -2246,16 +1841,11 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * keyBoardOperations
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param testData
-	 *            of (Keys)
-	 * @param locatorName
-	 *            of (String)
+	 * keyBoardOperations : Function to perform the keyboard operations
+	 * @param locator of (By)
+	 * @param testData of (Keys)
+	 * @param locatorName of (String)
 	 * @return boolean
-	 * @throws Throwable
 	 */
 	public boolean keyBoardOperations(By locator, Keys testData, String locatorName) throws Throwable {
 		boolean status = false;
@@ -2284,45 +1874,8 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * keyBoardOperations
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param testData
-	 *            of (String)
-	 * @param locatorName
-	 *            of (String)
-	 * @return boolean
-	 * @throws Throwable
-	 */
-	public boolean typeWitoutReport(By locator, String testData, String locatorName) throws Throwable {
-		boolean status = false;
-		/* try { */
-		// Waittime();
-		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		LOG.info("Class name : " + getCallerClassName() + "Method name : " + getCallerMethodName());
-		LOG.info("Method : Type  ::  Locator : " + locatorName + " :: Data :" + testData);
-		// WebDriverWait wait = new WebDriverWait(driver, 10);
-		LOG.info("Waiting for element :");
-		webDriver.findElement(locator).click();
-		LOG.info("Clicked on the Locator : ");
-		webDriver.findElement(locator).clear();
-		LOG.info("Cleared the existing Locator data : ");
-		webDriver.findElement(locator).sendKeys(testData);
-		LOG.info("Typed the Locator data :: " + testData);
-		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		status = true;
-		/*
-		 * } catch (Exception e) { status = false; LOG.info(e.getMessage()); }
-		 */
-		return status;
-	}
-
-	/**
-	 * Switch to frame using index value
-	 *
-	 * @param index
-	 *            of (int), frame number to switch
+	 * switchToFrameByIndex : Function helps Switch to other frame using index value
+	 * @param index of type (int), frame number to switch
 	 * @return void
 	 */
 	public void switchToFrameByIndex(int index) {
@@ -2330,8 +1883,7 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * come out from frame
-	 * 
+	 * comeOutFromFrame : Function helps to come out from frame
 	 * @return void
 	 */
 	public void comeOutFromFrame() {
@@ -2339,13 +1891,13 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * Click on OK button on alert
-	 *
+	 * acceptAlert : Function to accept alert
 	 * @return void
 	 */
 	public void acceptAlert() {
 		try {
-
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 			WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
 			wait.until(ExpectedConditions.alertIsPresent());
 			webDriver.switchTo().alert().accept();
@@ -2356,14 +1908,10 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * findWebElement
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
+	 * findWebElement: Function is to find element   
+	 * @param locator of type (By)
+	 * @param locatorName of type (String)
 	 * @return WebElement
-	 * @throws Throwable
 	 */
 	public WebElement findWebElement(By locator, String locatorName) throws Throwable {
 		WebElement element;
@@ -2388,18 +1936,12 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * checkBoxIsChecked
-	 * 
-	 * @param by
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
-	 * @param expected
-	 *            of (boolean)
+	 * checkBoxIsChecked : Function is to verify the check box enabling
+	 * @param locator of type (By)
+	 * @param locatorName of type (String)
 	 * @return boolean
-	 * @throws Throwable
 	 */
-	public boolean checkBoxIsChecked(By by, String locatorName, boolean expected) throws Throwable {
+	public boolean checkBoxIsChecked(By by, String locatorName) throws Throwable {
 		boolean status = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -2412,21 +1954,18 @@ public class WebDriverActions {
 
 		} finally {
 			if (!status) {
-
 				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 				failureReport("checkBoxIsChecked : ", msgCheckboxisnotChecked + locatorName);
 			} else {
 				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 				successReport("checkBoxIsChecked : ", locatorName + ", checkBoxIsChecked : true");
 			}
-
 		}
 		return status;
 	}
 
 	/**
-	 * switchToWindow, Function to switch to latest window
-	 * 
+	 * switchToWindow: Function to switch to latest window
 	 * @return : void
 	 */
 	public void switchToWindow() {
@@ -2436,19 +1975,16 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * switchToParentWindow, Function to switch to parent window
-	 * 
+	 * switchToParentWindow: Function to switch to parent window
+	 * @param window handle to switch
 	 * @return void
-	 * @param handle
-	 *            of (String), window handle to switch
 	 */
 	public void switchToParentWindow(String handle) {
 		webDriver.switchTo().window(handle);
 	}
 
 	/**
-	 * closeWindow, Function to close the currently focused window
-	 * 
+	 * closeWindow: Function to close the current focused window
 	 * @return : void
 	 */
 	public void closeWindow() {
@@ -2456,8 +1992,7 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * getWindowHandle, Function to get the current window handle
-	 * 
+	 * getWindowHandle: Function to get the current window handle
 	 * @return : String
 	 */
 	public String getWindowHandle() {
@@ -2465,16 +2000,20 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * scrollToWebElement, Function to scroll to a particular element
-	 * 
-	 * @param element
-	 *            of (By)
+	 * scrollToWebElement: Function to scroll to a particular element
+	 * @param locator of type (By)
 	 * @return : void
 	 */
 	public void scrollToWebElement(By element) {
 		JavascriptExecutor jse = (JavascriptExecutor) webDriver;
 		jse.executeScript("arguments[0].scrollIntoView(true);", webDriver.findElement(element));
 	}
+
+	/**
+	 * deleteSpecificFile: Function to delete the specified file from local machine path
+	 * @param filepath of type (String)
+	 * @return : void
+	 */
 
 	public void deleteSpecificFile(String fileName) throws InterruptedException {
 		try {
@@ -2490,8 +2029,7 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * findWebElementVisibility, Function returns WebElement
-	 * 
+	 * findWebElementVisibility: Function is to identify the presence of element in a page
 	 * @return : WebElement
 	 */
 
@@ -2517,22 +2055,11 @@ public class WebDriverActions {
 		return element;
 	}
 
-	public boolean isCheckBoxSelected(By locator) {
-		boolean flag = false;
-		flag = webDriver.findElement(locator).isSelected();
-		return flag;
-	}
-
 	/**
-	 * isVisible
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
+	 * isVisible : Function is to verify element is displayed or not  
+	 * @param locator of type (By)
+	 * @param locatorName of type (String)
 	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
 	 */
 	public boolean isVisibleOnly(By locator, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -2541,9 +2068,7 @@ public class WebDriverActions {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name :: " + getCallerClassName() + " Method name :: " + getCallerMethodName());
 			LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
-			// value = driver.findElement(locator).isDisplayed();
 			flag = webDriver.findElement(locator).isDisplayed();
-			// value = true;
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		} catch (Exception e) {
 			flag = false;
@@ -2553,10 +2078,11 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * isVisible locator of (By) locatorName of (String) boolean
+	 * differenceBetweenTwoDates : Function is to find difference between two dates
+	 * @param First Date of type String
+	 * @param second Date of type String
+	 * @return returns the time difference value of type (long)
 	 * 
-	 * @throws Throwable
-	 *             the throwable
 	 */
 	public long differenceBetweenTwoDates(String date1, String date2, String dateFormat) throws Throwable {
 		long diffDays = 0;
@@ -2708,40 +2234,28 @@ public class WebDriverActions {
 	
 	/**
 	 * getTextFromPDF : Read the pdf file and provide the content as string
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
+	 * @param locator of (By)
+	 * @param locatorNameof (String)
 	 * @return WebElement
 	 * @throws Throwable
 	 */
 	public String getTextFromPDF(String pdfFilePath) throws Throwable {
 		File pdfFile = new File(pdfFilePath);
-
 		PDFParser parser = new PDFParser(new FileInputStream(pdfFile));
 		parser.parse();
-
 		COSDocument cosDoc = parser.getDocument();
 		PDDocument pdDoc = new PDDocument(cosDoc);
-
 		PDFTextStripper pdfStripper = new PDFTextStripper();
 		String parsedText = pdfStripper.getText(pdDoc);
-	//	LOG.info("Text in PDF is: \n" + parsedText);
 		parser.getPDDocument().close();
 		return parsedText;
 		}
 		
-	/**
+		/**
 	    * waitForInVisibilityOfElement
-	    *
-	    * @param by
-	    *            of (By)
-	    * @param locatorName
-	    *            of (String)
+	    * @param by of (By)
+	    * @param locatorName   of (String)
 	    * @return boolean
-	    * @throws Throwable
-	    *             the throwable
 	    */
 	   public boolean waitForInVisibilityOfElement(By by, String locatorName) throws Throwable {
 	      boolean flag = false;
@@ -2771,12 +2285,8 @@ public class WebDriverActions {
 	   
 	   /**
 	    * isItemPresentInLocalStorage
-	    *
-	    * @param item
-	    *            of (String)
+	    * @param item of (String)
 	    * @return boolean
-	    * @throws Throwable
-	    *             the throwable
 	    */
 	   public boolean isItemPresentInLocalStorage(String item) throws Throwable {
 	      boolean flag = false;
@@ -2805,11 +2315,9 @@ public class WebDriverActions {
 	   }
 	   
 	   /**
-	     * getCurrentURL
-	     *
+	     * getCurrentURL : function to retrieve the current URL.
 	     * @return String
-	     * @throws Throwable
-	     *             the throwable
+	     * 
 	     */
 	public String getCurrentURL() throws Throwable {
 		String text = webDriver.getCurrentUrl();
@@ -2820,26 +2328,18 @@ public class WebDriverActions {
 	}
 	
 	   /**
-	    * isVisible
-	    *
-	    * @param locator
-	    *            of (By)
-	    * @param locatorName
-	    *            of (String)
+	    * isNotVisible 
+	    * @param locator of (By)
+	    * @param locatorName of (String)
 	    * @return boolean
-	    * @throws Throwable
-	    *             the throwable
 	    */
 	   public boolean isNotVisible(By locator, String locatorName) throws Throwable {
 	      boolean flag = false;
 	      try {
-	         // added loggers
 	         LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 	         LOG.info("Class name :: " + getCallerClassName() + " Method name :: " + getCallerMethodName());
 	         LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
-	         // value = driver.findElement(locator).isDisplayed();
 	         flag = !webDriver.findElement(locator).isDisplayed();
-	         // value = true;
 	         LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 	      } catch (Exception e) {
 	         flag = false;
@@ -2857,12 +2357,11 @@ public class WebDriverActions {
 	    * nextOccuranceOfDay, Returns the date of the next occurrence of that day
 	    * e.g if nextOccuranceOfDay("dd/MM/YYYY, "tuesday") was called and today was Wednesday then the date returned would be today plus 6 days
 	    * format
-	    *
-	    * @return : String
 	    * @param dateTimeFormat
 	    *            of (String), format to get date and time (e.g: dd/MM/yyyy)
 	    * @param dayOfWeek
 	    *            of (String), the day of the week to find the next occurrence of
+	    * @return : String
 	    */
 	   public String nextOccurrenceOfDay(String dateTimeFormat, String dayOfWeek) throws Throwable {
 	      int dayNum=0;
