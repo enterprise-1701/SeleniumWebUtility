@@ -3,8 +3,6 @@ package com.cubic.accelerators;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -56,13 +54,27 @@ public class WebDriverActions {
 	private String testCaseName = null;
 	
 	private int timeValue  = Integer.parseInt(GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("webdriver_dynamicwait_time"));
-	
+	/**
+	 * 
+	 * @param webDriver
+	 * @param customReports
+	 * @param testCaseName
+	 */
 	public WebDriverActions(WebDriver webDriver, CustomReports customReports, String testCaseName) {
 		this.webDriver = webDriver;
 		this.customReports = customReports;
 		this.testCaseName = testCaseName;
 	}
 	
+	/**
+	 * 
+	 * @param customReports
+	 * @param testCaseName
+	 * @param browserName
+	 * @param seleniumGridUrl
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
 	public WebDriverActions(CustomReports customReports, String testCaseName, String browserName, String seleniumGridUrl)
 			throws IOException, InterruptedException {
 
@@ -71,10 +83,18 @@ public class WebDriverActions {
 		this.testCaseName = testCaseName;
 	}
 	
+	/**
+	 * Used to call selenium actions directly to use them in test scripts
+	 * @return current webDriver instance
+	 */
 	public WebDriver getWebDriver (){
 		return this.webDriver;
 	}
 	
+	/**
+	 * Tear down process to quit the webDriverAction instances
+	 * @param webDriverActions instance to quit
+	 */
 	public static void flush(WebDriverActions webDriverActions){
 		if(webDriverActions.webDriver!=null){
 			webDriverActions.webDriver.quit();
@@ -85,6 +105,13 @@ public class WebDriverActions {
 		}
 	}
 
+	/**
+	 * For adding the failure step to the detailed report
+	 * Current web page instance will be captured as screenshot and linked to the step 
+	 *   
+	 *  @param stepName is description about action performed to display in customised detail report
+	 * 	@param description is about the actual behaviour to display in customised detail report
+	 */
 	public void failureReport(String stepName, String description) {
 		if (customReports != null) {
 			File screenshotFile = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
@@ -92,18 +119,37 @@ public class WebDriverActions {
 		}
 	}
 
+	/**
+	 * For adding the warning step to the detailed report.
+	 * 
+	 * @param stepName is description about action performed to display in customised detail report 
+	 * @param description is about the actual behaviour to display in customised detail report
+	 */		
 	public void warningReport(String stepName, String description) {
 		if (customReports != null) {
 			customReports.warningReport(stepName, description, testCaseName); 
 		}
 	}
 	
+	/**
+	 * For adding the success step to the detailed report.
+	 * 
+	 * @param stepName is description about action performed to display in customised detail report 
+	 * @param description is about the actual behaviour to display in customised detail report
+	 */	
 	public void successReport(String stepName, String description) {
 		if (customReports != null) {
 			customReports.successReport(stepName, description, testCaseName);
 		}
 	}
 
+	/**
+	 * For adding the success step to the detailed report with screenshot reference. 
+	 * Current web page instance will be captured as screenshot and linked to the step.
+	 *   
+	 *  @param stepName is description about action performed to display in customised detail report
+	 * 	@param description is about the actual behaviour to display in customised detail report
+	 */
 	public void successReportForWeb(String stepName, String description) {
 		if (customReports != null) {
 			File screenshotFile = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
@@ -276,9 +322,9 @@ public class WebDriverActions {
 	}	
 	
 	/**
-	 * Gets the URL
-	 * @param url value of URL
-	 * @return boolean value indicating success of the operation           
+	 * Launches web page with provided URL
+	 * @param url of the web page
+	 * @return boolean value indicating success of the operation          
 	 */
 	
 	public boolean navigateToUrl(String url) {
@@ -290,6 +336,7 @@ public class WebDriverActions {
 		} catch (Exception e) {
 			failureReport("Navigated to url", "Unable to navigat to url '" + url + "'");
 			flag = false;
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		}
 		return flag;
@@ -317,6 +364,7 @@ public class WebDriverActions {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 			LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
@@ -345,6 +393,7 @@ public class WebDriverActions {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 			LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
+			LOG.error(e.getStackTrace());
 			return false;
 		} finally
 
@@ -367,7 +416,7 @@ public class WebDriverActions {
 			WebDriverWait wait = new WebDriverWait(webDriver, time);
 			wait.until(ExpectedConditions.presenceOfElementLocated(locator));
 		} catch (Exception e) {
-			// e.printStackTrace();
+			LOG.error(e.getStackTrace());
 		}
 	}
 
@@ -386,6 +435,7 @@ public class WebDriverActions {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		} catch (Exception e) {
 			LOG.info(e.getMessage());
+			LOG.error(e.getStackTrace());
 		}
 	}
 
@@ -404,7 +454,7 @@ public class WebDriverActions {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 			LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
-			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 			LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
 		} finally {
 			if (!flag) {
@@ -443,6 +493,7 @@ public class WebDriverActions {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 			LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
@@ -473,7 +524,7 @@ public class WebDriverActions {
 		} catch (Exception e) {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
-			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 			LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
 			return false;
 		} finally {
@@ -486,7 +537,7 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * clicks an element
+	 * clicks an element using java script executor
 	 * @param locator of element
 	 * @param locatorName message to be included in the execution report
 	 * @return boolean value indicating success of the operation
@@ -509,6 +560,7 @@ public class WebDriverActions {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 			LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
+			LOG.error(e.getStackTrace());
 			flag = false;
 			throw new RuntimeException(e);
 		} finally {
@@ -524,7 +576,7 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * Selects value from drop down based on value of the index
+	 * Selects value from drop down based on value
 	 * @param locator of element
 	 * @param value dropdown list value
 	 * @param locatorName message to be included in the execution report
@@ -543,14 +595,15 @@ public class WebDriverActions {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			return true;
 		} catch (Exception e) {
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
-				failureReport("Select",
-						"Option with value attribute : " + value + " is Not Select from the DropDown : " + locatorName);
+				failureReport("Select " + value + " in "+ locatorName + " dropdown",
+						value + " is Not Selected from the DropDown : " + locatorName);
 			} else {
-				successReport("Select",
-						"Option with value attribute : " + value + " is  Selected from the DropDown : " + locatorName);
+				successReport("Select " + value + " in "+ locatorName + " dropdown",
+						value + " is selected from the DropDown : " + locatorName);
 			}
 		}
 	}
@@ -571,13 +624,13 @@ public class WebDriverActions {
 			return true;
 		} catch (Exception e) {
 			// return false;
-			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
-				failureReport("Select " +visibleText, visibleText + " is Not Select from the DropDown" + locatorName);
+				failureReport("Select " + visibleText + " in "+ locatorName + " dropdown", visibleText + " is Not Select from the DropDown" + locatorName);
 			} else {
-				successReport("Select " +visibleText, visibleText + "  is Selected from the DropDown" + locatorName);
+				successReport("Select " + visibleText + " in "+ locatorName + " dropdown", visibleText + "  is Selected from the DropDown" + locatorName);
 			}
 		}
 	}
@@ -597,6 +650,7 @@ public class WebDriverActions {
 			flag = webDriver.findElement(locator).isDisplayed();
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		} catch (Exception e) {
+			LOG.error(e.getStackTrace());
 			flag = false;
 		} finally {
 			if (!flag) {
@@ -619,7 +673,7 @@ public class WebDriverActions {
 			List<WebElement> rows = webDriver.findElements(locator);
 			listCount = rows.size();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 		}
 		return listCount;
 	}
@@ -655,6 +709,7 @@ public class WebDriverActions {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 			return false;
 		} finally {
 			if (!flag) {
@@ -692,6 +747,7 @@ public class WebDriverActions {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 			return false;
 		} finally {
 			if (!flag) {
@@ -703,7 +759,7 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * Compares Two String Values
+	 * Compares two string values
 	 * @param actText text1
 	 * @param expText text2
 	 * @return boolean value indicating success of the operation
@@ -727,6 +783,7 @@ public class WebDriverActions {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 			return false;
 		} finally {
 			if (!flag) {
@@ -762,6 +819,7 @@ public class WebDriverActions {
 		} catch (Exception e) {
 			status = false;
 			LOG.info(e.getMessage());
+			LOG.error(e.getStackTrace());
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		} finally {
@@ -791,6 +849,7 @@ public class WebDriverActions {
 			status = false;
 			e.printStackTrace();
 			LOG.info(e.getMessage());
+			LOG.error(e.getStackTrace());
 		} finally {
 			if (!status) {
 				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -825,6 +884,7 @@ public class WebDriverActions {
 			status = true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 		}finally {
 			if (!status) {
 				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -858,6 +918,7 @@ public class WebDriverActions {
 			status = true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 		}finally {
 			if (!status) {
 				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -871,7 +932,7 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * Sends the keys to element
+	 * Enters text into the text field
 	 * @param locator of element
 	 * @param testData of (String)
 	 * @param locatorName message to be included in the execution report
@@ -898,6 +959,7 @@ public class WebDriverActions {
 		} catch (Exception e) {
 			status = false;
 			LOG.info(e.getMessage());
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		}finally {
 			if (!status) {
@@ -934,6 +996,7 @@ public class WebDriverActions {
 		} catch (Exception e) {
 			status = false;
 			LOG.info(e.getMessage());
+			LOG.error(e.getStackTrace());
 			failureReport("Enter text in :: " + locatorName, msgTypeFailure + locatorName);
 			throw new RuntimeException(e);
 		}finally {
@@ -972,6 +1035,7 @@ public class WebDriverActions {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
@@ -998,6 +1062,7 @@ public class WebDriverActions {
 		 flag=true;
 		}catch(Exception e){
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
@@ -1011,7 +1076,7 @@ public class WebDriverActions {
 
 	
 	/**
-	 * Asserts  text  with an actual text of element 
+	 * Asserts text  with an actual text of element 
 	 * @param by locator of element 
 	 * @param text expectedText text of (String)
 	 * @return boolean value indicating success of the operation
@@ -1028,6 +1093,7 @@ public class WebDriverActions {
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 			return false;
 		}  finally {
 					if (!flag) {
@@ -1057,6 +1123,7 @@ public class WebDriverActions {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
@@ -1086,8 +1153,9 @@ public class WebDriverActions {
 			result = this.webDriver.findElement(locator).getAttribute(attributeName);
 			LOG.info("Locator is Visible and attribute value is retrieved :: " + result);
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 		}finally {
 			if (!flag) {
 				warningReport("GetAttribute :: ", "Unable to get Attribute value from :: " + attributeName);
@@ -1121,6 +1189,7 @@ public class WebDriverActions {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
@@ -1152,6 +1221,7 @@ public class WebDriverActions {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++");
 			return true;
 		} catch (Exception e) {
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
@@ -1185,6 +1255,7 @@ public class WebDriverActions {
 			executor.executeScript("arguments[0].click();", element);
 			flag = true;
 		} catch (Exception e) {
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
@@ -1217,6 +1288,7 @@ public class WebDriverActions {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			flag = true;
 		} catch (Exception e) {
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
@@ -1251,6 +1323,7 @@ public class WebDriverActions {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 		}
 		return elements;
 	}
@@ -1278,6 +1351,7 @@ public class WebDriverActions {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 		}finally {
 			if (!flag) {
 				failureReport("Expected loading time of element : "+locatorName, "Element is not Loaded");
@@ -1310,6 +1384,7 @@ public class WebDriverActions {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			return true;
 		} catch (Exception e) {
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
@@ -1321,7 +1396,7 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * Navigates to other URL
+	 * Navigates to URL
 	 * @param Url value of URL
 	 * @return boolean value indicating success of the operation
 	 */
@@ -1333,6 +1408,7 @@ public class WebDriverActions {
 			flag = true;
 		} catch (Exception e) {
 			LOG.info(e.getMessage());
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException();
 			
 		} finally {
@@ -1358,6 +1434,7 @@ public class WebDriverActions {
 		
 		}catch(Exception e){
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 		}
 		 return intRandom_number;
 	}
@@ -1382,6 +1459,7 @@ public class WebDriverActions {
 			status = true;
 		} catch (Exception e) {
 			LOG.info(e.getMessage());
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		}finally {
 			if (!status) {
@@ -1430,6 +1508,7 @@ public class WebDriverActions {
 			return true;
 		} catch (Exception e) {
 			// return false;
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
@@ -1458,6 +1537,7 @@ public class WebDriverActions {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++");
 			return true;
 		} catch (Exception e) {
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
@@ -1481,8 +1561,9 @@ public class WebDriverActions {
 		String result = "";
 		try {
 			result = this.webDriver.findElement(locator).getCssValue(cssValue);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 		}finally {
 			if (!flag) {
 				failureReport("Get the CSS Value of property  :: "+cssValue, "Unable to retrieve the value of CSSProperty "+cssValue);
@@ -1505,8 +1586,9 @@ public class WebDriverActions {
 		try {
 			String bColor = this.webDriver.findElement(locator).getCssValue(cssValue);
 			hexColor = Color.fromString(bColor).asHex();
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 		}finally {
 			if (!flag) {
 				failureReport("Get the back ground colour of css property  :: "+cssValue, "Unable to retrieve the back ground color of CSSProperty "+cssValue);
@@ -1543,6 +1625,7 @@ public class WebDriverActions {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 			return false;
 		}  finally {
 			if (!flag) {
@@ -1554,7 +1637,7 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * Refresh the page
+	 * Refresh the web page
 	 */
 	public void refreshPage()  {
 		boolean flag = false;
@@ -1569,6 +1652,7 @@ public class WebDriverActions {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 			LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
 		} finally {
 			if (!flag) {
@@ -1599,6 +1683,7 @@ public class WebDriverActions {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 			LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
 		} finally {
 			if (!flag) {
@@ -1626,6 +1711,7 @@ public class WebDriverActions {
 		webDriver.switchTo().frame(webDriver.findElement(locator));
 		}catch(Exception e){
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 		}finally {
 			if (!flag) {
 				failureReport("Swtich to frame  :: "+locator, "Unable to switch to frame "+locator);
@@ -1647,6 +1733,7 @@ public class WebDriverActions {
 		webDriver.switchTo().frame(index);
 		}catch(Exception e){
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 		}finally {
 			if (!flag) {
 				failureReport("Swtich to frame  :: ", "Unable to switch to frame ");
@@ -1667,6 +1754,7 @@ public class WebDriverActions {
 		webDriver.switchTo().defaultContent();
 		}catch(Exception e){
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 		}finally {
 			if (!flag) {
 				failureReport("Swtich to Parent Frame ", "Unable to switch to Parent frame ");
@@ -1688,6 +1776,7 @@ public class WebDriverActions {
 			webDriver.switchTo().alert().accept();
 		} catch (Exception e) {
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 		}
 	}
 
@@ -1714,13 +1803,14 @@ public class WebDriverActions {
 		} catch (Exception e) {
 			LOG.info(e.getMessage());
 			e.printStackTrace();
+			LOG.error(e.getStackTrace());
 			throw new RuntimeException(e);
 		}
 		return element;
 	}
 
 	/**
-	 * Selects the check box 
+	 * Verifies the check box is checked or not 
 	 * @param by locator of element
 	 * @param locatorName message to be included in the execution report
 	 * @return boolean value indicating success of the operation
@@ -1735,6 +1825,7 @@ public class WebDriverActions {
 				status = true;
 		} catch (Exception e) {
 			status = false;
+			LOG.error(e.getStackTrace());
 			LOG.info(e.getMessage());
 
 		} finally {
@@ -1854,7 +1945,7 @@ public class WebDriverActions {
 	}
 	
 	/**
-	 * assertFalse
+	 * Asserts False of the condition
 	 * @param condition of (boolean)
 	 * @param message of (String)
 	 * @return boolean value indicating success of the operation
@@ -1869,6 +1960,7 @@ public class WebDriverActions {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 			LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
+			LOG.error(e.getStackTrace());
 			return false;
 		} finally{
 			if (condition) {
@@ -2011,7 +2103,7 @@ public class WebDriverActions {
 		}
 	
 	   /**
-	    * verifies the invisibility of element  
+	    * Verifies the invisibility of element  
 	    * @param locator of element
 	    * @param locatorName message to be included in the execution report
 	    * @return boolean value indicating success of the operation
@@ -2025,6 +2117,7 @@ public class WebDriverActions {
 	         flag = !webDriver.findElement(locator).isDisplayed();
 	         LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 	      } catch (Exception e) {
+	    	  LOG.error(e.getStackTrace());
 	         flag = false;
 	      } finally {
 	         if (!flag) {
