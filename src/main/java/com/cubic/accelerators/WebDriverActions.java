@@ -1,20 +1,15 @@
 package com.cubic.accelerators;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -39,10 +34,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.apache.pdfbox.cos.COSDocument;
-import org.apache.pdfbox.pdfparser.PDFParser;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.util.PDFTextStripper;
 
 import com.cubic.genericutils.GenericConstants;
 import com.cubic.reportengine.report.CustomReports;
@@ -285,9 +276,9 @@ public class WebDriverActions {
 	}	
 	
 	/**
-	 * navigateToUrl : Function is load to Other URL
-	 * @param send the url of type String
-	 * @return boolean           
+	 * Gets the URL
+	 * @param url value of URL
+	 * @return boolean value indicating success of the operation           
 	 */
 	
 	public boolean navigateToUrl(String url)throws Throwable {
@@ -303,14 +294,13 @@ public class WebDriverActions {
 		}
 		return flag;
 	}
-
+	
 	/**
-	 * navigateToUrl : Function to select the value from dropdown using index
-	 * @param locator of the element of type (By)
-	 * @param index of the element of type (int)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @return boolean
-	 *            
+	 * Selects a value from dropdown based on index of the value
+	 * @param locator of element
+	 * @param index of element
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
 	public boolean selectByIndex(By locator, int index, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -340,11 +330,10 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * assertTrue : Function is to assert the condition
-	 * @param condition of type (boolean)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @return boolean
-	 *        
+	 * Asserts the condition
+	 * @param condition
+	 * @param message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
 	public boolean assertTrue(boolean condition, String message) throws Throwable {
 		try {
@@ -369,10 +358,9 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * dynamicWaitByLocator : Function is to  wait for element presence till maximum time interval as defined by user
-	 * @param locator of type (By)
-	 * @param time of type (int)
-	 * @return void
+	 * Waits for element presence
+	 * @param locator of element
+	 * @param time 
 	 * @throws InterruptedException
 	 */
 	public void dynamicWaitByLocator(By locator, int time) throws InterruptedException {
@@ -385,9 +373,8 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * dynamicWaitByLocator : Function is to wait for element presence till maximum time defined globally
-	 * @param locator of type (By)
-	 * @return void
+	 * Waits for element presence
+	 * @param locator of element
 	 * @throws InterruptedException
 	 */
 	public void dynamicWaitByLocator(By locator) throws InterruptedException {
@@ -405,16 +392,15 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * assertElementPresent : Function is to assert the element presence
-	 * @param locator of type (By)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @return boolean
-	 * 
+	 * Asserts a element presence  
+	 * @param locator of element
+	 * @param message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean assertElementPresent(By by, String locatorName) throws Throwable {
+	public boolean assertElementPresent(By by, String locatorName){
 		boolean flag = false;
 		try {
-			Assert.assertTrue(isElementPresent(by, locatorName, true));
+			Assert.assertTrue(isElementPresent(by, locatorName));
 			flag = true;
 		} catch (Exception e) {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
@@ -434,13 +420,12 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * mouseHoverByJavaScript :Function to mouse hover on a element using javascript
-	 * @param locator of (By)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @return boolean
-	 * @throws Throwable
+	 * MouseHovers on a element using JavaScript Implementation
+	 * @param locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean mouseHoverByJavaScript(By locator, String locatorName) throws Throwable {
+	public boolean mouseHoverByJavaScript(By locator, String locatorName){
 		boolean flag = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -471,13 +456,12 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * waitForVisibilityOfElement: Function to wait for visibility of element 
-	 * @param by of (By)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @return boolean
-	 * throws Throwable 
+	 * waits for visibility of element
+	 * @param locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation 
 	 */
-	public boolean waitForVisibilityOfElement(By by, String locatorName) throws Throwable {
+	public boolean waitForVisibilityOfElement(By by, String locatorName){
 		boolean flag = false;
 		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
@@ -504,13 +488,12 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * clickUsingJavascriptExecutor:Function is to click the button
-	 * @param locator of (By)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @return boolean
-	 * @throws Throwable the throwable
+	 * clicks an element
+	 * @param locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean clickUsingJavascriptExecutor(By locator, String locatorName) throws Throwable {
+	public boolean clickUsingJavascriptExecutor(By locator, String locatorName) {
 		boolean flag = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -543,14 +526,13 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * selectByValue :Function to select the value from dropdown by value
-	 * @param locator of (By)
-	 * @param value of (String)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @return boolean
-	 * @throws Throwable the throwable
+	 * Selects value from drop down based on value of the index
+	 * @param locator of element
+	 * @param value dropdown list value
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean selectByValue(By locator, String value, String locatorName) throws Throwable {
+	public boolean selectByValue(By locator, String value, String locatorName){
 		boolean flag = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -576,14 +558,13 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * selectByVisibleText :Function to select visible text from dropdown
-	 * @param locator of (By)
+	 * Selects value from dropdown based on visible text 
+	 * @param locator of element
 	 * @param visibleText of (String)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @return boolean
-	 * @throws Throwable the throwable
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean selectByVisibleText(By locator, String visibleText, String locatorName) throws Throwable {
+	public boolean selectByVisibleText(By locator, String visibleText, String locatorName){
 		boolean flag = false;
 		try {
 			Select s = new Select(webDriver.findElement(locator));
@@ -596,74 +577,70 @@ public class WebDriverActions {
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
-				failureReport("Select", visibleText + " is Not Select from the DropDown" + locatorName);
+				failureReport("Select " +visibleText, visibleText + " is Not Select from the DropDown" + locatorName);
 			} else {
-				successReport("Select", visibleText + "  is Selected from the DropDown" + locatorName);
+				successReport("Select " +visibleText, visibleText + "  is Selected from the DropDown" + locatorName);
 			}
 		}
 	}
 
 	/**
-	 * isVisible : Function to verify the element visbility
-	 * @param locator of (By)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @return boolean
-	 * @throws Throwable the throwable
+	 * Verifies Visibility of element in a web page
+	 * @param locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean isVisible(By locator, String locatorName) throws Throwable {
+	public boolean isVisible(By locator, String locatorName){
 		boolean flag = false;
 		try {
-			// added loggers
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name :: " + getCallerClassName() + " Method name :: " + getCallerMethodName());
 			LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
-			// value = driver.findElement(locator).isDisplayed();
 			flag = webDriver.findElement(locator).isDisplayed();
-			// value = true;
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		} catch (Exception e) {
 			flag = false;
 		} finally {
 			if (!flag) {
-				failureReport("IsVisible : ", locatorName + " Element is Not Visible : ");
+				failureReport("IsVisible : " +locatorName, locatorName + " Element is Not Visible : ");
 			} else {
-				successReport("IsVisible : ", locatorName + " Element is Visible : ");
+				successReport("IsVisible : " +locatorName, locatorName + " Element is Visible : ");
 			}
 		}
 		return flag;
 	}
 
 	/**
-	 * getElementsSize Function to get the size of the element 
-	 * @param locator of (By)
-	 * @return int
+	 * Provides size of WebElements list
+	 * @param locator of element
+	 * @return integer value indicating the count of the web elements
 	 */
 	public int getElementsSize(By locator) {
-		int a = 0;
+		int listCount = 0;
 		try {
 			List<WebElement> rows = webDriver.findElements(locator);
-			a = rows.size();
+			listCount = rows.size();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return a;
+		return listCount;
 	}
 
 	/**
-	 * assertTextMatching : Function is to assert the text 
-	 * @param by of (By) 
-	 * @param expectedText text of (String)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @return boolean
-	 * @throws Throwable the throwable
+	 * Verifies a text contains in an actual text of element 
+	 * @param locator of element 
+	 * @param text expectedText text of (String)
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean assertTextMatching(By by, String text, String locatorName) throws Throwable {
+	public boolean assertTextContains(By by, String text, String locatorName){
 		boolean flag = false;
+		String ActualText = null;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name : " + getCallerClassName() + "Method name : " + getCallerMethodName());
 			LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
-			String ActualText = getText(by, locatorName).trim();
+			 ActualText = getText(by, locatorName).trim();
 			LOG.info("ActualText is : " + ActualText);
 
 			if (ActualText.contains(text.trim())) {
@@ -683,38 +660,34 @@ public class WebDriverActions {
 			return false;
 		} finally {
 			if (!flag) {
-				failureReport("Verify : " + locatorName, text + " is not present in the element : ");
-				// return false;
+				failureReport("Expected Text : " + text,  "Expected text "+text+" is not contains in ActualText of Webelement : " + ActualText );
 			} else {
-				successReport("Verify : " + locatorName, text + " is  present in the element : " + locatorName);
+				successReport("Expected Text : " + text, "Expected text "+text+" is contains in ActualText of WebElement : " + ActualText);
 			}
 		}
 	}
 
 	/**
-	 * assertTextMatchingWithAttribute : Function is to assert value of attribute
-	 * @param by of (By)
-	 * @param ExpectedText of (String)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @return boolean
-	 * @throws Throwable the throwable
+	 * Verifies a text contains in an actual text of attribute Value
+	 * @param locator of element 
+	 * @param text expectedText text of (String)
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean assertTextMatchingWithAttribute(By by, String text, String locatorName) throws Throwable {
+	public boolean assertTextMatchingContainsWithAttribute(By by, String text, String locatorName){
 		boolean flag = false;
+		String actualText = null;
 		try {
-			// added loggers
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name : " + getCallerClassName() + "Method name : " + getCallerMethodName());
 			LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
-			String ActualText = getAttributeByValue(by, text).trim();
-			LOG.info("ActualText is" + ActualText);
-			if (ActualText.contains(text.trim())) {
+			 actualText = getAttributeValue(by, text).trim();
+			LOG.info("ActualText is" + actualText);
+			if (actualText.contains(text.trim())) {
 				flag = true;
-				// added loggers
-				LOG.info("String comparison with actual text :: " + "actual text is :" + ActualText
+				LOG.info("String comparison with actual text :: " + "actual text is :" + actualText
 						+ "And expected text is : " + text);
 				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
 				return true;
 			} else {
 				return false;
@@ -724,25 +697,22 @@ public class WebDriverActions {
 			return false;
 		} finally {
 			if (!flag) {
-				failureReport("Verify : " + locatorName, text + " is not present in the element : ");
-				// return false;
+				failureReport("Expected Text : " + text,  "Expected text "+text+" is not contains in ActualText of attribute : " + actualText);
 			} else {
-				successReport("Verify : " + locatorName, text + " is  present in the element : ");
+				successReport("Expected Text : " + text,  "Expected text "+text+" is  contains in ActualText of attribute : " + actualText);
 			}
 		}
 	}
 
 	/**
-	 * assertTextStringMatching: Function to compare two String values
-	 * @param actText of (String)
-	 * @param expText of (String)
-	 * @return boolean
-	 * @throws Throwable the throwable
+	 * Compares Two String Values
+	 * @param actText text1
+	 * @param expText text2
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean assertTextStringMatching(String actText, String expText) throws Throwable {
+	public boolean assertTextStringMatching(String actText, String expText){
 		boolean flag = false;
 		try {
-			// added loggers
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name : " + getCallerClassName() + "Method name : " + getCallerMethodName());
 			String ActualText = actText.trim();
@@ -762,32 +732,28 @@ public class WebDriverActions {
 			return false;
 		} finally {
 			if (!flag) {
-				failureReport("Verify : " + expText, actText + " is not present in the element : ");
-				// return false;
+				failureReport("Actual Text :: "+ actText +" Should equal to :: " + expText , "Actual Text :: "+ actText +" is not equal to :: " + expText);
 			} else {
-				successReport("Verify : " + expText, actText + " is  present in the element : ");
+				successReport("Actual Text :: "+ actText +" Should equal to :: " + expText , "Actual Text :: "+ actText +" is equal to :: " + expText);
 			}
 		}
 	}
 
 	/**
-	 * click : function to click the Element 
-	 * @param locator of type (By)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @return boolean
-	 * @throws Throwable the throwable
+	 * Clicks the element
+	 * @param locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean click(By locator, String locatorName) throws Throwable {
+	public boolean click(By locator, String locatorName){
 		boolean status = false;
-		// isElementPresent(locator, locatorName);
+		
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 			LOG.info("Method : click  ::  Locator : " + locatorName);
 			WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
-			// internalServerErrorHandler();
 			LOG.info("Waiting for element");
-			// wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 			LOG.info("Locator is Visible :: " + locator);
 			wait.until(ExpectedConditions.elementToBeClickable(locator));
 			LOG.info("Clicked on the Locator");
@@ -799,50 +765,41 @@ public class WebDriverActions {
 			status = false;
 			LOG.info(e.getMessage());
 			e.printStackTrace();
-			// failureReport("Click : " + locatorName, msgClickFailure
-			// + locatorName);
 			throw new RuntimeException(e);
 		} finally {
 			if (!status) {
-
-				failureReport("Click : " + locatorName, msgClickFailure + locatorName);
-
+					failureReport("Click : " + locatorName, msgClickFailure + locatorName);
 			} else {
 				successReport("Click : " + locatorName, msgClickSuccess + locatorName);
 			}
-
 		}
 		return status;
 	}
 
 	/**
-	 * isElementPresent : Function to verify the presence of element with report part integration
-	 * @param by of (By)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @param expected of (boolean)
-	 * @return boolean
-	 * @throws Throwable the throwable
+	 * Verifies presence of element in a web page
+	 * @param locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean isElementPresent(By by, String locatorName, boolean expected) throws Throwable {
+	public boolean isElementPresent(By by, String locatorName){
 		boolean status = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			highlight(webDriver.findElement(by));
 			((JavascriptExecutor)webDriver).executeScript("arguments[0].scrollIntoView(true)",webDriver.findElement(by));
-			this.successReport("isElementPresent : " + locatorName, this.msgIsElementFoundSuccess + locatorName);
 			status = true;
 		} catch (Exception e) {
 			status = false;
 			e.printStackTrace();
 			LOG.info(e.getMessage());
-			
 		} finally {
 			if (!status) {
 				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 				failureReport("isElementPresent : ", msgIsElementFoundFailure + locatorName);
 			} else {
 				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-				successReport("isElementPresent : ", locatorName + ", isElementPresent : true");
+				this.successReport("isElementPresent : " + locatorName, this.msgIsElementFoundSuccess + locatorName);
 			}
 
 		}
@@ -850,38 +807,12 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * isElementPresent : Function to verify the presence of element without report part integration
-	 * @param by of (By)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @param expected of (boolean)
-	 * @return boolean
-	 * @throws Throwable the throwable
+	 * Scrolls to Web Element
+	 * @param by locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean isElementPresent(By by, String locatorName) throws Throwable {
-		boolean status = false;
-		try {
-			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			dynamicWaitByLocator(by);
-			highlight(webDriver.findElement(by));
-			((JavascriptExecutor)webDriver).executeScript("arguments[0].scrollIntoView(true)",webDriver.findElement(by));
-			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			status = true;
-		} catch (Exception e) {
-			status = false;
-			LOG.info(e.getMessage());
-			// throw new RuntimeException(e);
-		}
-		return status;
-	}
-
-	/**
-	 * scroll : Function is to scroll to the element
-	 * @param by of (By)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @return boolean
-	 * @throws Throwable the throwable
-	 */
-	public boolean scroll(By by, String locatorName) throws Throwable {
+	public boolean scroll(By by, String locatorName){
 		boolean status = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -896,15 +827,24 @@ public class WebDriverActions {
 			status = true;
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			if (!status) {
+				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+				failureReport("Scroll To element :"+locatorName, "Unable to Scroll to element " + locatorName);
+			} else {
+				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+				this.successReport("Scroll To element :"+locatorName, "Scroll to element " + locatorName);
+			}
+
 		}
 		return status;
 	}
 
 	/**
-	 * JSScroll :Function is to scroll the element using JavaScript
-	 * @param locator of type (By)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @return boolean
+	 * Scrolls to element with JavaScript implementation
+	 * @param locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
 	public boolean JSScroll(By by, String locatorName) throws Throwable {
 		boolean status = false;
@@ -920,49 +860,26 @@ public class WebDriverActions {
 			status = true;
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		return status;
-	}
-
-	/**
-	 * verifyElementPresent :Function is to verify the element presence in the page
-	 * @param locator of type (By)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @param expected of (boolean)
-	 * @return boolean
-	 */
-	public boolean verifyElementPresent(By by, String locatorName, boolean expected) throws Throwable {
-		boolean status = false;
-		try {
-			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
-			LOG.info("Method : " + getCallerMethodName());
-			if (this.webDriver.findElement(by).isDisplayed()) {
-				this.successReport("VerifyElementPresent : " + locatorName,
-						this.msgIsElementFoundSuccess + locatorName);
-				LOG.info("Element is available :: " + locatorName);
+		}finally {
+			if (!status) {
 				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-				status = true;
+				failureReport("Scroll To element :"+locatorName, "Unable to Scroll to element " + locatorName);
 			} else {
-				status = false;
+				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+				this.successReport("Scroll To element :"+locatorName, "Scroll to element " + locatorName);
 			}
-		} catch (Exception e) {
-			status = false;
-			LOG.info(e.getMessage());
-			// throw new RuntimeException(e);
 		}
 		return status;
 	}
 
 	/**
-	 * sendKeys : Function is to send the keys
-	 * @param locator of (By)
+	 * Sends the keys to element
+	 * @param locator of element
 	 * @param testData of (String)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @return boolean
-	 * @throws Throwable the throwable
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean sendKeys(By locator, String testData, String locatorName) throws Throwable {
+	public boolean sendKeys(By locator, String testData, String locatorName){
 		boolean status = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -970,7 +887,6 @@ public class WebDriverActions {
 			LOG.info("Method : Type  ::  Locator : " + locatorName + " :: Data :" + testData);
 			WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
 			LOG.info("Waiting for element :");
-			// wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 			LOG.info("Locator is Visible :: " + locator);
 			wait.until(ExpectedConditions.elementToBeClickable(locator));
 			webDriver.findElement(locator).click();
@@ -980,27 +896,31 @@ public class WebDriverActions {
 			webDriver.findElement(locator).sendKeys(testData);
 			LOG.info("Typed the Locator data :: " + testData);
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
-			successReport("Enter text in :: " + locatorName, msgTypeSuccess + testData);
 			status = true;
 		} catch (Exception e) {
 			status = false;
 			LOG.info(e.getMessage());
-			failureReport("Enter text in :: " + locatorName, msgTypeFailure + testData);
 			throw new RuntimeException(e);
+		}finally {
+			if (!status) {
+				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+				failureReport("Enter text in :: " + locatorName, msgTypeFailure + testData);
+			} else {
+				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+				this.successReport("Enter text in :: " + locatorName, msgTypeSuccess + testData);
+			}
 		}
 		return status;
 	}
 
 	/**
-	 * typeUsingJavaScriptExecutor : Function  is to send the keys using JavaScript
-	 * @param locator of (By)
+	 * Sends the keys to element with JavaScript Implementation
+	 * @param locator of element
 	 * @param testData of (String)
-	 * @param Valid message of type String for to generate a detailed report
-	 * @return boolean
-	 * @throws Throwable the throwable
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean typeUsingJavaScriptExecutor(By locator, String testData, String locatorName) throws Throwable {
+	public boolean typeUsingJavaScriptExecutor(By locator, String testData, String locatorName){
 		boolean status = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -1018,20 +938,31 @@ public class WebDriverActions {
 			LOG.info(e.getMessage());
 			failureReport("Enter text in :: " + locatorName, msgTypeFailure + locatorName);
 			throw new RuntimeException(e);
+		}finally {
+			if (!status) {
+				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+				failureReport("Enter text in :: " + locatorName, msgTypeFailure + testData);
+			} else {
+				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+				this.successReport("Enter text in :: " + locatorName, msgTypeSuccess + testData);
+			}
 		}
 		return status;
 	}
 
 	/**
-	 * waitForTitlePresent : Moves the mouse to the middle of the element. The element is scrolled
-	 * into view and its location is calculated using getBoundingClientRect.
-	 * @param locator: Action to be performed on element (Get it from Object repository)
+	 * Waits for Title of element should be present
+	 * @param locator of element
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean waitForTitlePresent(By locator) throws Throwable {
+	public boolean waitForTitlePresent(By locator,String message){
 		boolean flag = false;
 		boolean bValue = false;
+		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		LOG.info("Class name : " + getCallerClassName() + "Method name : " + getCallerMethodName());
+		LOG.info("Method : " + locator);
 		try {
-			for (int i = 0; i < 200; i++) {
+			for (int i = 0; i < 20; i++) {
 				if (webDriver.findElements(locator).size() > 0) {
 					flag = true;
 					bValue = true;
@@ -1045,100 +976,82 @@ public class WebDriverActions {
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
-				failureReport("WaitForTitlePresent :: ", "Title is wrong : ");
+				failureReport("Wait For Title Present :: "+message, "Successfully not found title: "+message);
 			} else {
-				successReport("WaitForTitlePresent :: ", "Launched successfully expected Title : ");
+				successReport("Wait For Title Present :: "+message, "Successfully found title: "+message);
 			}
 		}
 		return bValue;
 	}
 
 	/**
-	 * getTitle : Function is to get the Title of Page.
-	 * @return the title of the page of type (String)
+	 * Gets Title of the Page
+	 * @return String value is the title of the web page
 	 * 
 	 */
-	public String getTitle() throws Throwable {
-		String text = webDriver.getTitle();
-		{
-			successReport("Title :: ", "Title of the page is :: " + text);
+	public String getTitle(){
+		boolean flag = false;
+		String text= null;
+		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		LOG.info("Class name : " + getCallerClassName() + "Method name : " + getCallerMethodName());
+		try{
+		 text = webDriver.getTitle();
+		 flag=true;
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally {
+			if (!flag) {
+				failureReport("Expected Title Of the Page :: "+text, "Title Of the PAge is not retrieved : ");
+			} else {
+				successReport("Expected Title Of the Page :: ", "Title of the page is :: " + text);
+			}
 		}
 		return text;
 	}
 
+	
 	/**
-	 * assertText : Function is to assert String Value
-	 * @param by of (By)
-	 * @param Expected text of (String)
-	 * @return boolean
+	 * Asserts  text  with an actual text of element 
+	 * @param by locator of element 
+	 * @param text expectedText text of (String)
+	 * @return boolean value indicating success of the operation
 	 */
 	public boolean assertText(By by, String text) throws Throwable {
 		boolean flag = false;
+		String actualText = null;
 		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 		try {
-			Assert.assertEquals(getText(by, text).trim(), text.trim());
+			actualText = getText(by, text).trim();
+			Assert.assertEquals(actualText, text.trim());
 			flag = true;
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
-		} finally {
-			if (!flag) {
-				failureReport("AssertText :: ", text + " is not present in the element : ");
-				return false;
-			} else {
-				successReport("AssertText :: ", text + " is  present in the element : ");
-			}
+		}  finally {
+					if (!flag) {
+						failureReport("Actual Text :: "+ actualText +" Should equal to :: " + text , "Actual Text :: "+ actualText +" is not equal to :: " + text);
+					} else {
+						successReport("Actual Text :: "+ actualText +" Should equal to :: " + text , "Actual Text :: "+ actualText +" is equal to :: " + text);
+					}
 		}
 	}
 
 	/**
-	 * assertTitle : Function is To assert tiltle of Page
-	 * @param Expected title of (String)
-	 * @return boolean
+	 * Gets the text of element
+	 * @param locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return string value is the text of the element
 	 */
-	public boolean assertTitle(String title) throws Throwable {
-		boolean flag = false;
-		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
-		try {
-			By windowTitle = By.xpath("//title[contains(text(),'" + title + "')]");
-			if (waitForTitlePresent(windowTitle)) {
-				Assert.assertEquals(getTitle(), title);
-				flag = true;
-				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-				return true;
-			} else {
-				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-				return false;
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return false;
-		} finally {
-			if (!flag) {
-				failureReport("AsserTitle :: ", "Page title is not matched with : " + title);
-				return false;
-			} else {
-				successReport("AsserTitle :: ", " Page title is verified with : " + title);
-			}
-		}
-	}
-
-	/**
-	 * getText : Function is to get the value of element
-	 * @param locator of (By)
-	 * @param locatorName of (String)
-	 * @return the value of element of type (String)
-	 */
-	public String getText(By locator, String locatorName) throws Throwable {
+	public String getText(By locator, String locatorName){
 		String text = "";
 		boolean flag = false;
 		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 		try {
-			if (isElementPresent(locator, locatorName, true)) {
+			if (isElementPresent(locator, locatorName)) {
 				text = webDriver.findElement(locator).getText();
 				LOG.info("Locator is Visible and text is retrieved :: " + text);
 				flag = true;
@@ -1151,7 +1064,7 @@ public class WebDriverActions {
 				warningReport("GetText :: ", "Unable to get Text from :: " +locatorName);
 				LOG.info("GetText :: Unable to get Text from :: " + locatorName);
 			} else {
-				successReport("GetText :: " + locatorName, "" + locatorName + " is :" + text);
+				successReport("GetText From element :: " + locatorName,"The Value of the Element is :" + text);
 				LOG.info("Locator is Visible and text is retrieved :: " + text);
 			}
 		}
@@ -1159,44 +1072,40 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * getAttributeByValue : Function is to get the value of Attribute 
+	 * Gets the value of Attribute
 	 * @param locator : Action to be performed on element
-	 * @param locatorName of (String)
-	 * @return the value of attribute of type (String)
+	 * @param attributeName message to be included in the execution report
+	 * @return string value is indicating the actual value of the attribute
 	 */
-	public String getAttributeByValue(By locator, String locatorName) throws Throwable {
-		String text = "";
+	public String getAttributeValue(By locator, String attributeName) {
 		boolean flag = false;
+		String result = "";
+		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+		LOG.info("Method : " + getCallerMethodName());
 		try {
+			result = this.webDriver.findElement(locator).getAttribute(attributeName);
+			LOG.info("Locator is Visible and attribute value is retrieved :: " + result);
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
-			LOG.info("Method : " + getCallerMethodName());
-			if (isElementPresent(locator, locatorName, true)) {
-				text = webDriver.findElement(locator).getAttribute("value");
-				LOG.info("Locator is Visible and attribute value is retrieved :: " + text);
-				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-				flag = true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		} finally {
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}finally {
 			if (!flag) {
-				warningReport("GetAttribute :: ", "Unable to get Attribute value from :: " + locatorName);
-				LOG.info("GetAttribute :: Unable to get Attribute value from :: " + locatorName);
+				warningReport("GetAttribute :: ", "Unable to get Attribute value from :: " + attributeName);
+				LOG.info("GetAttribute :: Unable to get Attribute value from :: " + attributeName);
 			} else {
-				successReport("GetAttribute :: ", "" + locatorName + " is" + text);
-				LOG.info("Locator is Visible and attribute value is retrieved :: " + text);
+				successReport("GetText From element :: " + attributeName,"The Value of the attribute is :" + result);
+				LOG.info("Locator is Visible and attribute value is retrieved :: " + result);
 			}
 		}
-		return text;
+		return result;
 	}
 	
 	/**
-	 * getAttributeByClass : Function is to get the value class attribute 
+	 * Gets the Value of class attribute of a html tag
 	 * @param locator : Action to be performed on element
-	 * @param locatorName of (String)
-	 * @return String
+	 * @param locatorName message to be included in the execution report
+	 * @return string value is indicating the actual value of class attribute
 	 */
 	public String getAttributeByClass(By locator, String locatorName) throws Throwable {
 		String text = "";
@@ -1205,7 +1114,7 @@ public class WebDriverActions {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 			LOG.info("Method : " + getCallerMethodName());
-			if (isElementPresent(locator, locatorName, true)) {
+			if (isElementPresent(locator, locatorName)) {
 				text = webDriver.findElement(locator).getAttribute("class");
 				LOG.info("Locator is Visible and attribute value is retrieved :: " + text);
 				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -1219,7 +1128,7 @@ public class WebDriverActions {
 				warningReport("GetAttribute :: ", "Unable to get Attribute value from :: " + locatorName);
 				LOG.info("GetAttribute :: Unable to get Attribute value from :: " + locatorName);
 			} else {
-				successReport("GetAttribute :: ", "" + locatorName + " is" + text);
+				successReport("GetText From element :: " + locatorName,"The Value of the Class attribute is :" + text);
 				LOG.info("Locator is Visible and attribute value is retrieved :: " + text);
 			}
 		}
@@ -1227,11 +1136,10 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * mouseHover : Moves the mouse to the middle of the element. The element is scrolled
-	 * into view and its location is calculated using getBoundingClientRect.
+	 * MouseHovers on the element
 	 * @param locator : Action to be performed on element 
-	 * @param locatorName : Meaningful name to the element (Ex:link,menus etc..)
-	 * @return : boolean 
+	 * @param locatorName : message to be included in the execution report
+	 * @return : boolean value indicating success of the operation 
 	 */
 	public boolean mouseHover(By locator, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -1245,29 +1153,26 @@ public class WebDriverActions {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++");
 			return true;
 		} catch (Exception e) {
-			// return false;
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
-				failureReport("MouseOver :: ", "MouseOver action is not perform on ::" + locatorName);
+				failureReport("MouseOver on :: "+locatorName, "MouseOver action is not performed on ::" + locatorName);
 			} else {
-				this.successReport("MouseOver :: ", "MouserOver Action is Done on  :: " + locatorName);
+				this.successReport("MouseOver on :: "+locatorName, "MouserOver Action is performed  on  :: " + locatorName);
 			}
 		}
 	}
 
 	/**
-	 * JSClick : Function is to click the element using JavaScript
-	 * @param locator : Action to be performed on element of type (By)
-	 * @param locatorName of type (String)
-	 * @return boolean
+	 * Click the element with JavaScript Implementation
+	 * @param locator : Action to be performed on element
+	 * @param message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 * 
 	 */
 	public boolean JSClick(By locator, String locatorName) throws Throwable {
 		boolean flag = false;
 		try {
-			// added the loggers for click method
-
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name : " + getCallerClassName() + "Method name : " + getCallerMethodName());
 			LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
@@ -1288,17 +1193,17 @@ public class WebDriverActions {
 				failureReport("Click : " + locatorName, "Click is not performed on : " + locatorName);
 			} else {
 				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-				this.successReport("Click : " + locatorName, "Successfully click on  : " + locatorName);
+				this.successReport("Click : " + locatorName, "Successfully clicked on  : " + locatorName);
 			}
 		}
 		return flag;
 	}
 
 	/**
-	 * jsMouseHover : Function is to mouse hover on element using JavaScript  
-	 * @param locator of (By)
-	 * @param locatorName of (String)
-	 * @return boolean
+	 * MouseHovers on element with Javascript Implementation
+	 * @param locator of element 
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
 	public boolean jsMouseHover(By locator, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -1325,10 +1230,10 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * getWebElementList : Function is to retrieve list of web elements
-	 * @param by of (By)
-	 * @param locatorName of (String)
-	 * @return List<WebElement>
+	 * Gets the list of Web Elements
+	 * @param locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return List<WebElement> indicating the list of web elements
 	 */
 	public List<WebElement> getWebElementList(By by, String locatorName) throws Throwable {
 		List<WebElement> elements = null;
@@ -1352,12 +1257,13 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * elementLoadingTime : Function is to calculate time of element loading
-	 * @param locator of (By)
-	 * @return float
+	 * Gets the time of element loading
+	 * @param locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return float value is indicating loading time of element
 	 */
-	public float elementVisibleTime(By locator) throws Throwable {
-
+	public float elementVisibleTime(By locator,String locatorName){
+		boolean flag = false;
 		float timeTaken = 0;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -1373,16 +1279,22 @@ public class WebDriverActions {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			if (!flag) {
+				failureReport("Expected loading time of element : "+locatorName, "Element is not Loaded");
+			} else {
+				this.successReport("Expected loading time of element : "+locatorName, "Element " + locatorName + " loading time is"+timeTaken);
+			}
 		}
 		return timeTaken;
 	}
 
 	/**
-	 * getAttributeByClass : Function is to get the value class attribute 
-	 * @param locator : Action to be performed on element on source of type (By)
-	 * @param locator : Action to be performed on element on destination of type (By)
-	 * @param locatorName of (String)
-	 * @return boolean
+	 * DragAndDrops the element
+	 * @param souceLocator Action to be performed on element source 
+	 * @param destinationLocator Action to be performed on element destination 
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
 	public boolean dragAndDrop(By souceLocator, By destinationLocator, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -1410,34 +1322,33 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * navigateTo : Function to navigate to other URL
-	 * @param Url of type (String)
-	 * @return boolean
+	 * Navigates to other URL
+	 * @param Url value of URL
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean navigateTo(String Url) throws Throwable {
+	public boolean navigateTo(String Url){
 		boolean flag = false;
 		try {
 			webDriver.navigate().to(Url);
 			LOG.info("Navigated URL is : " + Url);
 			flag = true;
-			return flag;
 		} catch (Exception e) {
-			flag = false;
 			LOG.info(e.getMessage());
+			throw new RuntimeException();
+			
 		} finally {
 			if (!flag) {
-				failureReport("Unable to Open : ", Url);
-				return false;
+				failureReport("Unable to Open URL :: ", Url);
 			} else {
-				successReport("Successfully Opened : ", Url);
+				successReport("Successfully Navigates to URL :: ", Url);
 			}
 		}
 		return flag;
 	}
 
 	/**
-	 * generateRandomNumber : Function is to generate a random number
-	 * @return random numbers of type (int)
+	 * Gets the random number integer value
+	 * @return integer value indicating the random number
 	 */
 	public int generateRandomNumber() throws Throwable {
 		Random generator = new Random();
@@ -1446,15 +1357,14 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * rightClick : Function is to perform the mouse right click
-	 * @param locator of (By)
-	 * @param locatorName of (String)
-	 * @return boolean
+	 * MouseRightClicks on element
+	 * @param locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
 	public boolean rightClick(By locator, String locatorName) throws Throwable {
-		boolean status;
+		boolean status = false;
 		try {
-			// added loggers
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name : " + getCallerClassName() + "Method name : " + getCallerMethodName());
 			Actions action = new Actions(webDriver);
@@ -1465,16 +1375,20 @@ public class WebDriverActions {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			status = true;
 		} catch (Exception e) {
-			status = false;
 			LOG.info(e.getMessage());
-			failureReport("Click : " + locatorName, msgRightClickFailure + locatorName);
 			throw new RuntimeException(e);
+		}finally {
+			if (!status) {
+				failureReport("Mouse Right click on element  : "+locatorName, "Unable to right click on element " + locatorName);
+			} else {
+				this.successReport("Mouse Right click on element  : "+locatorName, "Successfully right click on element " + locatorName);
+			}
 		}
 		return status;
 	}
 
 	/**
-	 * getCallerClassName : function is to retrieve the ClassName
+	 * Gets the respective caller class name
 	 * @return Gives the Respective ClassName of type (String)
 	 */
 	public static String getCallerClassName() {
@@ -1483,8 +1397,8 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * getCallerClassName : function is to retrieve the MethodName
-	 * @return Gives the Respective ClassName of type (String)
+	 * Gets the respective caller method name
+	 * @return Gives the respective method name of type (String)
 	 */
 	public static String getCallerMethodName() {
 		StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
@@ -1492,11 +1406,10 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * mouseDoubleClick : Double click the mouse to the middle of the element. The element is
-	 * scrolled into view and its location is calculated using
-	 * getBoundingClientRect.
-	 * @param locator : Action to be performed on element of type (By)
-	 * @param locatorName: Meaningful name to the element (Ex:link,menus etc..)
+	 * MouseDoubleclicks  on element
+	 * @param locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
 	public boolean mouseDoubleClick(By locator, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -1514,18 +1427,18 @@ public class WebDriverActions {
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
-				failureReport("double Click :: ", "double Click action is not perform on ::" + locatorName);
+				failureReport("Double Click on :: "+locatorName, "Double Click action is not perform on ::" + locatorName);
 			} else {
-				successReport("double Click :: ", "double Click Action is Done on  :: " + locatorName);
+				successReport("Double Click :: "+locatorName, "double Click Action is performed on  :: " + locatorName);
 			}
 		}
 	}
 
 	/**
-	 * click the mouse to the middle of the element. The element is scrolled
-	 * into view and its location is calculated using getBoundingClientRect.
-	 * @param locator : Action to be performed on element of type (By)
-	 * @param locatorName : Meaningful name to the element (Ex:link,menus etc..)
+	 * MouseClicks on element
+	 * @param locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
 	public boolean mouseClick(By locator, String locatorName) throws Throwable {
 		boolean flag = false;
@@ -1539,184 +1452,70 @@ public class WebDriverActions {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++");
 			return true;
 		} catch (Exception e) {
-			// return false;
 			throw new RuntimeException(e);
 		} finally {
 			if (!flag) {
-				failureReport("Click :: ", "Click action is not perform on ::" + locatorName);
+				failureReport("Click :: ", "Mouse Click action is not perform on ::" + locatorName);
 			} else {
-				this.successReport(" Click :: ", " Click Action is Done on  :: " + locatorName);
+				this.successReport(" Click :: ", "Mouse Click Action is Done on  :: " + locatorName);
 			}
 		}
 	}
 
-	/**
-	 * getYear: Function to get required year e.g: 0-Current year, 1-Next year,
-	 * @param number of type (int) Number to get year (e.g: -1,0,1 etc)
-	 * @return int
-	 */
-	public int getYear(int number) throws Throwable {
-		Calendar cal = Calendar.getInstance();
-		int year = cal.get(Calendar.YEAR) + number;
-		LOG.info("Year is : " + year);
-		return year;
-	}
+	
 
 	/**
-	 * dateFormatVerification: Function to verify date format by giving actualdate
-	 * @param actualDate of type (String) actual date e.g: 21-11-2015
-	 * @param formatToVerify of type (String) format type e.g: dd-MM-yyyy
-	 * @return boolean
-	 */
-	public boolean dateFormatVerification(String actualDate, String formatToVerify) {
-		boolean flag = false;
-
-		if (actualDate.toLowerCase().contains("am")) {
-			flag = formatVerify(actualDate, formatToVerify);
-		} else if (actualDate.toLowerCase().contains("pm")) {
-			flag = formatVerify(actualDate, formatToVerify);
-		} else if (!actualDate.toLowerCase().contains("am") || !actualDate.toLowerCase().contains("pm")) {
-			flag = formatVerify(actualDate, formatToVerify);
-		}
-		return flag;
-	}
-
-	/**
-	 * formatVerify: Reusable Function to verify date format by giving actualdate
-	 * @param actualDate of type (String)e.g: 21-11-2015
-	 * @param formatToVerify of type (String) type e.g: dd-MM-yyyy
-	 * @return : boolean
-	 */
-	public boolean formatVerify(String actualDate, String formatToVerify) {
-		boolean flag = false;
-		try {
-			SimpleDateFormat sdf;
-			sdf = new SimpleDateFormat(formatToVerify);
-			Date date = sdf.parse(actualDate);
-			String formattedDate = sdf.format(date);
-			if (actualDate.equals(formattedDate)) {
-				flag = true;
-			} else {
-				flag = false;
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return flag;
-	}
-
-	/**
-	 * replaceAll: Function to replace the regular expression values with client required values
-	 * @param text of type (String)
-	 * @param pattern of type (String), regular expression of actual value
-	 * @param replaceWith of (String), value to replace the actual
-	 * @return : String
-	 */
-	public String replaceAll(String text, String pattern, String replaceWith) {
-		String flag = null;
-		try {
-			flag = text.replaceAll(pattern, replaceWith);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return flag;
-	}
-
-	/**
-	 * subString, Function to get sub string of given actual string text
-	 * @param text of type (String), Actual text
-	 * @param startIndex of (int), Start index of sub string
-	 * @param endIndex of (int), end index of sub string
-	 * @return : String
-	 */
-	public String subString(String text, int startIndex, int endIndex) {
-		String flag = null;
-		try {
-			flag = text.substring(startIndex, endIndex);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return flag;
-	}
-
-	/**
-	 * getCssValue: Function to get the value of a given CSS property (e.g.width)
-	 * @param locator of type (By)
-	 * @param cssValue of type(String), CSS property
-	 * @return : String
+	 * get the CSS property value of element 
+	 * @param locator of element
+	 * @param cssValue of type(String), CSS property (eg:width etc)
+	 * @return : String indicating the value css property of element 
 	 */
 	public String getCssValue(By locator, String cssValue) {
+		boolean flag = false;
 		String result = "";
 		try {
 			result = this.webDriver.findElement(locator).getCssValue(cssValue);
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		}finally {
+			if (!flag) {
+				failureReport("Get the CSS Value of property  :: "+cssValue, "Unable to retrieve the value of CSSProperty "+cssValue);
+			} else {
+				this.successReport("Get the CSS Value of property  :: "+cssValue, "Retrieved the value of CSSProperty is :: "+ result);
+			}
 		}
 		return result;
 	}
 
 	/**
-	 * getBackGroundColor: Function to get the background color of a given webelement (e.g. background-color)
-	 * @param locator of type (By)
+	 * Gets the background colour of element (e.g. background-color)
+	 * @param locator of element
 	 * @param cssValue of type (String), CSS property (e.g. background-color)
-	 * @return : String
+	 * @return : String indicating the background color of element 
 	 */
 	public String getBackGroundColor(By locator, String cssValue) {
+		boolean flag = false;
 		String hexColor = "";
 		try {
 			String bColor = this.webDriver.findElement(locator).getCssValue(cssValue);
 			hexColor = Color.fromString(bColor).asHex();
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		}finally {
+			if (!flag) {
+				failureReport("Get the back ground colour of css property  :: "+cssValue, "Unable to retrieve the back ground color of CSSProperty "+cssValue);
+			} else {
+				this.successReport("Get the back ground colour of css property  :: "+cssValue, "Retrieved the back ground colour of CSSProperty is :: "+ hexColor);
+			}
 		}
 		return hexColor;
 	}
 
 	/**
-	 * switchToFrame: Function is to switch to another frame
-	 * @param locator of type (By)
-	 */
-	public void switchToFrame(By locator) {
-		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
-		WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
-		LOG.info("Waiting for element");
-		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-		LOG.info("Locator is Visible :: " + locator);
-		wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-		webDriver.switchTo().frame(webDriver.findElement(locator));
-	}
-
-	/**
-	 * getCurrentDateTime, Function to get current time in client required format
-	 * @param dateTimeFormat of type (String), format to get date and time (e.g: h:mm)
-	 * @return : String
-	 */
-	public String getCurrentDateTime(String dateTimeFormat) throws Throwable {
-		DateFormat dateFormat = new SimpleDateFormat(dateTimeFormat);
-		Date date = new Date();
-		return dateFormat.format(date);
-	}
-
-	/**
-	 * getFutureDateTime: Function to get future or past date in client required format
-	 * @param dateTimeFormat of (String), format to get date and time (e.g: MM/dd/yyyy)
-	 * @param days of (int), number to get date E.g. 1:Tomorrow date, -1:Yesterday date
-	 * @return : String
-	 */
-	public String getFutureDateTime(String dateTimeFormat, int days) throws Throwable {
-		SimpleDateFormat sdf = new SimpleDateFormat(dateTimeFormat);
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_YEAR, days);
-		Date tomorrow = calendar.getTime();
-		return sdf.format(tomorrow);
-	}
-
-	/**
-	 * assertTextStringContains :Function to  assert text string contains.
+	 * Asserts text string contains.
 	 * @param actText of type (String)
 	 * @param expText of type (String)
-	 * @return boolean
+	 * @return boolean value indicating success of the operation
 	 */
 	public boolean assertTextStringContains(String actText, String expText) throws Throwable {
 		boolean flag = false;
@@ -1739,90 +1538,47 @@ public class WebDriverActions {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
-		} finally {
+		}  finally {
 			if (!flag) {
-				failureReport("Verify : " + expText, actText + " is not present in the element : ");
-				return false;
-			} else if (flag) {
-				successReport("Verify : " + expText, actText + " is  present in the element : ");
+				failureReport("Actual Text :: "+ actText +" Should equal to :: " + expText , "Actual Text :: "+ actText +" is not equal to :: " + expText);
+			} else {
+				successReport("Actual Text :: "+ actText +" Should equal to :: " + expText , "Actual Text :: "+ actText +" is equal to :: " + expText);
 			}
 		}
 	}
 
 	/**
-	 * deleteDirectory: Function to delete directory from local machine
-	 * @param directoryPath of type (String), path for the directory to delete
-	 * @return void
-	 */
-	public void deleteDirectory(String directoryPath) throws IOException {
-		FileUtils.deleteDirectory(new File(directoryPath));
-	}
-
-	/**
-	 * getRandomString, Get random String
-	 * @param noOfCharacters of (int), Number of characters to get randomly
-	 * @return String
-	 * @throws IOException
-	 */
-	public String getRandomString(int noOfCharacters) throws IOException {
-		return RandomStringUtils.randomAlphabetic(noOfCharacters);
-	}
-
-	/**
-	 * getRandomNumeric: Get random Numeric
-	 * @param noOfCharacters of type (int), Number of characters to get randomly
-	 * @return String
-	 * @throws IOException
-	 */
-	public String getRandomNumeric(int noOfCharacters) throws IOException {
-		return RandomStringUtils.randomNumeric(noOfCharacters);
-	}
-
-	/**
-	 * getAttributeValue, Function to get the value of a given attribute (e.g.class)
-	 * @param locator of type (By)
-	 * @param attributeName of (String)
-	 * @return : String
-	 */
-	public String getAttributeValue(By locator, String attributeName) {
-		String result = "";
-		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
-		LOG.info("Method : " + getCallerMethodName());
-		try {
-			result = this.webDriver.findElement(locator).getAttribute(attributeName);
-			LOG.info("Locator is Visible and attribute value is retrieved :: " + result);
-			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return result;
-	}
-	/**
-	 * refreshPage : Function to refresh page 
-	 * @return void
+	 * Refresh the page
 	 */
 	public void refreshPage() throws Throwable {
+		boolean flag = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 			LOG.info("Method : " + getCallerMethodName());
 			webDriver.navigate().refresh();
+			flag =true;
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		} catch (Exception e) {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 			e.printStackTrace();
 			LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
+		} finally {
+			if (!flag) {
+				failureReport("Page is refreshing " , "Page not refreshed");
+			} else {
+				successReport("Page is refreshing " , "Successfully refreshed page");
+			}
 		}
 	}
 
 	/**
-	 * clearData : Function to clear value from textBox
-	 * @param locator of (By)
-	 * @return void
+	 *Clears the data of an element 
+	 *@param locator of element
 	 */
-	public void clearData(By locator) throws Throwable {
+	public void clearData(By locator){
+		boolean flag = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
@@ -1831,68 +1587,92 @@ public class WebDriverActions {
 			element.sendKeys(Keys.CONTROL + "a");
 			element.sendKeys(Keys.DELETE);
 			element.clear();
+			flag =true;
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		} catch (Exception e) {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 			e.printStackTrace();
 			LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
+		} finally {
+			if (!flag) {
+				failureReport("Clear the data of element " , "Not cleared the data of element");
+			} else {
+				successReport("Clear the data of element " , "Successfully cleared the data of element");
+			}
 		}
 	}
 
 	/**
-	 * keyBoardOperations : Function to perform the keyboard operations
-	 * @param locator of (By)
-	 * @param testData of (Keys)
-	 * @param locatorName of (String)
-	 * @return boolean
+	 * Switch to another frame
+	 * @param locator of element
 	 */
-	public boolean keyBoardOperations(By locator, Keys testData, String locatorName) throws Throwable {
-		boolean status = false;
-		try {
-			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			LOG.info("Class name : " + getCallerClassName() + "Method name : " + getCallerMethodName());
-			LOG.info("Method : Type  ::  Locator : " + locatorName + " :: Data :" + testData);
-			WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
-			LOG.info("Waiting for element :");
-			// wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-			LOG.info("Locator is Visible :: " + locator);
-			wait.until(ExpectedConditions.elementToBeClickable(locator));
-			webDriver.findElement(locator).sendKeys(testData);
-			LOG.info("Typed the Locator data :: " + testData);
-			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
-			successReport("Enter text in :: " + locatorName, msgTypeSuccess + testData);
-			status = true;
-		} catch (Exception e) {
-			status = false;
-			LOG.info(e.getMessage());
-			failureReport("Enter text in :: " + locatorName, msgTypeFailure + testData);
-			throw new RuntimeException(e);
+	public void switchToFrame(By locator) {
+		boolean flag = false;
+		try{
+		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+		WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
+		LOG.info("Waiting for element");
+		wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+		LOG.info("Locator is Visible :: " + locator);
+		wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+		webDriver.switchTo().frame(webDriver.findElement(locator));
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			if (!flag) {
+				failureReport("Swtich to frame  :: "+locator, "Unable to switch to frame "+locator);
+			} else {
+				this.successReport("Swtich to frame  :: "+locator, "Successfully switched to frame"+locator);
+			}
 		}
-		return status;
 	}
-
+	
 	/**
-	 * switchToFrameByIndex : Function helps Switch to other frame using index value
-	 * @param index of type (int), frame number to switch
-	 * @return void
+	 * Switch to another frame by using index of frame
+	 * @param locator of element
+	 * @param index value of frame
 	 */
 	public void switchToFrameByIndex(int index) {
+		boolean flag = false;
+		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+		try{
 		webDriver.switchTo().frame(index);
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			if (!flag) {
+				failureReport("Swtich to frame  :: ", "Unable to switch to frame ");
+			} else {
+				this.successReport("Swtich to frame  :: ", "Successfully switched to frame");
+			}
+		}
 	}
 
 	/**
-	 * comeOutFromFrame : Function helps to come out from frame
-	 * @return void
+	 * Switch to default Content
 	 */
-	public void comeOutFromFrame() {
+	public void switchToDefaultContent() {
+		boolean flag = false;
+		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+		try{
 		webDriver.switchTo().defaultContent();
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			if (!flag) {
+				failureReport("Swtich to Parent Frame ", "Unable to switch to Parent frame ");
+			} else {
+				this.successReport("Swtich to Parent frame ", "Successfully switched to Parent frame");
+			}
+		}
 	}
 
 	/**
-	 * acceptAlert : Function to accept alert
-	 * @return void
+	 * Accepts the alert
 	 */
 	public void acceptAlert() {
 		try {
@@ -1901,19 +1681,18 @@ public class WebDriverActions {
 			WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
 			wait.until(ExpectedConditions.alertIsPresent());
 			webDriver.switchTo().alert().accept();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * findWebElement: Function is to find element   
-	 * @param locator of type (By)
-	 * @param locatorName of type (String)
-	 * @return WebElement
+	 * Finds the WebElemnt 
+	 * @param locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return WebElement 
 	 */
-	public WebElement findWebElement(By locator, String locatorName) throws Throwable {
+	public WebElement findWebElement(By locator, String locatorName){
 		WebElement element;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -1936,18 +1715,19 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * checkBoxIsChecked : Function is to verify the check box enabling
-	 * @param locator of type (By)
-	 * @param locatorName of type (String)
-	 * @return boolean
+	 * Selects the check box 
+	 * @param locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean checkBoxIsChecked(By by, String locatorName) throws Throwable {
+	
+	public boolean checkBoxIsChecked(By by, String locatorName){
 		boolean status = false;
 		try {
+		
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			webDriver.findElement(by).isSelected();
-			this.successReport("checkBoxIsChecked : " + locatorName, this.msgIsElementFoundSuccess + locatorName);
-			status = true;
+				status = true;
 		} catch (Exception e) {
 			status = false;
 			LOG.info(e.getMessage());
@@ -1955,85 +1735,83 @@ public class WebDriverActions {
 		} finally {
 			if (!status) {
 				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-				failureReport("checkBoxIsChecked : ", msgCheckboxisnotChecked + locatorName);
+				failureReport("checkBox Is Checked : ", msgCheckboxisnotChecked + locatorName);
 			} else {
 				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-				successReport("checkBoxIsChecked : ", locatorName + ", checkBoxIsChecked : true");
+				successReport("check Box is checked", locatorName + ", checkBox is checked : true");
 			}
 		}
 		return status;
 	}
 
 	/**
-	 * switchToWindow: Function to switch to latest window
-	 * @return : void
+	 * Switch to latest window
 	 */
-	public void switchToWindow() {
-		for (String handle : webDriver.getWindowHandles()) {
-			webDriver.switchTo().window(handle);
+		public void switchToWindow() {
+			for (String handle : webDriver.getWindowHandles()) {
+				webDriver.switchTo().window(handle);
+			}
 		}
-	}
 
 	/**
-	 * switchToParentWindow: Function to switch to parent window
-	 * @param window handle to switch
-	 * @return void
+	 * switch to parent window
+	 * @param handle value of window handle to switch
 	 */
 	public void switchToParentWindow(String handle) {
 		webDriver.switchTo().window(handle);
 	}
 
 	/**
-	 * closeWindow: Function to close the current focused window
-	 * @return : void
+	 * Close the current window
 	 */
 	public void closeWindow() {
 		webDriver.close();
 	}
 
 	/**
-	 * getWindowHandle: Function to get the current window handle
-	 * @return : String
+	 * Gets the current window handle
+	 * @return String indicating the value of current window handle
 	 */
 	public String getWindowHandle() {
 		return webDriver.getWindowHandle();
 	}
 
 	/**
-	 * scrollToWebElement: Function to scroll to a particular element
-	 * @param locator of type (By)
-	 * @return : void
+	 * Scrolls to web element with JavaScript implementation
+	 * @param locator of element
 	 */
-	public void scrollToWebElement(By element) {
-		JavascriptExecutor jse = (JavascriptExecutor) webDriver;
-		jse.executeScript("arguments[0].scrollIntoView(true);", webDriver.findElement(element));
-	}
-
-	/**
-	 * deleteSpecificFile: Function to delete the specified file from local machine path
-	 * @param filepath of type (String)
-	 * @return : void
-	 */
-
-	public void deleteSpecificFile(String fileName) throws InterruptedException {
+	public void scrollToWebElement(By element,String locatorName) {
+		boolean status = false;
 		try {
-			File file = new File(fileName);
-			if (file.delete()) {
-				System.out.println(file.getName() + " is deleted!");
-			} else {
-				System.out.println("Delete operation is failed.");
-			}
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+			LOG.info("Method : " + getCallerMethodName());
+			JavascriptExecutor jse = (JavascriptExecutor) webDriver;
+			jse.executeScript("arguments[0].scrollIntoView(true);", webDriver.findElement(element));
+			LOG.info("Scroll is performed : " +locatorName);
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			status = true;
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			if (!status) {
+				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+				failureReport("Scroll To element :"+locatorName, "Unable to Scroll to element " + locatorName);
+			} else {
+				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+				this.successReport("Scroll To element :"+locatorName, "Scroll to element " + locatorName);
+				}
+			}
 		}
-	}
 
 	/**
-	 * findWebElementVisibility: Function is to identify the presence of element in a page
-	 * @return : WebElement
+	 * verifies the presence of element in a page
+	 * @param locator
+	 * @param locatorName
+	 * @return WebElement
 	 */
 
-	public WebElement findWebElementVisibility(By locator, String locatorName) throws Throwable {
+	public WebElement findWebElementVisibility(By locator, String locatorName){
 		WebElement element;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -2055,56 +1833,10 @@ public class WebDriverActions {
 		return element;
 	}
 
-	/**
-	 * isVisible : Function is to verify element is displayed or not  
-	 * @param locator of type (By)
-	 * @param locatorName of type (String)
-	 * @return boolean
-	 */
-	public boolean isVisibleOnly(By locator, String locatorName) throws Throwable {
-		boolean flag = false;
-		try {
-			// added loggers
-			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			LOG.info("Class name :: " + getCallerClassName() + " Method name :: " + getCallerMethodName());
-			LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
-			flag = webDriver.findElement(locator).isDisplayed();
-			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		} catch (Exception e) {
-			flag = false;
-
-		}
-		return flag;
-	}
-
-	/**
-	 * differenceBetweenTwoDates : Function is to find difference between two dates
-	 * @param First Date of type String
-	 * @param second Date of type String
-	 * @return returns the time difference value of type (long)
-	 * 
-	 */
-	public long differenceBetweenTwoDates(String date1, String date2, String dateFormat) throws Throwable {
-		long diffDays = 0;
-		try {
-			SimpleDateFormat format = new SimpleDateFormat(dateFormat);
-			Date d1 = format.parse(date1);
-			Date d2 = format.parse(date2);
-			long diff = d2.getTime() - d1.getTime();
-			diffDays = diff / (24 * 60 * 60 * 1000) + 1;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return diffDays;
-	}
 	
 	/**
-	 * @FunctionName highlight
-	 * @Description Function to highlight the element
+	 * Highlights the web element
 	 * @param element
-	 * @return void
-	 * @throws Throwable
-	 * @author PriyaBatchu
 	 */
 	public void highlight(WebElement element) {
 
@@ -2115,20 +1847,13 @@ public class WebDriverActions {
 		}
 	}
 	
-	
-	
 	/**
 	 * assertFalse
-	 * 
-	 * @param condition
-	 *            of (boolean)
-	 * @param message
-	 *            of (String)
-	 * @return boolean
-	 * @throws Throwable
-	 *             the throwable
+	 * @param condition of (boolean)
+	 * @param message of (String)
+	 * @return boolean value indicating success of the operation
 	 */
-	public boolean assertFalse(boolean condition, String message) throws Throwable {
+	public boolean assertFalse(boolean condition, String message) {
 		try {
 			if (!condition)
 				return true;
@@ -2139,26 +1864,21 @@ public class WebDriverActions {
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 			LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
 			return false;
-		} finally
-
-		{
+		} finally{
 			if (condition) {
-				failureReport("Expected :: " + message, message);
+				failureReport("Expected :: " + message, message + " is :: " + condition);
 			} else {
-				successReport("Expected :: " + message, message);
+				successReport("Expected :: " + message, message + " is :: " + condition);
 			}
 		}
 	}
 	
 	/**
-	 * pressEnter from  KeyBoard
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @return void
-	 * @throws Throwable
+	 * Press Enter key from KeyBoard
+	 * @param locator of element
 	 */
 	public void pressEnter(By locator) throws Throwable {
+		boolean status = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
@@ -2172,18 +1892,20 @@ public class WebDriverActions {
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 			e.printStackTrace();
 			LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
+		}finally {
+			if (!status) {
+				failureReport("Click Enter Key in Keyboard "  , "Unable to click Enter Key in Keyboard" );
+		} else {
+			successReport("Click Enter Key in Keyboard "  , "Successfully clicked Enter Key in Keyboard" );
 		}
+	}
 	}
 	
 	/**
-	 * findWebElements
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
-	 * @return WebElement
-	 * @throws Throwable
+	 * Gets the WebElements  
+	 * @param locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return List<WebElement> 
 	 */
 	public List<WebElement> findWebElements(By locator, String locatorName) throws Throwable {
 		List<WebElement> element;
@@ -2206,56 +1928,11 @@ public class WebDriverActions {
 		return element;
 	}
 	
-	/**
-	 * getLatestFilefromDir : Get the latest file from the path provided
-	 * 
-	 * @param locator
-	 *            of (By)
-	 * @param locatorName
-	 *            of (String)
-	 * @return WebElement
-	 * @throws Throwable
-	 */
-	public File getLatestFilefromDir(String dirPath){
-	    File dir = new File(dirPath);
-	    File[] files = dir.listFiles();
-	    if (files == null || files.length == 0) {
-	        return null;
-	    }
-	
-	    File lastModifiedFile = files[0];
-	    for (int i = 1; i < files.length; i++) {
-	       if (lastModifiedFile.lastModified() < files[i].lastModified()) {
-	           lastModifiedFile = files[i];
-	       }
-	    }
-	    return lastModifiedFile;
-	}
-	
-	/**
-	 * getTextFromPDF : Read the pdf file and provide the content as string
-	 * @param locator of (By)
-	 * @param locatorNameof (String)
-	 * @return WebElement
-	 * @throws Throwable
-	 */
-	public String getTextFromPDF(String pdfFilePath) throws Throwable {
-		File pdfFile = new File(pdfFilePath);
-		PDFParser parser = new PDFParser(new FileInputStream(pdfFile));
-		parser.parse();
-		COSDocument cosDoc = parser.getDocument();
-		PDDocument pdDoc = new PDDocument(cosDoc);
-		PDFTextStripper pdfStripper = new PDFTextStripper();
-		String parsedText = pdfStripper.getText(pdDoc);
-		parser.getPDDocument().close();
-		return parsedText;
-		}
-		
 		/**
-	    * waitForInVisibilityOfElement
-	    * @param by of (By)
-	    * @param locatorName   of (String)
-	    * @return boolean
+	    * waits for inVisibility Of Element
+	    * @param locator of element
+	    * @param locatorName message to be included in the execution report
+	    * @return boolean value indicating success of the operation
 	    */
 	   public boolean waitForInVisibilityOfElement(By by, String locatorName) throws Throwable {
 	      boolean flag = false;
@@ -2284,9 +1961,9 @@ public class WebDriverActions {
 	   }
 	   
 	   /**
-	    * isItemPresentInLocalStorage
+	    * presence of element in local storage
 	    * @param item of (String)
-	    * @return boolean
+	    * @return boolean value indicating success of the operation
 	    */
 	   public boolean isItemPresentInLocalStorage(String item) throws Throwable {
 	      boolean flag = false;
@@ -2295,7 +1972,7 @@ public class WebDriverActions {
 	         LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 	         LOG.info("Method : " + getCallerMethodName() + "  ::  StorageItem : " + item);
 	         String javaScript = String.format("return window.localStorage.getItem('%s');", item);
-	        JavascriptExecutor js = (JavascriptExecutor) webDriver;
+	         JavascriptExecutor js = (JavascriptExecutor) webDriver;
 	         flag = true;
 	         LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 	         return !(js.executeScript(javaScript) == null);
@@ -2315,23 +1992,23 @@ public class WebDriverActions {
 	   }
 	   
 	   /**
-	     * getCurrentURL : function to retrieve the current URL.
+	     * Get the current URL of webPage
 	     * @return String
 	     * 
 	     */
-	public String getCurrentURL() throws Throwable {
-		String text = webDriver.getCurrentUrl();
-		{
-			successReport("Current URL :: ", "Current URL of the page is :: " + text);
+		public String getCurrentURL() throws Throwable {
+			String text = webDriver.getCurrentUrl();
+			{
+				successReport("Current URL :: ", "Current URL of the page is :: " + text);
+			}
+			return text;
 		}
-		return text;
-	}
 	
 	   /**
-	    * isNotVisible 
-	    * @param locator of (By)
-	    * @param locatorName of (String)
-	    * @return boolean
+	    * verifies the invisibility of element  
+	    * @param locator of element
+	    * @param locatorName message to be included in the execution report
+	    * @return boolean value indicating success of the operation
 	    */
 	   public boolean isNotVisible(By locator, String locatorName) throws Throwable {
 	      boolean flag = false;
@@ -2345,42 +2022,14 @@ public class WebDriverActions {
 	         flag = false;
 	      } finally {
 	         if (!flag) {
-	            failureReport("IsVisible : ", locatorName + " Element is Not Visible : ");
+	            failureReport(locatorName +"is not Visible : ", locatorName + " Element is Visible");
 	         } else {
-	            successReport("IsVisible : ", locatorName + " Element is Visible : ");
+	            successReport(locatorName+" is not Visible : ", locatorName + " Element is Not Visible as expected");
 	         }
 	      }
 	      return flag;
 	   }
 	   
-	   /**
-	    * nextOccuranceOfDay, Returns the date of the next occurrence of that day
-	    * e.g if nextOccuranceOfDay("dd/MM/YYYY, "tuesday") was called and today was Wednesday then the date returned would be today plus 6 days
-	    * format
-	    * @param dateTimeFormat
-	    *            of (String), format to get date and time (e.g: dd/MM/yyyy)
-	    * @param dayOfWeek
-	    *            of (String), the day of the week to find the next occurrence of
-	    * @return : String
-	    */
-	   public String nextOccurrenceOfDay(String dateTimeFormat, String dayOfWeek) throws Throwable {
-	      int dayNum=0;
-	      switch (dayOfWeek.toLowerCase()){
-	         case "monday":{dayNum=1;break;}
-	         case "tuesday":{dayNum=2;break;}
-	         case "wednesday":{dayNum=3;break;}
-	         case "thursday":{dayNum=4;break;}
-	         case "friday":{dayNum=5;break;}
-	         case "saturday":{dayNum=6;break;}
-	         case "sunday":{dayNum=7;break;}
-	      }
-	      SimpleDateFormat sdf = new SimpleDateFormat(dateTimeFormat);
-	      Calendar cal = Calendar.getInstance();
-	      int dow = cal.get(Calendar.DAY_OF_WEEK);
-	      dow--; //This is to force Monday to be day 1 rather than Sunday
-	      int numDays = 7 - ((dow - dayNum) % 7 + 7) % 7;
-	      cal.add(Calendar.DAY_OF_YEAR, numDays);
-	      return sdf.format(cal.getTime());
-	   }
+	   
 
 }
