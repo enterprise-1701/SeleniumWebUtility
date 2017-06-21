@@ -281,7 +281,7 @@ public class WebDriverActions {
 	 * @return boolean value indicating success of the operation           
 	 */
 	
-	public boolean navigateToUrl(String url)throws Throwable {
+	public boolean navigateToUrl(String url) {
 		boolean flag = false;
 		try {
 			webDriver.get(url);
@@ -302,7 +302,7 @@ public class WebDriverActions {
 	 * @param locatorName message to be included in the execution report
 	 * @return boolean value indicating success of the operation
 	 */
-	public boolean selectByIndex(By locator, int index, String locatorName) throws Throwable {
+	public boolean selectByIndex(By locator, int index, String locatorName)  {
 		boolean flag = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -331,11 +331,11 @@ public class WebDriverActions {
 
 	/**
 	 * Asserts the condition
-	 * @param condition
+	 * @param condition of boolean
 	 * @param message to be included in the execution report
 	 * @return boolean value indicating success of the operation
 	 */
-	public boolean assertTrue(boolean condition, String message) throws Throwable {
+	public boolean assertTrue(boolean condition, String message)  {
 		try {
 			if (condition)
 				return true;
@@ -360,10 +360,9 @@ public class WebDriverActions {
 	/**
 	 * Waits for element presence
 	 * @param locator of element
-	 * @param time 
-	 * @throws InterruptedException
+	 * @param time of integer
 	 */
-	public void dynamicWaitByLocator(By locator, int time) throws InterruptedException {
+	public void dynamicWaitByLocator(By locator, int time){
 		try {
 			WebDriverWait wait = new WebDriverWait(webDriver, time);
 			wait.until(ExpectedConditions.presenceOfElementLocated(locator));
@@ -375,9 +374,8 @@ public class WebDriverActions {
 	/**
 	 * Waits for element presence
 	 * @param locator of element
-	 * @throws InterruptedException
 	 */
-	public void dynamicWaitByLocator(By locator) throws InterruptedException {
+	public void dynamicWaitByLocator(By locator){
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name : " + getCallerClassName() + "Method name : " + getCallerMethodName());
@@ -393,8 +391,8 @@ public class WebDriverActions {
 
 	/**
 	 * Asserts a element presence  
-	 * @param locator of element
-	 * @param message to be included in the execution report
+	 * @param by locator of element
+	 * @param locatorName message to be included in the execution report
 	 * @return boolean value indicating success of the operation
 	 */
 	public boolean assertElementPresent(By by, String locatorName){
@@ -457,7 +455,7 @@ public class WebDriverActions {
 
 	/**
 	 * waits for visibility of element
-	 * @param locator of element
+	 * @param by locator of element
 	 * @param locatorName message to be included in the execution report
 	 * @return boolean value indicating success of the operation 
 	 */
@@ -628,7 +626,7 @@ public class WebDriverActions {
 
 	/**
 	 * Verifies a text contains in an actual text of element 
-	 * @param locator of element 
+	 * @param by locator of element 
 	 * @param text expectedText text of (String)
 	 * @param locatorName message to be included in the execution report
 	 * @return boolean value indicating success of the operation
@@ -669,7 +667,7 @@ public class WebDriverActions {
 
 	/**
 	 * Verifies a text contains in an actual text of attribute Value
-	 * @param locator of element 
+	 * @param by locator of element 
 	 * @param text expectedText text of (String)
 	 * @param locatorName message to be included in the execution report
 	 * @return boolean value indicating success of the operation
@@ -778,7 +776,7 @@ public class WebDriverActions {
 
 	/**
 	 * Verifies presence of element in a web page
-	 * @param locator of element
+	 * @param by locator of element
 	 * @param locatorName message to be included in the execution report
 	 * @return boolean value indicating success of the operation
 	 */
@@ -842,11 +840,11 @@ public class WebDriverActions {
 
 	/**
 	 * Scrolls to element with JavaScript implementation
-	 * @param locator of element
+	 * @param by locator of element
 	 * @param locatorName message to be included in the execution report
 	 * @return boolean value indicating success of the operation
 	 */
-	public boolean JSScroll(By by, String locatorName) throws Throwable {
+	public boolean JSScroll(By by, String locatorName)  {
 		boolean status = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -953,6 +951,7 @@ public class WebDriverActions {
 	/**
 	 * Waits for Title of element should be present
 	 * @param locator of element
+	 * @param message to be included in the execution report
 	 * @return boolean value indicating success of the operation
 	 */
 	public boolean waitForTitlePresent(By locator,String message){
@@ -1017,7 +1016,7 @@ public class WebDriverActions {
 	 * @param text expectedText text of (String)
 	 * @return boolean value indicating success of the operation
 	 */
-	public boolean assertText(By by, String text) throws Throwable {
+	public boolean assertText(By by, String text)  {
 		boolean flag = false;
 		String actualText = null;
 		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -1107,7 +1106,7 @@ public class WebDriverActions {
 	 * @param locatorName message to be included in the execution report
 	 * @return string value is indicating the actual value of class attribute
 	 */
-	public String getAttributeByClass(By locator, String locatorName) throws Throwable {
+	public String getAttributeByClass(By locator, String locatorName)  {
 		String text = "";
 		boolean flag = false;
 		try {
@@ -1141,7 +1140,7 @@ public class WebDriverActions {
 	 * @param locatorName : message to be included in the execution report
 	 * @return : boolean value indicating success of the operation 
 	 */
-	public boolean mouseHover(By locator, String locatorName) throws Throwable {
+	public boolean mouseHover(By locator, String locatorName)  {
 		boolean flag = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++");
@@ -1166,11 +1165,11 @@ public class WebDriverActions {
 	/**
 	 * Click the element with JavaScript Implementation
 	 * @param locator : Action to be performed on element
-	 * @param message to be included in the execution report
+	 * @param locatorName message to be included in the execution report
 	 * @return boolean value indicating success of the operation
 	 * 
 	 */
-	public boolean JSClick(By locator, String locatorName) throws Throwable {
+	public boolean JSClick(By locator, String locatorName)  {
 		boolean flag = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -1205,7 +1204,7 @@ public class WebDriverActions {
 	 * @param locatorName message to be included in the execution report
 	 * @return boolean value indicating success of the operation
 	 */
-	public boolean jsMouseHover(By locator, String locatorName) throws Throwable {
+	public boolean jsMouseHover(By locator, String locatorName)  {
 		boolean flag = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -1231,11 +1230,11 @@ public class WebDriverActions {
 
 	/**
 	 * Gets the list of Web Elements
-	 * @param locator of element
+	 * @param by locator of element
 	 * @param locatorName message to be included in the execution report
-	 * @return List<WebElement> indicating the list of web elements
+	 * @return List of web elements
 	 */
-	public List<WebElement> getWebElementList(By by, String locatorName) throws Throwable {
+	public List<WebElement> getWebElementList(By by, String locatorName)  {
 		List<WebElement> elements = null;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -1296,7 +1295,7 @@ public class WebDriverActions {
 	 * @param locatorName message to be included in the execution report
 	 * @return boolean value indicating success of the operation
 	 */
-	public boolean dragAndDrop(By souceLocator, By destinationLocator, String locatorName) throws Throwable {
+	public boolean dragAndDrop(By souceLocator, By destinationLocator, String locatorName)  {
 		boolean flag = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -1349,11 +1348,18 @@ public class WebDriverActions {
 	/**
 	 * Gets the random number integer value
 	 * @return integer value indicating the random number
+	 * 
 	 */
-	public int generateRandomNumber() throws Throwable {
+	public int generateRandomNumber(){
+		int intRandom_number=0;
+		try{
 		Random generator = new Random();
-		int intRandom_number = generator.nextInt(9999) + 10000;
-		return intRandom_number;
+		 intRandom_number = generator.nextInt(9999) + 10000;
+		
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		 return intRandom_number;
 	}
 
 	/**
@@ -1362,7 +1368,7 @@ public class WebDriverActions {
 	 * @param locatorName message to be included in the execution report
 	 * @return boolean value indicating success of the operation
 	 */
-	public boolean rightClick(By locator, String locatorName) throws Throwable {
+	public boolean rightClick(By locator, String locatorName)  {
 		boolean status = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -1411,7 +1417,7 @@ public class WebDriverActions {
 	 * @param locatorName message to be included in the execution report
 	 * @return boolean value indicating success of the operation
 	 */
-	public boolean mouseDoubleClick(By locator, String locatorName) throws Throwable {
+	public boolean mouseDoubleClick(By locator, String locatorName)  {
 		boolean flag = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++");
@@ -1440,7 +1446,7 @@ public class WebDriverActions {
 	 * @param locatorName message to be included in the execution report
 	 * @return boolean value indicating success of the operation
 	 */
-	public boolean mouseClick(By locator, String locatorName) throws Throwable {
+	public boolean mouseClick(By locator, String locatorName)  {
 		boolean flag = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++");
@@ -1517,7 +1523,7 @@ public class WebDriverActions {
 	 * @param expText of type (String)
 	 * @return boolean value indicating success of the operation
 	 */
-	public boolean assertTextStringContains(String actText, String expText) throws Throwable {
+	public boolean assertTextStringContains(String actText, String expText)  {
 		boolean flag = false;
 		try {
 			// added loggers
@@ -1550,7 +1556,7 @@ public class WebDriverActions {
 	/**
 	 * Refresh the page
 	 */
-	public void refreshPage() throws Throwable {
+	public void refreshPage()  {
 		boolean flag = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -1631,7 +1637,6 @@ public class WebDriverActions {
 	
 	/**
 	 * Switch to another frame by using index of frame
-	 * @param locator of element
 	 * @param index value of frame
 	 */
 	public void switchToFrameByIndex(int index) {
@@ -1716,7 +1721,7 @@ public class WebDriverActions {
 
 	/**
 	 * Selects the check box 
-	 * @param locator of element
+	 * @param by locator of element
 	 * @param locatorName message to be included in the execution report
 	 * @return boolean value indicating success of the operation
 	 */
@@ -1778,7 +1783,8 @@ public class WebDriverActions {
 
 	/**
 	 * Scrolls to web element with JavaScript implementation
-	 * @param locator of element
+	 * @param element of locator
+	 * @param locatorName message to be included in the execution report
 	 */
 	public void scrollToWebElement(By element,String locatorName) {
 		boolean status = false;
@@ -1806,8 +1812,8 @@ public class WebDriverActions {
 
 	/**
 	 * verifies the presence of element in a page
-	 * @param locator
-	 * @param locatorName
+	 * @param locator of element
+	 * @param locatorName message to be included in the execution report
 	 * @return WebElement
 	 */
 
@@ -1836,7 +1842,7 @@ public class WebDriverActions {
 	
 	/**
 	 * Highlights the web element
-	 * @param element
+	 * @param element locator of element
 	 */
 	public void highlight(WebElement element) {
 
@@ -1877,7 +1883,7 @@ public class WebDriverActions {
 	 * Press Enter key from KeyBoard
 	 * @param locator of element
 	 */
-	public void pressEnter(By locator) throws Throwable {
+	public void pressEnter(By locator) {
 		boolean status = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -1905,9 +1911,9 @@ public class WebDriverActions {
 	 * Gets the WebElements  
 	 * @param locator of element
 	 * @param locatorName message to be included in the execution report
-	 * @return List<WebElement> 
+	 * @return List of web elements 
 	 */
-	public List<WebElement> findWebElements(By locator, String locatorName) throws Throwable {
+	public List<WebElement> findWebElements(By locator, String locatorName) {
 		List<WebElement> element;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -1930,11 +1936,11 @@ public class WebDriverActions {
 	
 		/**
 	    * waits for inVisibility Of Element
-	    * @param locator of element
+	    * @param by locator of element
 	    * @param locatorName message to be included in the execution report
 	    * @return boolean value indicating success of the operation
 	    */
-	   public boolean waitForInVisibilityOfElement(By by, String locatorName) throws Throwable {
+	   public boolean waitForInVisibilityOfElement(By by, String locatorName)  {
 	      boolean flag = false;
 	      LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 	      LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
@@ -1965,7 +1971,7 @@ public class WebDriverActions {
 	    * @param item of (String)
 	    * @return boolean value indicating success of the operation
 	    */
-	   public boolean isItemPresentInLocalStorage(String item) throws Throwable {
+	   public boolean isItemPresentInLocalStorage(String item)  {
 	      boolean flag = false;
 	      try {
 	         LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -1994,7 +2000,7 @@ public class WebDriverActions {
 	   /**
 	     * Get the current URL of webPage
 	     * @return String
-	     * 
+	     * @throws Throwable Handled
 	     */
 		public String getCurrentURL() throws Throwable {
 			String text = webDriver.getCurrentUrl();
@@ -2010,7 +2016,7 @@ public class WebDriverActions {
 	    * @param locatorName message to be included in the execution report
 	    * @return boolean value indicating success of the operation
 	    */
-	   public boolean isNotVisible(By locator, String locatorName) throws Throwable {
+	   public boolean isNotVisible(By locator, String locatorName)  {
 	      boolean flag = false;
 	      try {
 	         LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
