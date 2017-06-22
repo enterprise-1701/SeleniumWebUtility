@@ -34,8 +34,8 @@ public class WebDriverEngine {
 	 * This method will be executed before the suite.
 	 * CustomReport folder structure is created in this phase.
 	 * 
-	 * @param context
-	 * @throws Exception
+	 * @param context org.testng.ITestContext
+	 * @throws Exception java.lang.Exception
 	 */
 	@BeforeSuite
 	public void beforeSuite(ITestContext context) throws Exception {
@@ -61,8 +61,8 @@ public class WebDriverEngine {
 	 * This method will be executed after the suite.
 	 * Generating summary report and freeing up the custom report instances are done in this phase.
 	 * 
-	 * @param context
-	 * @throws Exception
+	 * @param context org.testng.ITestContext
+	 * @throws Exception org.testng.ITestContext
 	 */
 	@AfterSuite
 	public void afterSuite(ITestContext context) throws Exception {
@@ -82,8 +82,10 @@ public class WebDriverEngine {
 	/**
 	 * Browser(i.e. webdriver) intialization is done in this phase.
 	 * 
-	 * @param context
-	 * @throws Exception
+	 * @param context org.testng.ITestContext
+	 * @param browser name of the browser
+	 * @param seleniumgridurl url of seleniumGrid server
+	 * @throws Exception java.lang.Exception
 	 */
 	@SuppressWarnings("unchecked")
 	@BeforeClass
@@ -115,7 +117,7 @@ public class WebDriverEngine {
 	/**
 	 * Closes the browser and webdriver instance. 
 	 * 
-	 * @param context
+	 * @param context seleniumGrid server
 	 */
 	@AfterClass
 	public void afterClass(ITestContext context) {
@@ -164,21 +166,21 @@ public class WebDriverEngine {
 			throw new Exception("Unable to execute the method 'getWebDriverActions'");
 		}
 		return webDriverActions;
-	}
+	}	
 	
 	/**
 	 * Prerequisite setup at test method level(@Test method level). Call to this
 	 * method should be the first line in the test method(i.e. in @Test)
 	 * 
-	 * Ex:  String testCaseName = "<<TESTCASE ID>> : <<TESTCASE DESCRIPTION>>"
+	 * Ex:  String testCaseName = "&gt;&gt;TESTCASE ID&lt;&lt; : &gt;&gt;TESTCASE DESCRIPTION&lt;&lt;"
 	 *      WebDriverActions webDriverActions = setupAutomationTest(context, testCaseName);
 	 * 
 	 * Note: testCaseName(ex: "TC 01 : Sample Test") should be same when you are calling the method 'setupWebTest' and 'teardownWebTest'
 	 * 
-	 * @param context
-	 * @param testCaseName
-	 * @return WebDriverActions
-	 * @throws Exception
+	 * @param context org.testng.ITestContext
+	 * @param testCaseName should be &gt;&gt;TESTCASE_ID&lt;&lt; : &gt;&gt;TESTCASE DESCRIPTION&lt;&lt; format
+	 * @return com.cubic.accelerators.WebDriverActions
+	 * @throws Exception java.lang.Exception
 	 */
 	public WebDriverActions setupAutomationTest(ITestContext context, String testCaseName) throws Exception {
 		WebDriverActions webDriverActions = null;
@@ -206,14 +208,14 @@ public class WebDriverEngine {
 	 * Call to this method should be the last line in the test method(i.e. in @Test), should be written in finally block.
 	 *	
 	 * Ex:  
-	 * String testCaseName = "<<TESTCASE ID>> : <<TESTCASE DESCRIPTION>>"
+	 * String testCaseName = "&gt;&gt;TESTCASE ID&lt;&lt; : &gt;&gt;TESTCASE DESCRIPTION&lt;&lt;"
 	 * teardownAutomationTest(context, testCaseName);
 	 * 
 	 * Note: testCaseName(ex: "TC 01 : Sample Test") should be same when you are calling the method 'setupWebTest' and 'teardownWebTest'
 	 * 
-	 * @param context
-	 * @param testCaseName
-	 * @throws Exception
+	 * @param context org.testng.ITestContext
+	 * @param testCaseName should be in "&gt;&gt;TESTCASE ID&lt;&lt; : &gt;&gt;TESTCASE DESCRIPTION&lt;&lt;" format
+	 * @throws Exception java.lang.Exception
 	 */
 	public void teardownAutomationTest(ITestContext context, String testCaseName) throws Exception {
 		try{
