@@ -41,39 +41,42 @@ public class WebDriverActions {
 	private final String msgClickSuccess = "Successfully Clicked On ";
 	private final String msgClickFailure = "Unable To Click On ";
 	private final String msgRightClickSuccess = "Successfully Mouse Right Clicked On ";
-	private final String msgRightClickFailure = "Unable To Right Click On ";
 	private final String msgTypeSuccess = "Successfully Entered value ";
 	private final String msgTypeFailure = "Unable To Type On ";
 	private final String msgIsElementFoundSuccess = "Successfully Found Element ";
 	private final String msgIsElementFoundFailure = "Unable To Found Element ";
 	private final String msgCheckboxisnotChecked = "Checkbox is not Selected";
-	
 
 	private WebDriver webDriver = null;
 	private CustomReports customReports = null;
 	private String testCaseName = null;
 	
 	private int timeValue  = Integer.parseInt(GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("webdriver_dynamicwait_time"));
+	
 	/**
+	 * This Constructor is used internally with in the Selenium Libarary(i.e. WebDriver engine).
 	 * 
-	 * @param webDriver
-	 * @param customReports
-	 * @param testCaseName
+	 * @param webDriver reference variable is declared with in the class  
+	 * @param customReports reference variable is declared with in the class 
+	 * @param testCaseName reference variable is declared with in the class(testCaseName is <<TESTCASE_ID>> : <<TESTCASE DESCRIPTION>>)
 	 */
-	public WebDriverActions(WebDriver webDriver, CustomReports customReports, String testCaseName) {
+	WebDriverActions(WebDriver webDriver, CustomReports customReports, String testCaseName) {
 		this.webDriver = webDriver;
 		this.customReports = customReports;
 		this.testCaseName = testCaseName;
 	}
 	
 	/**
+	 * Constructor should be used explicitly, if you want to access the webDriver when the automation script doesn't extend the WebDriverEngine.
+	 * This need to be used while instantiating a separate webdriver object in script development where you are extending other Engines like  
+	 * RESTEngine instead of extending WebDriverEngine.
 	 * 
-	 * @param customReports
-	 * @param testCaseName
-	 * @param browserName
-	 * @param seleniumGridUrl
-	 * @throws IOException
-	 * @throws InterruptedException
+	 * @param customReports reference variable is declared with in the class
+	 * @param testCaseName reference variable is declared with in the class(testCaseName is <<TESTCASE_ID>> : <<TESTCASE DESCRIPTION>>)
+	 * @param browserName to initialise the browser
+	 * @param seleniumGridUrl url of seleniumGrid server
+	 * @throws IOException java.io.IOException
+	 * @throws InterruptedException java.lang.InterruptedException
 	 */
 	public WebDriverActions(CustomReports customReports, String testCaseName, String browserName, String seleniumGridUrl)
 			throws IOException, InterruptedException {
@@ -2011,7 +2014,6 @@ public class WebDriverActions {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 			LOG.info("Method : click  ::  Locator : " + locatorName);
-			WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
 			LOG.info("Waiting for element");
 			LOG.info("Locator is Visible :: " + locator);
 			LOG.info("Clicked on the Locator");
