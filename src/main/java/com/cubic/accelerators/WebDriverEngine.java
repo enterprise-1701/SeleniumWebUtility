@@ -172,13 +172,13 @@ public class WebDriverEngine {
 	 * Prerequisite setup at test method level(@Test method level). Call to this
 	 * method should be the first line in the test method(i.e. in @Test)
 	 * 
-	 * Ex:  String testCaseName = "&gt;&gt;TESTCASE ID&lt;&lt; : &gt;&gt;TESTCASE DESCRIPTION&lt;&lt;"
+	 * Ex:  String testCaseName = "&lt;&lt;TESTCASE ID&gt;&gt; : &lt;&lt;TESTCASE DESCRIPTION&gt;&gt;"
 	 *      WebDriverActions webDriverActions = setupAutomationTest(context, testCaseName);
 	 * 
 	 * Note: testCaseName(ex: "TC 01 : Sample Test") should be same when you are calling the method 'setupWebTest' and 'teardownWebTest'
 	 * 
 	 * @param context org.testng.ITestContext
-	 * @param testCaseName should be &gt;&gt;TESTCASE_ID&lt;&lt; : &gt;&gt;TESTCASE DESCRIPTION&lt;&lt; format
+	 * @param testCaseName should be &lt;&lt;TESTCASE_ID&gt;&gt; : &lt;&lt;TESTCASE DESCRIPTION&gt;&gt; format
 	 * @return com.cubic.accelerators.WebDriverActions
 	 * @throws Exception java.lang.Exception
 	 */
@@ -208,13 +208,13 @@ public class WebDriverEngine {
 	 * Call to this method should be the last line in the test method(i.e. in @Test), should be written in finally block.
 	 *	
 	 * Ex:  
-	 * String testCaseName = "&gt;&gt;TESTCASE ID&lt;&lt; : &gt;&gt;TESTCASE DESCRIPTION&lt;&lt;"
+	 * String testCaseName = "&lt;&lt;TESTCASE ID&gt;&gt; : &lt;&lt;TESTCASE DESCRIPTION&gt;&gt;"
 	 * teardownAutomationTest(context, testCaseName);
 	 * 
 	 * Note: testCaseName(ex: "TC 01 : Sample Test") should be same when you are calling the method 'setupWebTest' and 'teardownWebTest'
 	 * 
 	 * @param context org.testng.ITestContext
-	 * @param testCaseName should be in "&gt;&gt;TESTCASE ID&lt;&lt; : &gt;&gt;TESTCASE DESCRIPTION&lt;&lt;" format
+	 * @param testCaseName should be in "&lt;&lt;TESTCASE ID&gt;&gt; : &lt;&lt;TESTCASE DESCRIPTION&gt;&gt;" format
 	 * @throws Exception java.lang.Exception
 	 */
 	public void teardownAutomationTest(ITestContext context, String testCaseName) throws Exception {

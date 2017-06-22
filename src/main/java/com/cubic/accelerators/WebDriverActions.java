@@ -58,7 +58,7 @@ public class WebDriverActions {
 	 * 
 	 * @param webDriver reference variable is declared with in the class  
 	 * @param customReports reference variable is declared with in the class 
-	 * @param testCaseName reference variable is declared with in the class(testCaseName is &gt;&gt;TESTCASE_ID&lt;&lt; : &gt;&gt;TESTCASE DESCRIPTION&lt;&lt;)
+	 * @param testCaseName reference variable is declared with in the class(testCaseName is &lt;&lt;TESTCASE_ID&gt;&gt; : &lt;&lt;TESTCASE DESCRIPTION&gt;&gt;)
 	 */
 	WebDriverActions(WebDriver webDriver, CustomReports customReports, String testCaseName) {
 		this.webDriver = webDriver;
@@ -72,7 +72,7 @@ public class WebDriverActions {
 	 * RESTEngine instead of extending WebDriverEngine.
 	 * 
 	 * @param customReports reference variable is declared with in the class
-	 * @param testCaseName reference variable is declared with in the class(testCaseName is &gt;&gt;TESTCASE_ID&lt;&lt; : &gt;&gt;TESTCASE DESCRIPTION&lt;&lt;)
+	 * @param testCaseName reference variable is declared with in the class(testCaseName is &lt;&lt;TESTCASE_ID&gt;&gt; : &lt;&lt;TESTCASE DESCRIPTION&gt;&gt;)
 	 * @param browserName to initialise the browser
 	 * @param seleniumGridUrl url of seleniumGrid server
 	 * @throws IOException java.io.IOException
