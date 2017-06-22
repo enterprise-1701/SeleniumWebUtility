@@ -175,7 +175,7 @@ public class WebDriverEngine {
 	 * Ex:  String testCaseName = "&lt;&lt;TESTCASE ID&gt;&gt; : &lt;&lt;TESTCASE DESCRIPTION&gt;&gt;"
 	 *      WebDriverActions webDriverActions = setupAutomationTest(context, testCaseName);
 	 * 
-	 * Note: testCaseName(ex: "TC 01 : Sample Test") should be same when you are calling the method 'setupWebTest' and 'teardownWebTest'
+	 * Note: testCaseName(ex: "TC 01 : Sample Test") should be same when you are calling the method 'setupAutomationTest' and 'teardownAutomationTest'
 	 * 
 	 * @param context org.testng.ITestContext
 	 * @param testCaseName should be &lt;&lt;TESTCASE_ID&gt;&gt; : &lt;&lt;TESTCASE DESCRIPTION&gt;&gt; format
@@ -211,7 +211,7 @@ public class WebDriverEngine {
 	 * String testCaseName = "&lt;&lt;TESTCASE ID&gt;&gt; : &lt;&lt;TESTCASE DESCRIPTION&gt;&gt;"
 	 * teardownAutomationTest(context, testCaseName);
 	 * 
-	 * Note: testCaseName(ex: "TC 01 : Sample Test") should be same when you are calling the method 'setupWebTest' and 'teardownWebTest'
+	 * Note: testCaseName(ex: "TC 01 : Sample Test") should be same when you are calling the method 'setupAutomationTest' and 'teardownAutomationTest'
 	 * 
 	 * @param context org.testng.ITestContext
 	 * @param testCaseName should be in "&lt;&lt;TESTCASE ID&gt;&gt; : &lt;&lt;TESTCASE DESCRIPTION&gt;&gt;" format
