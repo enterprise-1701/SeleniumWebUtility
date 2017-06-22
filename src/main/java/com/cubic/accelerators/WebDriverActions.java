@@ -58,7 +58,7 @@ public class WebDriverActions {
 	 * 
 	 * @param webDriver reference variable is declared with in the class  
 	 * @param customReports reference variable is declared with in the class 
-	 * @param testCaseName reference variable is declared with in the class(testCaseName is &lt;&lt;TESTCASE_ID&gt;&gt; : &lt;&lt;TESTCASE DESCRIPTION&gt;&gt;)
+	 * @param testCaseName reference variable is declared with in the class(testCaseName should be in the format &lt;&lt;TESTCASE_ID&gt;&gt; : &lt;&lt;TESTCASE DESCRIPTION&gt;&gt;)
 	 */
 	WebDriverActions(WebDriver webDriver, CustomReports customReports, String testCaseName) {
 		this.webDriver = webDriver;
@@ -67,12 +67,12 @@ public class WebDriverActions {
 	}
 	
 	/**
-	 * Constructor should be used explicitly, if you want to access the webDriver when the automation script doesn't extend the WebDriverEngine.
+	 * Constructor should be used explicitly, if you want to access the webDriver when the automation script doesn't extend the WebDriverEngine.<br>
 	 * This need to be used while instantiating a separate webdriver object in script development where you are extending other Engines like  
 	 * RESTEngine instead of extending WebDriverEngine.
 	 * 
 	 * @param customReports reference variable is declared with in the class
-	 * @param testCaseName reference variable is declared with in the class(testCaseName is &lt;&lt;TESTCASE_ID&gt;&gt; : &lt;&lt;TESTCASE DESCRIPTION&gt;&gt;)
+	 * @param testCaseName reference variable is declared with in the class(testCaseName should be in format &lt;&lt;TESTCASE_ID&gt;&gt; : &lt;&lt;TESTCASE DESCRIPTION&gt;&gt;)
 	 * @param browserName to initialise the browser
 	 * @param seleniumGridUrl url of seleniumGrid server
 	 * @throws IOException java.io.IOException
