@@ -860,6 +860,35 @@ public class WebDriverActions {
 		}
 		return status;
 	}
+	
+
+	/**
+	 * Verifies presence of element in a web page 
+	 * @param by locator of element
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
+	 */
+	public boolean isElementPresentWithOutJS(By by, String locatorName,boolean expected){
+		boolean status = false;
+		try {
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			webDriver.findElement(by);
+			status = true;
+		} catch (Exception e) {
+			LOG.error(Log4jUtil.getStackTrace(e));
+		} finally {
+			if(expected){
+				if (!status) {
+					LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+					failureReport("isElementPresent : ", msgIsElementFoundFailure + locatorName);
+				} else {
+					LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+					this.successReport("isElementPresent : " + locatorName, this.msgIsElementFoundSuccess + locatorName);
+				}
+			}
+		}
+		return status;
+	}	
 
 	/**
 	 * Scrolls to Web Element
