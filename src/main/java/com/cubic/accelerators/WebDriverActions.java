@@ -2112,6 +2112,39 @@ public class WebDriverActions {
 	      return flag;
 	   }
 	   
+	   /**
+	     * keyBoardOperations
+	     * @param  locator of (By)
+	     * @param  testData of (Keys)
+	     * @param  locatorName of (String)
+	     * @return boolean
+	     * @throws Throwable
+	     */
+	    public boolean keyBoardOperations(By locator, Keys testData, String locatorName) throws Throwable {
+	        boolean status = false;
+	        try {
+	            LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+	            LOG.info("Class name : " + getCallerClassName() + "Method name : " + getCallerMethodName());
+	            LOG.info("Method : Type  ::  Locator : " + locatorName + " :: Data :" + testData);
+	            WebDriverWait wait = new WebDriverWait(webDriver, 30);
+	            LOG.info("Waiting for element :");
+	            //wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+	            LOG.info("Locator is Visible :: " + locator);
+	            wait.until(ExpectedConditions.elementToBeClickable(locator));
+	            webDriver.findElement(locator).sendKeys(testData);
+	            LOG.info("Typed the Locator data :: " + testData);
+	            LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+	            successReport("Enter text in :: " + locatorName, msgTypeSuccess + testData);
+	            status = true;
+	        } catch (Exception e) {
+	            status = false;
+	            LOG.info(e.getMessage());
+	            failureReport("Enter text in :: " + locatorName, msgTypeFailure + testData);
+	            throw new RuntimeException(e);
+	        }
+	        return status;
+	    }
 	   
 
 }
