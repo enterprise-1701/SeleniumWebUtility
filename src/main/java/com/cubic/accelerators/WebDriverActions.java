@@ -2146,5 +2146,33 @@ public class WebDriverActions {
 	        return status;
 	    }
 	   
+	    /**
+	       * Verifies Visibility of element in a web page
+	       * @param locator of element
+	       * @param locatorName message to be included in the execution report
+	       * @return boolean value indicating success of the operation
+	       */
+	       public boolean isVisible(By locator, String locatorName,boolean value){
+	              boolean flag = false;
+	              try {
+	                     LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+	                     LOG.info("Class name :: " + getCallerClassName() + " Method name :: " + getCallerMethodName());
+	                     LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
+	                     flag = webDriver.findElement(locator).isDisplayed();
+	                     LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+	              } catch (Exception e) {
+	                     LOG.error(Log4jUtil.getStackTrace(e));
+	                     flag = false;
+	              } finally {
+	                     if(value){
+	                     if (!flag) {
+	                           failureReport("IsVisible : " +locatorName, locatorName + " Element is Not Visible : ");
+	                     } else {
+	                           successReport("IsVisible : " +locatorName, locatorName + " Element is Visible : ");
+	                           }
+	                     }
+	              }
+	              return flag;
+	       }
 
 }
