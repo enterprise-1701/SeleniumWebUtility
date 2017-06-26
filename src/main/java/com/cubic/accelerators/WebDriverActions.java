@@ -199,10 +199,6 @@ public class WebDriverActions {
 				webDriver = new FirefoxDriver(firefoxProfile);
 			}
 			
-			webDriver.manage().window().maximize();
-			webDriver.manage().timeouts().implicitlyWait(implicitlyWaitTime, TimeUnit.SECONDS);
-			// LOG.info("Driver launch ::" + browser);		
-			
 			break;
 			
 		case WebDriverConstants.IE_BROWSER:
@@ -233,10 +229,6 @@ public class WebDriverActions {
 				webDriver = new InternetExplorerDriver(capabilities);
 			}
 			
-			webDriver.manage().window().maximize();
-			webDriver.manage().timeouts().implicitlyWait(implicitlyWaitTime, TimeUnit.SECONDS);
-			
-			// LOG.info("Driver launch ::" + browser);	
 			break;	
 			
 		case WebDriverConstants.CHROME_BROWSER:
@@ -274,11 +266,6 @@ public class WebDriverActions {
 				webDriver = new ChromeDriver(capabilities);
 			}
 			
-			webDriver.manage().window().maximize();
-			
-			webDriver.manage().timeouts().implicitlyWait(implicitlyWaitTime, TimeUnit.SECONDS);
-			// LOG.info("Driver launch ::" + browser);
-			
 			break;
 			
 		case WebDriverConstants.EDGE_BROWSER:
@@ -290,10 +277,6 @@ public class WebDriverActions {
 				webDriver = new EdgeDriver(capabilities);
 			}
 		
-			webDriver.manage().window().maximize();
-			webDriver.manage().timeouts().implicitlyWait(implicitlyWaitTime, TimeUnit.SECONDS);
-			
-			//LOG.info("Driver launch ::" + browser);
 			break;
 
 		case WebDriverConstants.SAFARI_BROWSER:
@@ -308,12 +291,7 @@ public class WebDriverActions {
 					continue;
 				}
 			}		
-			
-			webDriver.manage().window().maximize();
-			webDriver.manage().timeouts().implicitlyWait(implicitlyWaitTime, TimeUnit.SECONDS);
-			
-			//LOG.info("Driver launch ::" + browser);
-			
+						
 			break;			
 		}
 		
@@ -321,7 +299,9 @@ public class WebDriverActions {
 			webDriver = new RemoteWebDriver(new URL(seleniumGridUrl), capabilities);
 		}
 		
-
+		webDriver.manage().window().maximize();
+		webDriver.manage().timeouts().implicitlyWait(implicitlyWaitTime, TimeUnit.SECONDS);
+		
 		return webDriver;			
 	}	
 	
