@@ -33,6 +33,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import com.cubic.genericutils.DateUtil;
 import com.cubic.genericutils.GenericConstants;
 import com.cubic.logutils.Log4jUtil;
 import com.cubic.reportengine.report.CustomReports;
@@ -617,32 +618,7 @@ public class WebDriverActions {
 		}
 	}
 
-	/**
-	 * Verifies Visibility of element in a web page
-	 * @param locator of element
-	 * @param locatorName message to be included in the execution report
-	 * @return boolean value indicating success of the operation
-	 */
-	public boolean isVisible(By locator, String locatorName){
-		boolean flag = false;
-		try {
-			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			LOG.info("Class name :: " + getCallerClassName() + " Method name :: " + getCallerMethodName());
-			LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
-			flag = webDriver.findElement(locator).isDisplayed();
-			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		} catch (Exception e) {
-			LOG.error(Log4jUtil.getStackTrace(e));
-			flag = false;
-		} finally {
-			if (!flag) {
-				failureReport("IsVisible : " +locatorName, locatorName + " Element is Not Visible : ");
-			} else {
-				successReport("IsVisible : " +locatorName, locatorName + " Element is Visible : ");
-			}
-		}
-		return flag;
-	}
+	
 
 	/**
 	 * Provides size of WebElements list
@@ -746,7 +722,7 @@ public class WebDriverActions {
 	 * @param expText text2
 	 * @return boolean value indicating success of the operation
 	 */
-	public boolean assertTextStringMatching(String actText, String expText){
+	public boolean assertTextStringMatching(String actText, String expText,boolean value){
 		boolean flag = false;
 		try {
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -768,10 +744,12 @@ public class WebDriverActions {
 			LOG.error(Log4jUtil.getStackTrace(e));
 			return false;
 		} finally {
+			if(value){
 			if (!flag) {
 				failureReport("Actual Text :: "+ actText +" Should equal to :: " + expText , "Actual Text :: "+ actText +" is not equal to :: " + expText);
-			} else {
-				successReport("Actual Text :: "+ actText +" Should equal to :: " + expText , "Actual Text :: "+ actText +" is equal to :: " + expText);
+				} else {
+					successReport("Actual Text :: "+ actText +" Should equal to :: " + expText , "Actual Text :: "+ actText +" is equal to :: " + expText);
+				}
 			}
 		}
 	}
@@ -2134,7 +2112,6 @@ public class WebDriverActions {
 	            webDriver.findElement(locator).sendKeys(testData);
 	            LOG.info("Typed the Locator data :: " + testData);
 	            LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
 	            successReport("Enter text in :: " + locatorName, msgTypeSuccess + testData);
 	            status = true;
 	        } catch (Exception e) {
@@ -2145,11 +2122,12 @@ public class WebDriverActions {
 	        }
 	        return status;
 	    }
-	   
+	  
 	    /**
 	       * Verifies Visibility of element in a web page
 	       * @param locator of element
 	       * @param locatorName message to be included in the execution report
+	       * @param value indicating to control the report part (eg:true report will append to detailed report)
 	       * @return boolean value indicating success of the operation
 	       */
 	       public boolean isVisible(By locator, String locatorName,boolean value){
@@ -2174,5 +2152,4 @@ public class WebDriverActions {
 	              }
 	              return flag;
 	       }
-
-}
+	   }
