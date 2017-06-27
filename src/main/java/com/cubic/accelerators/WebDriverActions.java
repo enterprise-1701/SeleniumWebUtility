@@ -33,7 +33,6 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import com.cubic.genericutils.DateUtil;
 import com.cubic.genericutils.GenericConstants;
 import com.cubic.logutils.Log4jUtil;
 import com.cubic.reportengine.report.CustomReports;
@@ -720,6 +719,7 @@ public class WebDriverActions {
 	 * Compares two string values
 	 * @param actText text1
 	 * @param expText text2
+	 * @param value indicating to control the report generation
 	 * @return boolean value indicating success of the operation
 	 */
 	public boolean assertTextStringMatching(String actText, String expText,boolean value){
@@ -753,7 +753,8 @@ public class WebDriverActions {
 			}
 		}
 	}
-
+	
+	
 	/**
 	 * Clicks the element
 	 * @param locator of element
@@ -2152,4 +2153,40 @@ public class WebDriverActions {
 	              }
 	              return flag;
 	       }
+	       
+	       /**
+	   	 * Compares two string values
+	   	 * @param actText text1 
+	   	 * @param expText text2
+	   	 * @return boolean value indicating success of the operation
+	   	 */
+	   	public boolean assertTextStringMatching(String actText, String expText){
+	   		boolean flag = false;
+	   		try {
+	   			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+	   			LOG.info("Class name : " + getCallerClassName() + "Method name : " + getCallerMethodName());
+	   			String ActualText = actText.trim();
+	   			LOG.info("act - " + ActualText);
+	   			LOG.info("exp - " + expText);
+	   			if (ActualText.equalsIgnoreCase(expText.trim())) {
+	   				LOG.info("in if loop");
+	   				flag = true;
+	   				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+	   				return true;
+	   			} else {
+	   				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+	   				return false;
+	   			}
+	   		} catch (Exception e) {
+	   			e.printStackTrace();
+	   			LOG.error(Log4jUtil.getStackTrace(e));
+	   			return false;
+	   		} finally {
+	   			if (!flag) {
+	   				failureReport("Actual Text :: "+ actText +" Should equal to :: " + expText , "Actual Text :: "+ actText +" is not equal to :: " + expText);
+	   				} else {
+	   					successReport("Actual Text :: "+ actText +" Should equal to :: " + expText , "Actual Text :: "+ actText +" is equal to :: " + expText);
+	   			}
+	   		}
+	   	}
 	   }
