@@ -1134,6 +1134,7 @@ public class WebDriverActions {
 			result = this.webDriver.findElement(locator).getAttribute(attributeName);
 			LOG.info("Locator is Visible and attribute value is retrieved :: " + result);
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			flag=true;
 		} catch (Exception e) {
 			LOG.error(Log4jUtil.getStackTrace(e));
 		}finally {
@@ -1946,7 +1947,7 @@ public class WebDriverActions {
 			LOG.info("Method : " + getCallerMethodName());
 			WebElement element = webDriver.findElement(locator);
 			element.sendKeys(Keys.ENTER);
-			
+			status=true;
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		} catch (Exception e) {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
@@ -2077,6 +2078,7 @@ public class WebDriverActions {
 	         LOG.info("Class name :: " + getCallerClassName() + " Method name :: " + getCallerMethodName());
 	         LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
 	         flag = !webDriver.findElement(locator).isDisplayed();
+	         flag=true;
 	         LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 	      } catch (Exception e) {
 	    		LOG.error(Log4jUtil.getStackTrace(e));
@@ -2138,6 +2140,7 @@ public class WebDriverActions {
 	                     LOG.info("Class name :: " + getCallerClassName() + " Method name :: " + getCallerMethodName());
 	                     LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
 	                     flag = webDriver.findElement(locator).isDisplayed();
+	                     flag=true;
 	                     LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 	              } catch (Exception e) {
 	                     LOG.error(Log4jUtil.getStackTrace(e));
