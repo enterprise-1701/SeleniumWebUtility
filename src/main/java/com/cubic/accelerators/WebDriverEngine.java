@@ -55,6 +55,18 @@ public class WebDriverEngine {
 		
 		//TODO need to remove below commented code after re-checking
 		//context.setAttribute("webDriverActionList", new Hashtable<String, WebDriverActions>());
+		
+		// Create test run for the test cases in Test Rail
+		boolean testRailFlag=false;
+		if(propTable.get("Test_Rail_Integration_Enable_Flag")==null){
+			testRailFlag=false;
+		}else if(propTable.get("Test_Rail_Integration_Enable_Flag").equalsIgnoreCase("true")){
+			testRailFlag=true;
+		}
+		if(testRailFlag){
+			
+			TestRailUtil.generateTestRunsForTestCases(propTable.get("Test_Rail_Project_ID"),propTable.get("Test_Rail_Suite_ID"),customReports.getCustomReportBean().getSuiteStartDateAndTime());
+		}
 	}
 
 	/**
@@ -68,6 +80,18 @@ public class WebDriverEngine {
 	public void afterSuite(ITestContext context) throws Exception {
 		// Generates the Summary report.
 		generateSummaryReport(context);
+		
+		// Update test execution results into the Test Run under Test Rail project
+		boolean testRailFlag=false;
+		if(propTable.get("Test_Rail_Integration_Enable_Flag")==null){
+			testRailFlag=false;
+		}else if(propTable.get("Test_Rail_Integration_Enable_Flag").equalsIgnoreCase("true")){
+			testRailFlag=true;
+		}
+		
+		if(testRailFlag){			
+			TestRailUtil.updateTestResultsinTestRail();
+		}
 
 		cleanUpCustomReports();
 		
