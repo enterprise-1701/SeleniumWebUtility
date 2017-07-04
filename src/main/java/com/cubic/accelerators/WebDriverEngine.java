@@ -19,6 +19,7 @@ import com.cubic.logutils.Log4jUtil;
 import com.cubic.reportengine.bean.CustomReportBean;
 import com.cubic.reportengine.bean.DetailedReportBean;
 import com.cubic.reportengine.report.CustomReports;
+import com.cubic.testrail.TestRailUtil;
 
 /**
  * BaseWebTest have all the generic methods to execute to drive the webdriver browser web test cases.
@@ -29,6 +30,7 @@ public class WebDriverEngine {
 
 	private Hashtable<String, WebDriver> wedDriverList = null;
 	private Hashtable<String, WebDriverActions> webDriverActionList = null;
+	private Hashtable<String , String> propTable = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES;
 
 	/**
 	 * This method will be executed before the suite.
