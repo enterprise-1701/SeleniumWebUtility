@@ -115,15 +115,15 @@ public class WebDriverEngine {
 	 */
 	@SuppressWarnings("unchecked")
 	@BeforeClass
-	@Parameters({"browser","executionenv"})
-	public void beforeClass(ITestContext context, String browser, String executionenv) throws Exception {
+	@Parameters({"browser","executionenv","platform","version"})
+	public void beforeClass(ITestContext context, String browser, String executionenv,String platform,String version) throws Exception {
 		customReports = (CustomReports) context.getAttribute("customReports");
 
 		//Sets the browser name in bean
 		CustomReportBean customReportBean = customReports.getCustomReportBean();
 		customReportBean.setBrowserName(browser);
 		try {
-			WebDriver webDriver = WebDriverActions.getWebDriverForLocal(browser, executionenv);
+			WebDriver webDriver = WebDriverActions.getWebDriverForLocal(browser, executionenv,platform,version);
 			
 			wedDriverList = (Hashtable<String, WebDriver>) context.getAttribute("wedDriverList");
 

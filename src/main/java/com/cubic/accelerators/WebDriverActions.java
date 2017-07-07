@@ -79,10 +79,10 @@ public class WebDriverActions {
 	 * @throws IOException java.io.IOException
 	 * @throws InterruptedException java.lang.InterruptedException
 	 */
-	public WebDriverActions(CustomReports customReports, String testCaseName, String browserName, String executionenv)
+	public WebDriverActions(CustomReports customReports, String testCaseName, String browserName, String executionenv,String platform,String version)
 			throws IOException, InterruptedException {
 
-		this.webDriver = getWebDriverForLocal(browserName, executionenv);
+		this.webDriver = getWebDriverForLocal(browserName, executionenv,platform,version);
 		this.customReports = customReports;
 		this.testCaseName = testCaseName;
 	}
@@ -161,7 +161,7 @@ public class WebDriverActions {
 		}
 	}	
 	//Don't "getWebDriverForLocal" to public, since this method should not be exposed outside and should be allowed to access with in the package. 
-	static synchronized WebDriver getWebDriverForLocal(String browserName,String executionenv) throws IOException, InterruptedException{
+	static synchronized WebDriver getWebDriverForLocal(String browserName,String executionenv,String platform,String version) throws IOException, InterruptedException{
 		WebDriver webDriver = null;
 		DesiredCapabilities capabilities = null;
 		int implicitlyWaitTime = Integer.parseInt(GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("webdriver_implicitwait_time"));
@@ -295,20 +295,20 @@ public class WebDriverActions {
 			break;			
 		}
 		
-		/*if(executionenv!=null && !executiontype.equalsIgnoreCase(WebDriverConstants.LOCAL)){
-			webDriver = new RemoteWebDriver(new URL(executionenv), capabilities);
-		}*/
-		
+		//If block contains the logic related to sauce lab execution
 		if(executionenv!=null && !executionenv.equalsIgnoreCase(WebDriverConstants.LOCAL)){
 			if(executionenv.equalsIgnoreCase(WebDriverConstants.SAUCELAB)){
-				capabilities.setCapability(WebDriverConstants.PLATFORM, GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("platForm"));
-				capabilities.setCapability(WebDriverConstants.VERSION, GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("version"));
+				//capabilities.setCapability(WebDriverConstants.PLATFORM, GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("platForm"));
+				//capabilities.setCapability(WebDriverConstants.VERSION, GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("version"));
+				capabilities.setCapability(WebDriverConstants.PLATFORM,platform);
+				capabilities.setCapability(WebDriverConstants.VERSION,version);
 				String Username = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("USERNAME");
 				String AccessKey = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("ACCESS_KEY");
 				String Saucelaburl = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("SAUCELABHUB");
 				String URL = "https://" + Username + ":" + AccessKey + Saucelaburl; 
 				webDriver = new RemoteWebDriver(new URL(URL), capabilities);
 			}else{
+				//else block contains the logic of selenium grid execution
 				webDriver = new RemoteWebDriver(new URL(executionenv), capabilities);
 			}
 		}
