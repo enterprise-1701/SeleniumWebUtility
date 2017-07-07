@@ -110,20 +110,20 @@ public class WebDriverEngine {
 	 * 
 	 * @param context org.testng.ITestContext
 	 * @param browser name of the browser
-	 * @param seleniumgridurl url of seleniumGrid server
+	 * @param executionenv url of execution environment
 	 * @throws Exception java.lang.Exception
 	 */
 	@SuppressWarnings("unchecked")
 	@BeforeClass
-	@Parameters({"browser","seleniumgridurl"})
-	public void beforeClass(ITestContext context, String browser, String seleniumgridurl) throws Exception {
+	@Parameters({"browser","executionenv"})
+	public void beforeClass(ITestContext context, String browser, String executionenv) throws Exception {
 		customReports = (CustomReports) context.getAttribute("customReports");
 
 		//Sets the browser name in bean
 		CustomReportBean customReportBean = customReports.getCustomReportBean();
 		customReportBean.setBrowserName(browser);
 		try {
-			WebDriver webDriver = WebDriverActions.getWebDriverForLocal(browser, seleniumgridurl);
+			WebDriver webDriver = WebDriverActions.getWebDriverForLocal(browser, executionenv);
 			
 			wedDriverList = (Hashtable<String, WebDriver>) context.getAttribute("wedDriverList");
 

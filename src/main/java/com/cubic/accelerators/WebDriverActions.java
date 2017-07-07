@@ -75,14 +75,14 @@ public class WebDriverActions {
 	 * @param customReports reference variable is declared with in the class
 	 * @param testCaseName reference variable is declared with in the class(testCaseName should be in format &lt;&lt;TESTCASE_ID&gt;&gt; : &lt;&lt;TESTCASE DESCRIPTION&gt;&gt;)
 	 * @param browserName to initialise the browser
-	 * @param seleniumGridUrl url of seleniumGrid server
+	 * @param executionenv url of seleniumGrid server
 	 * @throws IOException java.io.IOException
 	 * @throws InterruptedException java.lang.InterruptedException
 	 */
-	public WebDriverActions(CustomReports customReports, String testCaseName, String browserName, String seleniumGridUrl)
+	public WebDriverActions(CustomReports customReports, String testCaseName, String browserName, String executionenv)
 			throws IOException, InterruptedException {
 
-		this.webDriver = getWebDriverForLocal(browserName, seleniumGridUrl);
+		this.webDriver = getWebDriverForLocal(browserName, executionenv);
 		this.customReports = customReports;
 		this.testCaseName = testCaseName;
 	}
@@ -161,7 +161,7 @@ public class WebDriverActions {
 		}
 	}	
 	//Don't "getWebDriverForLocal" to public, since this method should not be exposed outside and should be allowed to access with in the package. 
-	static synchronized WebDriver getWebDriverForLocal(String browserName,String seleniumGridUrl) throws IOException, InterruptedException{
+	static synchronized WebDriver getWebDriverForLocal(String browserName,String executionenv) throws IOException, InterruptedException{
 		WebDriver webDriver = null;
 		DesiredCapabilities capabilities = null;
 		int implicitlyWaitTime = Integer.parseInt(GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("webdriver_implicitwait_time"));
@@ -195,7 +195,7 @@ public class WebDriverActions {
 			firefoxProfile.setPreference("xpinstall.signatures.required", false);
 			capabilities.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
 			
-			if(seleniumGridUrl == null || seleniumGridUrl.equalsIgnoreCase(WebDriverConstants.LOCAL)){
+			if(executionenv == null || executionenv.equalsIgnoreCase(WebDriverConstants.LOCAL)){
 				webDriver = new FirefoxDriver(firefoxProfile);
 			}
 			
@@ -225,7 +225,7 @@ public class WebDriverActions {
 			Process p = Runtime.getRuntime().exec("RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 255");
 			p.waitFor();		
 			
-			if(seleniumGridUrl == null || seleniumGridUrl.equalsIgnoreCase(WebDriverConstants.LOCAL)){
+			if(executionenv == null || executionenv.equalsIgnoreCase(WebDriverConstants.LOCAL)){
 				webDriver = new InternetExplorerDriver(capabilities);
 			}
 			
@@ -262,7 +262,7 @@ public class WebDriverActions {
 			options.addArguments("--disable-web-security");
 			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 			
-			if(seleniumGridUrl == null ||seleniumGridUrl.equalsIgnoreCase(WebDriverConstants.LOCAL)){
+			if(executionenv == null ||executionenv.equalsIgnoreCase(WebDriverConstants.LOCAL)){
 				webDriver = new ChromeDriver(capabilities);
 			}
 			
@@ -273,7 +273,7 @@ public class WebDriverActions {
 			System.setProperty("webdriver.edge.driver", edgeDriverPath);
 			capabilities = DesiredCapabilities.edge();		
 			
-			if(seleniumGridUrl == null ||seleniumGridUrl.equalsIgnoreCase(WebDriverConstants.LOCAL)){
+			if(executionenv == null ||executionenv.equalsIgnoreCase(WebDriverConstants.LOCAL)){
 				webDriver = new EdgeDriver(capabilities);
 			}
 		
@@ -283,7 +283,7 @@ public class WebDriverActions {
 
 			for (int i = 1; i <= 10; i++) {
 				try {
-					if (seleniumGridUrl==null || seleniumGridUrl.trim().length()==0) {
+					if (executionenv==null || executionenv.trim().length()==0) {
 						webDriver = new SafariDriver();
 					}
 					break;
@@ -295,10 +295,23 @@ public class WebDriverActions {
 			break;			
 		}
 		
-		if(seleniumGridUrl!=null && !seleniumGridUrl.equalsIgnoreCase(WebDriverConstants.LOCAL)){
-			webDriver = new RemoteWebDriver(new URL(seleniumGridUrl), capabilities);
-		}
+		/*if(executionenv!=null && !executiontype.equalsIgnoreCase(WebDriverConstants.LOCAL)){
+			webDriver = new RemoteWebDriver(new URL(executionenv), capabilities);
+		}*/
 		
+		if(executionenv!=null && !executionenv.equalsIgnoreCase(WebDriverConstants.LOCAL)){
+			if(executionenv.equalsIgnoreCase(WebDriverConstants.SAUCELAB)){
+				capabilities.setCapability(WebDriverConstants.PLATFORM, GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("platForm"));
+				capabilities.setCapability(WebDriverConstants.VERSION, GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("version"));
+				String Username = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("USERNAME");
+				String AccessKey = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("ACCESS_KEY");
+				String Saucelaburl = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("SAUCELABHUB");
+				String URL = "https://" + Username + ":" + AccessKey + Saucelaburl; 
+				webDriver = new RemoteWebDriver(new URL(URL), capabilities);
+			}else{
+				webDriver = new RemoteWebDriver(new URL(executionenv), capabilities);
+			}
+		}
 		webDriver.manage().window().maximize();
 		webDriver.manage().timeouts().implicitlyWait(implicitlyWaitTime, TimeUnit.SECONDS);
 		
