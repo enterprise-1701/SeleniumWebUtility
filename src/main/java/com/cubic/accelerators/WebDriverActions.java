@@ -298,8 +298,6 @@ public class WebDriverActions {
 		//If block contains the logic related to sauce lab execution
 		if(executionenv!=null && !executionenv.equalsIgnoreCase(WebDriverConstants.LOCAL)){
 			if(executionenv.equalsIgnoreCase(WebDriverConstants.SAUCELAB)){
-				//capabilities.setCapability(WebDriverConstants.PLATFORM, GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("platForm"));
-				//capabilities.setCapability(WebDriverConstants.VERSION, GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("version"));
 				capabilities.setCapability(WebDriverConstants.PLATFORM,platform);
 				capabilities.setCapability(WebDriverConstants.VERSION,version);
 				String Username = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("USERNAME");
