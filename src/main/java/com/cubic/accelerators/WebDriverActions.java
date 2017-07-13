@@ -300,10 +300,9 @@ public class WebDriverActions {
 			if(executionenv.equalsIgnoreCase(WebDriverConstants.SAUCELAB)){
 				capabilities.setCapability(WebDriverConstants.PLATFORM,platform);
 				capabilities.setCapability(WebDriverConstants.VERSION,version);
-				String Username = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("USERNAME");
-				String AccessKey = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("ACCESS_KEY");
-				String Saucelaburl = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("SAUCELABHUB");
-				String URL = "https://" + Username + ":" + AccessKey + Saucelaburl; 
+				String Username = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("saucelabs_Username");
+				String AccessKey = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("saucelabs_Accesskey");
+				String URL = "https://" + Username + ":" + AccessKey + "@ondemand.saucelabs.com:443/wd/hub"; 
 				webDriver = new RemoteWebDriver(new URL(URL), capabilities);
 			}else{
 				//else block contains the logic of selenium grid execution
