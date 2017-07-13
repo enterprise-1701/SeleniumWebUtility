@@ -532,7 +532,7 @@ public class WebDriverActions {
 	}
 
 	/**
-	 * waits for titleIS Element of ExpectedConditions
+	 * waits for title of the page available
 	 * @param locatorName locator of element
 	 * @return boolean value indicating success of the operation 
 	 */
