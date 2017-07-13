@@ -354,7 +354,7 @@ public class WebDriverActions {
 			s.selectByIndex(index);
 			flag = true;
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			return true;
+			
 		} catch (Exception e) {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
@@ -370,6 +370,7 @@ public class WebDriverActions {
 						"Option at index :: " + index + "is Selected from the DropDown :: " + locatorName);
 			}
 		}
+		return flag;
 	}
 
 	/**
@@ -481,7 +482,7 @@ public class WebDriverActions {
 			flag = true;
 			LOG.info("MoveOver action is done on  :: " + locatorName);
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			return true;
+			
 		} catch (Exception e) {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
@@ -495,6 +496,7 @@ public class WebDriverActions {
 				successReport("MouseOver :: ", "MouserOver Action is Done on :: " + locatorName);
 			}
 		}
+		return flag;
 	}
 
 	/**
@@ -513,7 +515,7 @@ public class WebDriverActions {
 			wait.until(ExpectedConditions.visibilityOfElementLocated(by));
 			flag = true;
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			return true;
+		
 		} catch (Exception e) {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
@@ -527,8 +529,40 @@ public class WebDriverActions {
 				successReport("Visible of element is true :: ", "Element :: " + locatorName + "  is visible");
 			}
 		}
+		return flag;
 	}
 
+	/**
+	 * waits for titleIS Element of ExpectedConditions
+	 * @param locatorName locator of element
+	 * @return boolean value indicating success of the operation 
+	 */
+	public boolean waitFortitleIsElement(String locatorName){
+		boolean flag = false;
+		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+		LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
+		WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
+		try {
+			wait.until(ExpectedConditions.titleIs(locatorName));
+			flag = true;
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			return true;
+		} catch (Exception e) {
+			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
+			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+			LOG.error(Log4jUtil.getStackTrace(e));
+			LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
+			return false;
+		} finally {
+			if (!flag) {
+				failureReport("Title is not present :: ", "Title :: " + locatorName + " is not present");
+			} else {
+				successReport("Title is present :: ", "Title :: " + locatorName + " is present");
+			}
+		}
+	}
+	
 	/**
 	 * clicks an element using java script executor
 	 * @param locator of element
@@ -1691,6 +1725,7 @@ public class WebDriverActions {
 		LOG.info("Locator is Visible :: " + locator);
 		wait.until(ExpectedConditions.presenceOfElementLocated(locator));
 		webDriver.switchTo().frame(webDriver.findElement(locator));
+		flag=true;
 		}catch(Exception e){
 			LOG.error(Log4jUtil.getStackTrace(e));
 		}finally {
@@ -1712,6 +1747,7 @@ public class WebDriverActions {
 		LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 		try{
 		webDriver.switchTo().frame(index);
+		flag=true;
 		}catch(Exception e){
 			LOG.error(Log4jUtil.getStackTrace(e));
 		}finally {
@@ -1732,6 +1768,7 @@ public class WebDriverActions {
 		LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 		try{
 		webDriver.switchTo().defaultContent();
+		flag=true;
 		}catch(Exception e){
 			LOG.error(Log4jUtil.getStackTrace(e));
 		}finally {

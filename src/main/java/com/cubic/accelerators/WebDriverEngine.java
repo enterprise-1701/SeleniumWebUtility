@@ -178,7 +178,7 @@ public class WebDriverEngine {
 
 	@SuppressWarnings("unchecked")
 	@BeforeMethod
-	public void beforeBethod(ITestContext context) throws Exception {
+	public void beforeMethod(ITestContext context) throws Exception {
 		wedDriverList = (Hashtable<String, WebDriver>) context.getAttribute("wedDriverList");
 	}
 	
