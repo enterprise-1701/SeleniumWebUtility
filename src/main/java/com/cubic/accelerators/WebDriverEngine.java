@@ -11,6 +11,7 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 import com.cubic.genericutils.GenericConstants;
@@ -19,6 +20,7 @@ import com.cubic.logutils.Log4jUtil;
 import com.cubic.reportengine.bean.CustomReportBean;
 import com.cubic.reportengine.bean.DetailedReportBean;
 import com.cubic.reportengine.report.CustomReports;
+import com.cubic.testrail.TestRailUtil;
 
 /**
  * BaseWebTest have all the generic methods to execute to drive the webdriver browser web test cases.
@@ -29,6 +31,9 @@ public class WebDriverEngine {
 
 	private Hashtable<String, WebDriver> wedDriverList = null;
 	private Hashtable<String, WebDriverActions> webDriverActionList = null;
+	private Hashtable<String , String> propTable = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES;
+	private String testRailProjectID;
+	private String testRailSuiteID;
 
 	/**
 	 * This method will be executed before the suite.
@@ -38,7 +43,8 @@ public class WebDriverEngine {
 	 * @throws Exception java.lang.Exception
 	 */
 	@BeforeSuite
-	public void beforeSuite(ITestContext context) throws Exception {
+	@Parameters({"projectID","suiteID"})
+	public void beforeSuite(ITestContext context,@Optional String projectID,@Optional String suiteID) throws Exception {
 		//LOG.info("Before killing "+browser+" browser");
 		Runtime.getRuntime().exec("taskkill /F /IM chromedriver.exe");
 		Runtime.getRuntime().exec("taskkill /F /IM geckodriver.exe");
@@ -55,6 +61,28 @@ public class WebDriverEngine {
 		
 		//TODO need to remove below commented code after re-checking
 		//context.setAttribute("webDriverActionList", new Hashtable<String, WebDriverActions>());
+		
+		// Create test run for the test cases in Test Rail
+		boolean testRailFlag=false;
+		if(propTable.get("Test_Rail_Integration_Enable_Flag")==null){
+			testRailFlag=false;
+		}else if(propTable.get("Test_Rail_Integration_Enable_Flag").equalsIgnoreCase("true")){
+			testRailFlag=true;
+			if(projectID!=null  && !projectID.equals("%projectID%")){
+				testRailProjectID=projectID;
+			}else if(propTable.get("Test_Rail_Project_ID")!=null){
+				testRailProjectID=propTable.get("Test_Rail_Project_ID");
+			}
+			if(suiteID!=null && !suiteID.equals("%suiteID%")){
+				testRailSuiteID=suiteID;
+			}else if(propTable.get("Test_Rail_Suite_ID")!=null){
+				testRailSuiteID=propTable.get("Test_Rail_Suite_ID");
+			}
+		}
+		if(testRailFlag){
+			
+			TestRailUtil.generateTestRunsForTestCases(testRailProjectID,testRailSuiteID,customReports.getCustomReportBean().getSuiteStartDateAndTime());
+		}
 	}
 
 	/**
@@ -65,9 +93,33 @@ public class WebDriverEngine {
 	 * @throws Exception org.testng.ITestContext
 	 */
 	@AfterSuite
-	public void afterSuite(ITestContext context) throws Exception {
+	@Parameters({"projectID","suiteID"})
+	public void afterSuite(ITestContext context,@Optional String projectID,@Optional String suiteID) throws Exception {
 		// Generates the Summary report.
 		generateSummaryReport(context);
+		
+		// Update test execution results into the Test Run under Test Rail project
+		boolean testRailFlag=false;
+		if(propTable.get("Test_Rail_Integration_Enable_Flag")==null){
+			testRailFlag=false;
+		}else if(propTable.get("Test_Rail_Integration_Enable_Flag").equalsIgnoreCase("true")){
+			testRailFlag=true;
+		}
+		
+		if(testRailFlag){
+			try{
+				if(projectID==null 
+						|| suiteID==null 
+						|| propTable.get("Test_Rail_Project_ID")==null 
+						|| propTable.get("Test_Rail_Suite_ID") == null){
+					throw new Exception("Project ID or Suite ID values are not provided");
+				}
+				TestRailUtil.updateTestResultsinTestRail();
+				
+			}catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		}
 
 		cleanUpCustomReports();
 		
@@ -84,20 +136,20 @@ public class WebDriverEngine {
 	 * 
 	 * @param context org.testng.ITestContext
 	 * @param browser name of the browser
-	 * @param seleniumgridurl url of seleniumGrid server
+	 * @param executionenv url of execution environment
 	 * @throws Exception java.lang.Exception
 	 */
 	@SuppressWarnings("unchecked")
 	@BeforeClass
-	@Parameters({"browser","seleniumgridurl"})
-	public void beforeClass(ITestContext context, String browser, String seleniumgridurl) throws Exception {
+	@Parameters({"browser","executionenv","platform","version"})
+	public void beforeClass(ITestContext context, String browser, String executionenv,String platform,String version) throws Exception {
 		customReports = (CustomReports) context.getAttribute("customReports");
 
 		//Sets the browser name in bean
 		CustomReportBean customReportBean = customReports.getCustomReportBean();
 		customReportBean.setBrowserName(browser);
 		try {
-			WebDriver webDriver = WebDriverActions.getWebDriverForLocal(browser, seleniumgridurl);
+			WebDriver webDriver = WebDriverActions.getWebDriverForLocal(browser, executionenv,platform,version);
 			
 			wedDriverList = (Hashtable<String, WebDriver>) context.getAttribute("wedDriverList");
 
@@ -126,7 +178,7 @@ public class WebDriverEngine {
 
 	@SuppressWarnings("unchecked")
 	@BeforeMethod
-	public void beforeBethod(ITestContext context) throws Exception {
+	public void beforeMethod(ITestContext context) throws Exception {
 		wedDriverList = (Hashtable<String, WebDriver>) context.getAttribute("wedDriverList");
 	}
 	

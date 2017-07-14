@@ -75,14 +75,14 @@ public class WebDriverActions {
 	 * @param customReports reference variable is declared with in the class
 	 * @param testCaseName reference variable is declared with in the class(testCaseName should be in format &lt;&lt;TESTCASE_ID&gt;&gt; : &lt;&lt;TESTCASE DESCRIPTION&gt;&gt;)
 	 * @param browserName to initialise the browser
-	 * @param seleniumGridUrl url of seleniumGrid server
+	 * @param executionenv url of seleniumGrid server
 	 * @throws IOException java.io.IOException
 	 * @throws InterruptedException java.lang.InterruptedException
 	 */
-	public WebDriverActions(CustomReports customReports, String testCaseName, String browserName, String seleniumGridUrl)
+	public WebDriverActions(CustomReports customReports, String testCaseName, String browserName, String executionenv,String platform,String version)
 			throws IOException, InterruptedException {
 
-		this.webDriver = getWebDriverForLocal(browserName, seleniumGridUrl);
+		this.webDriver = getWebDriverForLocal(browserName, executionenv,platform,version);
 		this.customReports = customReports;
 		this.testCaseName = testCaseName;
 	}
@@ -161,7 +161,7 @@ public class WebDriverActions {
 		}
 	}	
 	//Don't "getWebDriverForLocal" to public, since this method should not be exposed outside and should be allowed to access with in the package. 
-	static synchronized WebDriver getWebDriverForLocal(String browserName,String seleniumGridUrl) throws IOException, InterruptedException{
+	static synchronized WebDriver getWebDriverForLocal(String browserName,String executionenv,String platform,String version) throws IOException, InterruptedException{
 		WebDriver webDriver = null;
 		DesiredCapabilities capabilities = null;
 		int implicitlyWaitTime = Integer.parseInt(GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("webdriver_implicitwait_time"));
@@ -195,7 +195,7 @@ public class WebDriverActions {
 			firefoxProfile.setPreference("xpinstall.signatures.required", false);
 			capabilities.setCapability(FirefoxDriver.PROFILE, firefoxProfile);
 			
-			if(seleniumGridUrl == null || seleniumGridUrl.equalsIgnoreCase(WebDriverConstants.LOCAL)){
+			if(executionenv == null || executionenv.equalsIgnoreCase(WebDriverConstants.LOCAL)){
 				webDriver = new FirefoxDriver(firefoxProfile);
 			}
 			
@@ -225,7 +225,7 @@ public class WebDriverActions {
 			Process p = Runtime.getRuntime().exec("RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 255");
 			p.waitFor();		
 			
-			if(seleniumGridUrl == null || seleniumGridUrl.equalsIgnoreCase(WebDriverConstants.LOCAL)){
+			if(executionenv == null || executionenv.equalsIgnoreCase(WebDriverConstants.LOCAL)){
 				webDriver = new InternetExplorerDriver(capabilities);
 			}
 			
@@ -262,7 +262,7 @@ public class WebDriverActions {
 			options.addArguments("--disable-web-security");
 			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 			
-			if(seleniumGridUrl == null ||seleniumGridUrl.equalsIgnoreCase(WebDriverConstants.LOCAL)){
+			if(executionenv == null ||executionenv.equalsIgnoreCase(WebDriverConstants.LOCAL)){
 				webDriver = new ChromeDriver(capabilities);
 			}
 			
@@ -273,7 +273,7 @@ public class WebDriverActions {
 			System.setProperty("webdriver.edge.driver", edgeDriverPath);
 			capabilities = DesiredCapabilities.edge();		
 			
-			if(seleniumGridUrl == null ||seleniumGridUrl.equalsIgnoreCase(WebDriverConstants.LOCAL)){
+			if(executionenv == null ||executionenv.equalsIgnoreCase(WebDriverConstants.LOCAL)){
 				webDriver = new EdgeDriver(capabilities);
 			}
 		
@@ -283,7 +283,7 @@ public class WebDriverActions {
 
 			for (int i = 1; i <= 10; i++) {
 				try {
-					if (seleniumGridUrl==null || seleniumGridUrl.trim().length()==0) {
+					if (executionenv==null || executionenv.trim().length()==0) {
 						webDriver = new SafariDriver();
 					}
 					break;
@@ -295,10 +295,20 @@ public class WebDriverActions {
 			break;			
 		}
 		
-		if(seleniumGridUrl!=null && !seleniumGridUrl.equalsIgnoreCase(WebDriverConstants.LOCAL)){
-			webDriver = new RemoteWebDriver(new URL(seleniumGridUrl), capabilities);
+		//If block contains the logic related to sauce lab execution
+		if(executionenv!=null && !executionenv.equalsIgnoreCase(WebDriverConstants.LOCAL)){
+			if(executionenv.equalsIgnoreCase(WebDriverConstants.SAUCELAB)){
+				capabilities.setCapability(WebDriverConstants.PLATFORM,platform);
+				capabilities.setCapability(WebDriverConstants.VERSION,version);
+				String Username = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("saucelabs_Username");
+				String AccessKey = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("saucelabs_Accesskey");
+				String URL = "https://" + Username + ":" + AccessKey + "@ondemand.saucelabs.com:443/wd/hub"; 
+				webDriver = new RemoteWebDriver(new URL(URL), capabilities);
+			}else{
+				//else block contains the logic of selenium grid execution
+				webDriver = new RemoteWebDriver(new URL(executionenv), capabilities);
+			}
 		}
-		
 		webDriver.manage().window().maximize();
 		webDriver.manage().timeouts().implicitlyWait(implicitlyWaitTime, TimeUnit.SECONDS);
 		
@@ -343,7 +353,7 @@ public class WebDriverActions {
 			s.selectByIndex(index);
 			flag = true;
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			return true;
+			
 		} catch (Exception e) {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
@@ -359,6 +369,7 @@ public class WebDriverActions {
 						"Option at index :: " + index + "is Selected from the DropDown :: " + locatorName);
 			}
 		}
+		return flag;
 	}
 
 	/**
@@ -470,7 +481,7 @@ public class WebDriverActions {
 			flag = true;
 			LOG.info("MoveOver action is done on  :: " + locatorName);
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			return true;
+			
 		} catch (Exception e) {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
@@ -484,6 +495,7 @@ public class WebDriverActions {
 				successReport("MouseOver :: ", "MouserOver Action is Done on :: " + locatorName);
 			}
 		}
+		return flag;
 	}
 
 	/**
@@ -502,7 +514,7 @@ public class WebDriverActions {
 			wait.until(ExpectedConditions.visibilityOfElementLocated(by));
 			flag = true;
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-			return true;
+		
 		} catch (Exception e) {
 			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
 			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
@@ -516,8 +528,40 @@ public class WebDriverActions {
 				successReport("Visible of element is true :: ", "Element :: " + locatorName + "  is visible");
 			}
 		}
+		return flag;
 	}
 
+	/**
+	 * waits for title of the page available
+	 * @param locatorName locator of element
+	 * @return boolean value indicating success of the operation 
+	 */
+	public boolean waitFortitleIsElement(String locatorName){
+		boolean flag = false;
+		LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+		LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
+		WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
+		try {
+			wait.until(ExpectedConditions.titleIs(locatorName));
+			flag = true;
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			return true;
+		} catch (Exception e) {
+			LOG.info("++++++++++++++++++++++++++++Catch Block Start+++++++++++++++++++++++++++++++++++++++++++");
+			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+			LOG.error(Log4jUtil.getStackTrace(e));
+			LOG.info("++++++++++++++++++++++++++++Catch Block End+++++++++++++++++++++++++++++++++++++++++++");
+			return false;
+		} finally {
+			if (!flag) {
+				failureReport("Title is not present :: ", "Title :: " + locatorName + " is not present");
+			} else {
+				successReport("Title is present :: ", "Title :: " + locatorName + " is present");
+			}
+		}
+	}
+	
 	/**
 	 * clicks an element using java script executor
 	 * @param locator of element
@@ -1680,6 +1724,7 @@ public class WebDriverActions {
 		LOG.info("Locator is Visible :: " + locator);
 		wait.until(ExpectedConditions.presenceOfElementLocated(locator));
 		webDriver.switchTo().frame(webDriver.findElement(locator));
+		flag=true;
 		}catch(Exception e){
 			LOG.error(Log4jUtil.getStackTrace(e));
 		}finally {
@@ -1701,6 +1746,7 @@ public class WebDriverActions {
 		LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 		try{
 		webDriver.switchTo().frame(index);
+		flag=true;
 		}catch(Exception e){
 			LOG.error(Log4jUtil.getStackTrace(e));
 		}finally {
@@ -1721,6 +1767,7 @@ public class WebDriverActions {
 		LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
 		try{
 		webDriver.switchTo().defaultContent();
+		flag=true;
 		}catch(Exception e){
 			LOG.error(Log4jUtil.getStackTrace(e));
 		}finally {

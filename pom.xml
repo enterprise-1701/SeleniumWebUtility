@@ -4,7 +4,7 @@
 
   <groupId>com.cubic.seleniumaction</groupId>
   <artifactId>seleniumaction</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
   <packaging>jar</packaging>
 
   <name>seleniumaction</name>
@@ -55,7 +55,7 @@
     <dependency>
 	    <groupId>com.cubic.testutil</groupId>
 	    <artifactId>testutil</artifactId>
-	    <version>1.0</version>  
+	    <version>1.1</version>  
    </dependency>
   </dependencies>
   

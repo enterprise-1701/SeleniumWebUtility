@@ -7,4 +7,8 @@ public interface WebDriverConstants {
 	String EDGE_BROWSER = "edge";
 	String SAFARI_BROWSER = "Safari";
 	String LOCAL = "local";	
+	String SAUCELAB = "saucelabs";
+	String PLATFORM = "platform";
+	String VERSION = "version";
+
 }
