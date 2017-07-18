@@ -108,10 +108,10 @@ public class WebDriverEngine {
 		
 		if(testRailFlag){
 			try{
-				if(projectID==null 
-						|| suiteID==null 
-						|| propTable.get("Test_Rail_Project_ID")==null 
-						|| propTable.get("Test_Rail_Suite_ID") == null){
+				if((projectID==null 
+						|| suiteID==null) 
+						&& (propTable.get("Test_Rail_Project_ID")==null 
+						|| propTable.get("Test_Rail_Suite_ID") == null)){
 					throw new Exception("Project ID or Suite ID values are not provided");
 				}
 				TestRailUtil.updateTestResultsinTestRail();
