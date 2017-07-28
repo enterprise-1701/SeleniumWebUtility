@@ -76,12 +76,12 @@
     <repository>
         <id>central</id>
         <name>UKSALP-ARTFCT01-releases</name>
-        <url>http://artifactory-server:8082/artifactory/system-test-virtual</url>
+        <url>http://artifactory-server:8082/artifactory/WWTest-virtual</url>
     </repository>
     <snapshotRepository>
         <id>snapshots</id>
         <name>UKSALP-ARTFCT01-snapshots</name>
-        <url>http://artifactory-server:8082/artifactory/system-test-virtual</url>
+        <url>http://artifactory-server:8082/artifactory/WWTest-virtual</url>
     </snapshotRepository>
-  </distributionManagement> 
+  </distributionManagement>
 </project>
