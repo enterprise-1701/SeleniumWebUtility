@@ -45,13 +45,18 @@ public class WebDriverEngine {
 	@BeforeSuite
 	@Parameters({"projectID","suiteID"})
 	public void beforeSuite(ITestContext context,@Optional String projectID,@Optional String suiteID) throws Exception {
-		//LOG.info("Before killing "+browser+" browser");
-		Runtime.getRuntime().exec("taskkill /F /IM chromedriver.exe");
-		Runtime.getRuntime().exec("taskkill /F /IM geckodriver.exe");
-		Runtime.getRuntime().exec("taskkill /F /IM IEDriverServer.exe");
-		Runtime.getRuntime().exec("taskkill /F /IM MicrosoftWebDriver.exe");
-		//LOG.info("After killing "+browser+" browser");		
-		
+		try {
+			//LOG.info("Before killing "+browser+" browser");
+			Runtime.getRuntime().exec("taskkill /F /IM chromedriver.exe");
+			Runtime.getRuntime().exec("taskkill /F /IM geckodriver.exe");
+			Runtime.getRuntime().exec("taskkill /F /IM IEDriverServer.exe");
+			Runtime.getRuntime().exec("taskkill /F /IM MicrosoftWebDriver.exe");
+			//LOG.info("After killing "+browser+" browser");
+		}
+		catch (Exception e) {
+			System.out.println(e);
+		}
+
 		Log4jUtil.configureLog4j(GenericConstants.LOG4J_FILEPATH);
 		
 		// Create custom report folder structure.
@@ -122,13 +127,18 @@ public class WebDriverEngine {
 		}
 
 		cleanUpCustomReports();
-		
-		//LOG.info("Before killing "+browser+" browser");
-		Runtime.getRuntime().exec("taskkill /F /IM chromedriver.exe");
-		Runtime.getRuntime().exec("taskkill /F /IM geckodriver.exe");
-		Runtime.getRuntime().exec("taskkill /F /IM IEDriverServer.exe");
-		Runtime.getRuntime().exec("taskkill /F /IM MicrosoftWebDriver.exe");
-		//LOG.info("After killing "+browser+" browser");		
+
+		try {
+			//LOG.info("Before killing "+browser+" browser");
+			Runtime.getRuntime().exec("taskkill /F /IM chromedriver.exe");
+			Runtime.getRuntime().exec("taskkill /F /IM geckodriver.exe");
+			Runtime.getRuntime().exec("taskkill /F /IM IEDriverServer.exe");
+			Runtime.getRuntime().exec("taskkill /F /IM MicrosoftWebDriver.exe");
+			//LOG.info("After killing "+browser+" browser");
+		}
+		catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 
 	/**
