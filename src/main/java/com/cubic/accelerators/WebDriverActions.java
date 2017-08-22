@@ -132,7 +132,7 @@ public class WebDriverActions {
 	 * Tear down process to quit the webDriverAction instances
 	 * @param webDriverActions instance to quit
 	 */
-	public static void flush(WebDriverActions webDriverActions){
+	public void flush(WebDriverActions webDriverActions){
 		if(webDriverActions.webDriver!=null){
 			webDriverActions.webDriver.quit();
 		}
