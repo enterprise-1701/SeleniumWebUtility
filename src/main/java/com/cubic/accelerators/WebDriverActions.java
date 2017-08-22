@@ -54,6 +54,8 @@ public class WebDriverActions {
 	
 	private int timeValue  = Integer.parseInt(GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("webdriver_dynamicwait_time"));
 	
+	
+	
 	/**
 	 * This Constructor is used internally with in the Selenium Libarary(i.e. WebDriver engine).
 	 * 
@@ -86,6 +88,36 @@ public class WebDriverActions {
 		this.customReports = customReports;
 		this.testCaseName = testCaseName;
 	}
+	
+	/**
+	 * Constructor should be used explicitly, if you want to access the webDriver when the automation script doesn't extend the WebDriverEngine.<br>
+	 * This need to be used while instantiating a separate webdriver object in script development where you are extending other Engines like  
+	 * RESTEngine instead of extending WebDriverEngine.
+	 * 
+	 * @param customReports reference variable is declared with in the class
+	 * @param testCaseName reference variable is declared with in the class(testCaseName should be in format &lt;&lt;TESTCASE_ID&gt;&gt; : &lt;&lt;TESTCASE DESCRIPTION&gt;&gt;)
+	 * @param browserName to initialise the browser
+	 * @param executionenv url of seleniumGrid server
+	 * @throws IOException java.io.IOException
+	 * @throws InterruptedException java.lang.InterruptedException
+	 */
+	public WebDriverActions(CustomReports customReports, String testCaseName)
+			throws IOException, InterruptedException {
+		 String browserName  = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("browser");
+		 String executionenv  = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("executionenv");
+		 String  platform  = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("platform");
+		 String version  = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("version");
+		
+		 if(browserName.isEmpty()&&executionenv.isEmpty()){
+			 browserName = "chrome";
+			 executionenv = "local";
+		 }
+		 
+		 this.webDriver = getWebDriverForLocal(browserName, executionenv,platform,version);
+		 this.customReports = customReports;
+		 this.testCaseName = testCaseName;
+	}
+	
 	
 	/**
 	 * Used to call selenium actions directly to use them in test scripts
@@ -221,6 +253,10 @@ public class WebDriverActions {
 			capabilities.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
 			capabilities.setCapability(InternetExplorerDriver.ENABLE_PERSISTENT_HOVERING, false);
 			capabilities.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
+			
+			capabilities.setCapability(CapabilityType.BROWSER_NAME, "IE");
+			capabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS,true);
+			capabilities.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
 			
 			Process p = Runtime.getRuntime().exec("RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 255");
 			p.waitFor();		
