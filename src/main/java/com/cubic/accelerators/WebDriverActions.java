@@ -108,11 +108,12 @@ public class WebDriverActions {
 		 String  platform  = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("platform");
 		 String version  = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("version");
 		
-		 if(browserName.isEmpty()&&executionenv.isEmpty()){
+		 if(browserName.isEmpty()){
 			 browserName = "chrome";
+		 }
+		 if(executionenv.isEmpty()){
 			 executionenv = "local";
 		 }
-		 
 		 this.webDriver = getWebDriverForLocal(browserName, executionenv,platform,version);
 		 this.customReports = customReports;
 		 this.testCaseName = testCaseName;
