@@ -73,20 +73,35 @@ public class WebDriverEngine {
 			testRailFlag=false;
 		}else if(propTable.get("Test_Rail_Integration_Enable_Flag").equalsIgnoreCase("true")){
 			testRailFlag=true;
-			if(projectID!=null  && !projectID.equals("%projectID%")){
+			if((projectID!=null)  && (!projectID.equals("%projectID%")) && (!projectID.equals("${ProjectID}"))){
 				testRailProjectID=projectID;
 			}else if(propTable.get("Test_Rail_Project_ID")!=null){
 				testRailProjectID=propTable.get("Test_Rail_Project_ID");
 			}
-			if(suiteID!=null && !suiteID.equals("%suiteID%")){
+			if((suiteID!=null) && (!suiteID.equals("%suiteID%")) && (!suiteID.equals("${SuiteID}"))){
 				testRailSuiteID=suiteID;
 			}else if(propTable.get("Test_Rail_Suite_ID")!=null){
 				testRailSuiteID=propTable.get("Test_Rail_Suite_ID");
 			}
 		}
 		if(testRailFlag){
-			
-			TestRailUtil.generateTestRunsForTestCases(testRailProjectID,testRailSuiteID,customReports.getCustomReportBean().getSuiteStartDateAndTime());
+			try {
+				if ((projectID == null || suiteID == null) && (propTable.get("Test_Rail_Project_ID") == null
+						|| propTable.get("Test_Rail_Suite_ID") == null)) {
+					throw new Exception("Project ID or Suite ID values are not provided");
+				}
+				if (projectID.equalsIgnoreCase("") || suiteID.equalsIgnoreCase("")) {
+					throw new Exception("Project ID or Suite ID values should not be blank");
+				}
+				if (projectID.equalsIgnoreCase("${ProjectID}") || suiteID.equalsIgnoreCase("${SuiteID}")) {
+					throw new Exception("Project ID or Suite ID values are invalid");
+				}
+
+				TestRailUtil.generateTestRunsForTestCases(testRailProjectID, testRailSuiteID,
+						customReports.getCustomReportBean().getSuiteStartDateAndTime());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -118,6 +133,12 @@ public class WebDriverEngine {
 						&& (propTable.get("Test_Rail_Project_ID")==null 
 						|| propTable.get("Test_Rail_Suite_ID") == null)){
 					throw new Exception("Project ID or Suite ID values are not provided");
+				}
+				if (projectID.equalsIgnoreCase("") || suiteID.equalsIgnoreCase("")) {
+					throw new Exception("Project ID or Suite ID values should not be blank");
+				}
+				if (projectID.equalsIgnoreCase("${ProjectID}") || suiteID.equalsIgnoreCase("${SuiteID}")) {
+					throw new Exception("Project ID or Suite ID values are invalid");
 				}
 				TestRailUtil.updateTestResultsinTestRail();
 				
@@ -379,6 +400,8 @@ public class WebDriverEngine {
 	 */
 	private boolean teardownReport(ITestContext context, String testCaseName){
 		boolean flag = false;
+		String testCaseID = null;
+		String finalResult = null;
 		try{
 			CustomReports customReports =(CustomReports) context.getAttribute("customReports");
 			CustomReportBean customReportBean = customReports.getCustomReportBean();
@@ -409,12 +432,42 @@ public class WebDriverEngine {
 				customReportBean.setTotalTestScriptsPassed(totalTestScriptsPassed);
 				customReportBean.setTotalTestScriptsFailed(totalTestScriptsFailed);
 				context.setAttribute("customReports", customReports);
+				testCaseID = detailedReportBean.getTestCaseID();
+				finalResult = detailedReportBean.getOverallStatus();
 			}			
 			
 			flag = true;
 		}catch (Exception e) {
 			e.printStackTrace();
 			flag = false;
+		}finally {
+			System.out.println("Test Case ID ::::" + testCaseID);
+			System.out.println("Test Status :::::" + finalResult);
+			boolean testRailFlag = false;
+			boolean testResultsUpdateFlag = false;
+			if (propTable.get("Test_Rail_Integration_Enable_Flag") == null) {
+				testRailFlag = false;
+			} else if (propTable.get("Test_Rail_Integration_Enable_Flag").equalsIgnoreCase("true")) {
+				testRailFlag = true;
+			}
+			if ((propTable.get("Test_Rail_Results_Update_End_of_Suite") == null)
+					|| (propTable.get("Test_Rail_Results_Update_End_of_Suite").equalsIgnoreCase("true"))) {
+				testResultsUpdateFlag = false;
+			} else if (propTable.get("Test_Rail_Results_Update_End_of_Suite").equalsIgnoreCase("false")) {
+				testResultsUpdateFlag = true;
+			}
+
+			if (testRailFlag) {
+				try {
+					if (testResultsUpdateFlag) {
+
+						TestRailUtil.updateTestResultinTestRail(testCaseID, finalResult);
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		
 		return flag;
