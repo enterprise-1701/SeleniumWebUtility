@@ -3,6 +3,7 @@ package com.cubic.accelerators;
 import java.time.Instant;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
@@ -309,7 +310,9 @@ public class WebDriverEngine {
 			teardownReport(context, testCaseName);
 		
 			// Remove actions object, after executing test method.
-			webDriverActionList.remove(testCaseName);	
+			webDriverActionList.remove(testCaseName);
+			// If test is fail then assert false, this is for testNG
+			assert !Objects.equals(this.customReports.getCustomReportBean().getDetailedReportMap().get(testCaseName).getOverallStatus().toLowerCase(), "fail");
 		}catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("Unable to execute the method 'teardownWebTest'.");
