@@ -10,6 +10,6 @@ public interface WebDriverConstants {
 	String SAUCELAB = "saucelabs";
 	String PLATFORM = "platform";
 	String VERSION = "version";
-	String EXTENDEDDEBUGGING = "extendedDebugging ";
+	String EXTENDEDDEBUGGING = "extendedDebugging";
 
 }
