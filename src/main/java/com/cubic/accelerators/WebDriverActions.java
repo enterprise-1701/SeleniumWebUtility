@@ -337,6 +337,7 @@ public class WebDriverActions {
 			if(executionenv.equalsIgnoreCase(WebDriverConstants.SAUCELAB)){
 				capabilities.setCapability(WebDriverConstants.PLATFORM,platform);
 				capabilities.setCapability(WebDriverConstants.VERSION,version);
+				capabilities.setCapability(WebDriverConstants.EXTENDEDDEBUGGING,true);
 				String Username = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("saucelabs_Username");
 				String AccessKey = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("saucelabs_Accesskey");
 				String URL = "https://" + Username + ":" + AccessKey + "@ondemand.saucelabs.com:443/wd/hub"; 
