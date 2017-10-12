@@ -1055,7 +1055,7 @@ public class WebDriverActions {
 			LOG.info("Method : " + locatorName);
 			WebElement searchbox = webDriver.findElement(locator);
 			JavascriptExecutor myExecutor = ((JavascriptExecutor) webDriver);
-			myExecutor.executeScript("arguments[0].value='" + testData + "'; ", searchbox);
+			myExecutor.executeScript("arguments[0].value='"+testData+"';", searchbox);
 			successReport("Enter text in :: " + locatorName, msgTypeSuccess + locatorName);
 			LOG.info("Clicked on  : " + locatorName);
 			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
