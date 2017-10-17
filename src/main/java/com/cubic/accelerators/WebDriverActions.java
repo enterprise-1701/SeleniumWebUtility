@@ -671,7 +671,24 @@ public class WebDriverActions {
 			}
 		}
 	}
-
+	public String getFirstSelectedOption(By locator,String locatorName){
+		
+		try {
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			LOG.info("Class name" + getCallerClassName() + "Method name : " + getCallerMethodName());
+			LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
+			Select s = new Select(webDriver.findElement(locator));
+			WebElement selectPayment =s.getFirstSelectedOption();
+			String selectpymnt=selectPayment.getText();
+			LOG.info("Successfully selected the value" + locatorName);
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			return selectpymnt;
+		} catch (Exception e) {
+			LOG.error(Log4jUtil.getStackTrace(e));
+			throw new RuntimeException(e);
+		
+		}
+	}
 	/**
 	 * Selects value from dropdown based on visible text 
 	 * @param locator of element
