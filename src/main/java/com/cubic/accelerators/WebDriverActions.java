@@ -1058,6 +1058,47 @@ public class WebDriverActions {
 	}
 
 	/**
+	 * Enters text into the text field WITHOUT clicking on it
+	 * @param locator of element
+	 * @param testData of (String)
+	 * @param locatorName message to be included in the execution report
+	 * @return boolean value indicating success of the operation
+	 */
+	public boolean sendKeysNoClick(By locator, String testData, String locatorName){
+		boolean status = false;
+		try {
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			LOG.info("Class name : " + getCallerClassName() + "Method name : " + getCallerMethodName());
+			LOG.info("Method : Type  ::  Locator : " + locatorName + " :: Data :" + testData);
+			WebDriverWait wait = new WebDriverWait(webDriver, timeValue);
+			LOG.info("Waiting for element :");
+			LOG.info("Locator is Visible :: " + locator);
+			wait.until(ExpectedConditions.elementToBeClickable(locator));
+			//webDriver.findElement(locator).click();
+			//LOG.info("Clicked on the Locator : ");
+			webDriver.findElement(locator).clear();
+			LOG.info("Cleared the existing Locator data : ");
+			webDriver.findElement(locator).sendKeys(testData);
+			LOG.info("Typed the Locator data :: " + testData);
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			status = true;
+		} catch (Exception e) {
+			status = false;
+			LOG.error(Log4jUtil.getStackTrace(e));
+			throw new RuntimeException(e);
+		}finally {
+			if (!status) {
+				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+				failureReport("Enter text in :: " + locatorName, msgTypeFailure + testData);
+			} else {
+				LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+				this.successReport("Enter text in :: " + locatorName, msgTypeSuccess + testData);
+			}
+		}
+		return status;
+	}
+	
+	/**
 	 * Sends the keys to element with JavaScript Implementation
 	 * @param locator of element
 	 * @param testData of (String)
