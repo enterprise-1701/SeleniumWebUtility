@@ -11,5 +11,6 @@ public interface WebDriverConstants {
 	String PLATFORM = "platform";
 	String VERSION = "version";
 	String EXTENDEDDEBUGGING = "extendedDebugging";
+	String HEADLESS_BROWSER="htmlunitdriver";
 
 }

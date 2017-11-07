@@ -19,6 +19,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -329,7 +330,10 @@ public class WebDriverActions {
 				}
 			}		
 						
-			break;			
+			break;	
+		case WebDriverConstants.HEADLESS_BROWSER:
+			webDriver =new HtmlUnitDriver();
+			break;
 		}
 		
 		//If block contains the logic related to sauce lab execution
