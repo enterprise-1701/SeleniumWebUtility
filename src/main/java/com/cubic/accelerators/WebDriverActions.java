@@ -29,6 +29,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.Color;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -154,6 +155,17 @@ public class WebDriverActions {
 		if (customReports != null) {
 			File screenshotFile = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
 			customReports.failureReportWeb(stepName, description, screenshotFile, testCaseName);
+		}
+	}
+	
+	/**
+	 * For adding the failure step to the detailed report
+	 *  @param stepName is description about action performed to display in customised detail report
+	 * 	@param description is about the actual behaviour to display in customised detail report
+	 */
+	public void failureReportHeadless(String stepName, String description) {
+		if (customReports != null) {
+			customReports.failureReport(stepName, description, testCaseName);
 		}
 	}
 
@@ -2339,4 +2351,21 @@ public class WebDriverActions {
 	   			}
 	   		}
 	   	}
+	   	
+	/**
+	 *  Waits for the page to load completely
+	 * @param driver
+	 */
+	public void waitForPageToLoad() {
+
+		ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
+
+			public Boolean apply(WebDriver webDriver) {
+				return ((JavascriptExecutor) getWebDriver()).executeScript("return document.readyState")
+						.equals("complete");
+			}
+		};
+		WebDriverWait wait = new WebDriverWait(getWebDriver(), timeValue);
+		wait.until(pageLoadCondition);
+	}
 	   }
