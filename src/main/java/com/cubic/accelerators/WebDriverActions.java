@@ -10,6 +10,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
@@ -2367,5 +2369,45 @@ public class WebDriverActions {
 		};
 		WebDriverWait wait = new WebDriverWait(getWebDriver(), timeValue);
 		wait.until(pageLoadCondition);
+	}
+	/**
+	 * It deletes all the cookies in the current website
+	 */
+	public void deleteAllCookies() {
+		try {
+			webDriver.manage().deleteAllCookies();
+			successReport("Delete all cookies", "Successfully deleted all cookies");
+		} catch (Exception e) {
+			failureReport("Delete all cookies", "Unable to delete all cookies");
+		}
+	}
+
+	/**
+	 * This method is used to add a cookie to the current website
+	 * @param name
+	 * @param value
+	 */
+	public void addCookie(String name, String value) {
+		try {
+			Cookie cookie = new Cookie(name, value);
+			webDriver.manage().addCookie(cookie);
+			successReport("Add Cookie", "Successfully added the cookie" + "name:" + name + ",  value:" + value);
+		} catch (Exception e) {
+			failureReport("Add cookie", "Unable to add the cookie" + "name:" + name + ",  value:" + value);
+		}
+	}
+
+	/**
+	 * This method is used to set the resolution to the current window
+	 * @param width
+	 * @param height
+	 */
+	public void setWindowSize(int width, int height) {
+		try {
+			webDriver.manage().window().setSize(new Dimension(width, height));
+			successReport("Set windoe size", "successfully set the window size as (" + width + "," + height + ")");
+		} catch (Exception e) {
+			failureReport("Set window size", "Unable to set the window size as (" + width + "," + height + ")");
+		}
 	}
 	   }
