@@ -270,7 +270,7 @@ public class WebDriverActions {
 			capabilities.setCapability(InternetExplorerDriver.ENABLE_PERSISTENT_HOVERING, false);
 			capabilities.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
 			
-			capabilities.setCapability(CapabilityType.BROWSER_NAME, "IE");
+			//capabilities.setCapability(CapabilityType.BROWSER_NAME, "IE");
 			capabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS,true);
 			capabilities.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
 			
