@@ -383,7 +383,7 @@ public class WebDriverEngine {
 				 
 				 customReportBean.setDetailedReportMap(detailedReportMap);
 				 context.setAttribute("customReports", customReports);
-				 System.out.println("Test Case ID ::::"+testCaseName.split("_")[0]);
+				 System.out.println("Test Case ID ::::"+testCaseName.split(":")[0]);
 			}			
 			
 			flag = true;
