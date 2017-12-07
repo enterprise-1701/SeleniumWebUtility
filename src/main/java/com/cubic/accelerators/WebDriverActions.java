@@ -305,7 +305,7 @@ public class WebDriverActions {
 			
 			System.setProperty("webdriver.chrome.driver", chromeDriverPath);
 			ChromeOptions options = new ChromeOptions();
-
+			options.addArguments("--lang=en-gb");
 			options.setExperimentalOption("prefs", chromePrefs);
 			capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 
@@ -333,18 +333,15 @@ public class WebDriverActions {
 
 		case WebDriverConstants.SAFARI_BROWSER:
 
-			for (int i = 1; i <= 10; i++) {
-				try {
-					if (executionenv==null || executionenv.trim().length()==0) {
-						webDriver = new SafariDriver();
-					}
-					break;
-				} catch (Exception e1) {
-					continue;
-				}
-			}		
-						
-			break;	
+			capabilities = DesiredCapabilities.safari();
+			capabilities.setCapability("timeout", 30);
+			if (executionenv == null || executionenv.equalsIgnoreCase(WebDriverConstants.LOCAL)) {
+				webDriver = new SafariDriver();
+
+			}
+
+			break;
+				
 		case WebDriverConstants.HEADLESS_BROWSER:
 			webDriver =new HtmlUnitDriver();
 			break;
