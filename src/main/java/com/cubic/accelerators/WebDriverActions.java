@@ -353,6 +353,9 @@ public class WebDriverActions {
 				capabilities.setCapability(WebDriverConstants.PLATFORM,platform);
 				capabilities.setCapability(WebDriverConstants.VERSION,version);
 				capabilities.setCapability(WebDriverConstants.EXTENDEDDEBUGGING,true);
+				if (GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.containsKey("sauceScreenResolution")) {
+					capabilities.setCapability("screenResolution", GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("sauceScreenResolution"));
+				}
 				String Username = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("saucelabs_Username");
 				String AccessKey = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("saucelabs_Accesskey");
 				String URL = "https://" + Username + ":" + AccessKey + "@ondemand.saucelabs.com:443/wd/hub"; 
