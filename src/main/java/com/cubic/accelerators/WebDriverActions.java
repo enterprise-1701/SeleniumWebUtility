@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -291,10 +292,13 @@ public class WebDriverActions {
             chromePrefs.put("profile.default_content_settings.popups", 0);
             chromePrefs.put("credentials_enable_service", false);
             chromePrefs.put("profile.password_manager_enabled", false);
-            
-          
+			ChromeOptions options = new ChromeOptions();
 
-			chromePrefs.put("profile.default_content_settings.popups", 0);
+			options.addArguments("--disable-extensions");
+			options.addArguments("disable-infobars");
+			chromePrefs.put("profile.default_content_setting_values.plugins", 1);
+			chromePrefs.put("profile.content_settings.plugin_whitelist.adobe-flash-player", 1);
+			chromePrefs.put("profile.content_settings.exceptions.plugins.*,*.per_resource.adobe-flash-player", 1);
 
 			//Optional
 			if(!(chromeDownloadDirPath==null || chromeDownloadDirPath.trim().length()==0)){
@@ -304,7 +308,6 @@ public class WebDriverActions {
 			capabilities = DesiredCapabilities.chrome();
 			
 			System.setProperty("webdriver.chrome.driver", chromeDriverPath);
-			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--lang=en-gb");
 			options.setExperimentalOption("prefs", chromePrefs);
 			capabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
