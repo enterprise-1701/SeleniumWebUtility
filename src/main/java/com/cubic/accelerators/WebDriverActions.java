@@ -2408,9 +2408,43 @@ public class WebDriverActions {
 	public void setWindowSize(int width, int height) {
 		try {
 			webDriver.manage().window().setSize(new Dimension(width, height));
-			successReport("Set windoe size", "successfully set the window size as (" + width + "," + height + ")");
+			successReport("Set window size", "successfully set the window size as (" + width + "," + height + ")");
 		} catch (Exception e) {
 			failureReport("Set window size", "Unable to set the window size as (" + width + "," + height + ")");
 		}
 	}
+	/**
+	 * Verifies enable of element in a web page
+	 * 
+	 * @param locator
+	 *            of element
+	 * @param locatorName
+	 *            message to be included in the execution report
+	 * @param value
+	 *            indicating to control the report part (eg:true report will
+	 *            append to detailed report)
+	 * @return boolean value indicating success of the operation
+	 */
+	public boolean isEnabled(By locator, String locatorName, boolean value) {
+		boolean flag = false;
+		try {
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+			LOG.info("Class name :: " + getCallerClassName() + " Method name :: " + getCallerMethodName());
+			LOG.info("Method : " + getCallerMethodName() + "  ::  Locator : " + locatorName);
+			flag = webDriver.findElement(locator).isEnabled();
+			LOG.info("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		} catch (Exception e) {
+			LOG.error(Log4jUtil.getStackTrace(e));
+		} finally {
+			if (value) {
+				if (!flag) {
+					failureReport("IsEnable : " + locatorName, locatorName + " Element is Not Enable : ");
+				} else {
+					successReport("IsEnable : " + locatorName, locatorName + " Element is Enable : ");
+				}
+			}
+		}
+		return flag;
+	}
+
 	   }
