@@ -35,6 +35,8 @@ public class WebDriverEngine {
 	private Hashtable<String , String> propTable = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES;
 	private String testRailProjectID;
 	private String testRailSuiteID;
+	private String testRailRunID;
+	private boolean testRailFlag;
 
 	/**
 	 * This method will be executed before the suite.
@@ -44,8 +46,12 @@ public class WebDriverEngine {
 	 * @throws Exception java.lang.Exception
 	 */
 	@BeforeSuite
-	@Parameters({"projectID","suiteID"})
-	public void beforeSuite(ITestContext context,@Optional String projectID,@Optional String suiteID) throws Exception {
+	@Parameters({"projectID","suiteID","runID","test_Rail_Integration_Enable_Flag"})
+	public void beforeSuite(ITestContext context,
+			@Optional String projectID,
+			@Optional String suiteID,
+			@Optional String runID,
+			@Optional String test_Rail_Integration_Enable_Flag) throws Exception {
 		try {
 			//LOG.info("Before killing "+browser+" browser");
 			Runtime.getRuntime().exec("taskkill /F /IM chromedriver.exe");
@@ -59,51 +65,33 @@ public class WebDriverEngine {
 		}
 
 		Log4jUtil.configureLog4j(GenericConstants.LOG4J_FILEPATH);
+		try{
+			testRailProjectID=TestRailUtil.getTestRailProjectID(projectID);
+			testRailSuiteID=TestRailUtil.getTestRailSuiteID(suiteID);
+			testRailFlag=TestRailUtil.getTestRailEnableFlag(test_Rail_Integration_Enable_Flag,testRailProjectID,testRailSuiteID);
+			// Create custom report folder structure.
+			createFolderStructureForCustomReport(context,testRailFlag);
+			context.setAttribute("wedDriverList", new Hashtable<String, WebDriver>());
+if(testRailFlag){
+				
+				if((runID==null) || (runID.equalsIgnoreCase("0") || runID.equalsIgnoreCase("%runID%") || runID.equalsIgnoreCase("${runID}") )){
+					TestRailUtil.generateTestRunsForTestCases(testRailProjectID,testRailSuiteID,customReports.getCustomReportBean().getSuiteStartDateAndTime());
+				}else if(runID!=null && !(runID.equals("0"))){
+					testRailRunID = runID;
+					TestRailUtil.setExistingTestRunID(testRailRunID);
+				}
+				
+				}
+		}catch (Exception e) {
+			System.out.println(e);
+		}
 		
-		// Create custom report folder structure.
-		createFolderStructureForCustomReport(context);
 
-		context.setAttribute("wedDriverList", new Hashtable<String, WebDriver>());
+		
 		
 		//TODO need to remove below commented code after re-checking
 		//context.setAttribute("webDriverActionList", new Hashtable<String, WebDriverActions>());
-		
-		// Create test run for the test cases in Test Rail
-		boolean testRailFlag=false;
-		if(propTable.get("Test_Rail_Integration_Enable_Flag")==null){
-			testRailFlag=false;
-		}else if(propTable.get("Test_Rail_Integration_Enable_Flag").equalsIgnoreCase("true")){
-			testRailFlag=true;
-			if((projectID!=null)  && (!projectID.equals("%projectID%")) && (!projectID.equals("${ProjectID}"))){
-				testRailProjectID=projectID;
-			}else if(propTable.get("Test_Rail_Project_ID")!=null){
-				testRailProjectID=propTable.get("Test_Rail_Project_ID");
-			}
-			if((suiteID!=null) && (!suiteID.equals("%suiteID%")) && (!suiteID.equals("${SuiteID}"))){
-				testRailSuiteID=suiteID;
-			}else if(propTable.get("Test_Rail_Suite_ID")!=null){
-				testRailSuiteID=propTable.get("Test_Rail_Suite_ID");
-			}
-		}
-		if(testRailFlag){
-			try {
-				if ((projectID == null || suiteID == null) && (propTable.get("Test_Rail_Project_ID") == null
-						|| propTable.get("Test_Rail_Suite_ID") == null)) {
-					throw new Exception("Project ID or Suite ID values are not provided");
-				}
-				if (projectID.equalsIgnoreCase("") || suiteID.equalsIgnoreCase("")) {
-					throw new Exception("Project ID or Suite ID values should not be blank");
-				}
-				if (projectID.equalsIgnoreCase("${ProjectID}") || suiteID.equalsIgnoreCase("${SuiteID}")) {
-					throw new Exception("Project ID or Suite ID values are invalid");
-				}
-
-				TestRailUtil.generateTestRunsForTestCases(testRailProjectID, testRailSuiteID,
-						customReports.getCustomReportBean().getSuiteStartDateAndTime());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+	
 	}
 
 	/**
@@ -117,31 +105,13 @@ public class WebDriverEngine {
 	@Parameters({"projectID","suiteID"})
 	public void afterSuite(ITestContext context,@Optional String projectID,@Optional String suiteID) throws Exception {
 		// Generates the Summary report.
-		generateSummaryReport(context);
-		
-		// Update test execution results into the Test Run under Test Rail project
-		boolean testRailFlag=false;
-		if(propTable.get("Test_Rail_Integration_Enable_Flag")==null){
-			testRailFlag=false;
-		}else if(propTable.get("Test_Rail_Integration_Enable_Flag").equalsIgnoreCase("true")){
-			testRailFlag=true;
-		}
+		generateSummaryReport(context,testRailFlag);
 		
 		if(testRailFlag){
 			try{
-				if((projectID==null 
-						|| suiteID==null) 
-						&& (propTable.get("Test_Rail_Project_ID")==null 
-						|| propTable.get("Test_Rail_Suite_ID") == null)){
-					throw new Exception("Project ID or Suite ID values are not provided");
+				if((propTable.get("Test_Rail_Results_Update_End_of_Suite")==null)||(propTable.get("Test_Rail_Results_Update_End_of_Suite").equalsIgnoreCase("true"))){
+					TestRailUtil.updateTestResultsinTestRail();
 				}
-				if (projectID.equalsIgnoreCase("") || suiteID.equalsIgnoreCase("")) {
-					throw new Exception("Project ID or Suite ID values should not be blank");
-				}
-				if (projectID.equalsIgnoreCase("${ProjectID}") || suiteID.equalsIgnoreCase("${SuiteID}")) {
-					throw new Exception("Project ID or Suite ID values are invalid");
-				}
-				TestRailUtil.updateTestResultsinTestRail();
 				
 			}catch (Exception e) {
 		        e.printStackTrace();
@@ -307,7 +277,7 @@ public class WebDriverEngine {
 			// Captures the test case execution details like time taken for
 			// executing the test case, test case status pass/fail, etc.
 			// This details will be used for generating summary report.
-			teardownReport(context, testCaseName);
+			teardownReport(context, testCaseName,testRailFlag);
 		
 			// Remove actions object, after executing test method.
 			webDriverActionList.remove(testCaseName);
@@ -331,10 +301,10 @@ public class WebDriverEngine {
 	 * @return boolean
 	 * @throws Exception 
 	 */
-	protected void createFolderStructureForCustomReport(ITestContext context) throws Exception {
+	protected void createFolderStructureForCustomReport(ITestContext context,boolean testRailFlag) throws Exception {
 		try {
 			customReports = new CustomReports();
-			customReports.createFolderStructureForCustomReport();
+			customReports.createFolderStructureForCustomReport(testRailFlag);
 			context.setAttribute("customReports", customReports);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -349,9 +319,9 @@ public class WebDriverEngine {
 	 * @param context
 	 * @throws Exception
 	 */
-	protected void generateSummaryReport(ITestContext context) throws Exception{
+	protected void generateSummaryReport(ITestContext context,boolean testRailFlag) throws Exception{
 		customReports = (CustomReports) context.getAttribute("customReports");
-		customReports.generateSummaryReport();
+		customReports.generateSummaryReport(testRailFlag);
 	}
 	
 	/** Initialize the detailed report for the test case(at test method level @Test) 
@@ -402,10 +372,11 @@ public class WebDriverEngine {
 	 * @param testCaseName
 	 * @return
 	 */
-	private boolean teardownReport(ITestContext context, String testCaseName){
+	private boolean teardownReport(ITestContext context, String testCaseName,boolean testRailFlag){
 		boolean flag = false;
 		String testCaseID = null;
 		String finalResult = null;
+		String comment=null;
 		try{
 			CustomReports customReports =(CustomReports) context.getAttribute("customReports");
 			CustomReportBean customReportBean = customReports.getCustomReportBean();
@@ -438,6 +409,7 @@ public class WebDriverEngine {
 				context.setAttribute("customReports", customReports);
 				testCaseID = detailedReportBean.getTestCaseID();
 				finalResult = detailedReportBean.getOverallStatus();
+				comment=detailedReportBean.getFailStepDescription();
 			}			
 			
 			flag = true;
@@ -447,25 +419,22 @@ public class WebDriverEngine {
 		}finally {
 			System.out.println("Test Case ID ::::" + testCaseID);
 			System.out.println("Test Status :::::" + finalResult);
-			boolean testRailFlag = false;
 			boolean testResultsUpdateFlag = false;
-			if (propTable.get("Test_Rail_Integration_Enable_Flag") == null) {
-				testRailFlag = false;
-			} else if (propTable.get("Test_Rail_Integration_Enable_Flag").equalsIgnoreCase("true")) {
-				testRailFlag = true;
-			}
-			if ((propTable.get("Test_Rail_Results_Update_End_of_Suite") == null)
-					|| (propTable.get("Test_Rail_Results_Update_End_of_Suite").equalsIgnoreCase("true"))) {
-				testResultsUpdateFlag = false;
-			} else if (propTable.get("Test_Rail_Results_Update_End_of_Suite").equalsIgnoreCase("false")) {
-				testResultsUpdateFlag = true;
+			
+			if((propTable.get("Test_Rail_Results_Update_End_of_Suite")==null)||(propTable.get("Test_Rail_Results_Update_End_of_Suite").equalsIgnoreCase("true"))){
+				testResultsUpdateFlag=false;
+			}else if(propTable.get("Test_Rail_Results_Update_End_of_Suite").equalsIgnoreCase("false")){
+				testResultsUpdateFlag=true;
 			}
 
 			if (testRailFlag) {
 				try {
+					
 					if (testResultsUpdateFlag) {
-
-						TestRailUtil.updateTestResultinTestRail(testCaseID, finalResult);
+						if(comment==null){
+							comment="";
+						}
+						TestRailUtil.updateTestResultinTestRail(testCaseID, finalResult,comment);
 					}
 
 				} catch (Exception e) {
