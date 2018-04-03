@@ -277,7 +277,7 @@ if(testRailFlag){
 			// Captures the test case execution details like time taken for
 			// executing the test case, test case status pass/fail, etc.
 			// This details will be used for generating summary report.
-			teardownReport(context, testCaseName,testRailFlag);
+			teardownReport(context, testCaseName,TestRailUtil.testRailFlag);
 		
 			// Remove actions object, after executing test method.
 			webDriverActionList.remove(testCaseName);
