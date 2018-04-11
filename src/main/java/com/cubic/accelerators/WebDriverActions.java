@@ -360,7 +360,12 @@ public class WebDriverActions {
 				
 				tunnelIdentifier = (tunnelIdentifier==null) ? "" : tunnelIdentifier.trim();  
 				if (tunnelIdentifier.length() > 0) {
-					capabilities.setCapability("tunnelIdentifier", tunnelIdentifier);
+					if(tunnelIdentifier.equalsIgnoreCase("unique Sauce Connect tunnel per build")){
+						System.out.println("TUNNEL_IDENTIFIER::: "+System.getProperty("TUNNEL_IDENTIFIER"));
+						capabilities.setCapability("tunnelIdentifier", System.getProperty("TUNNEL_IDENTIFIER"));
+					}else{
+						capabilities.setCapability("tunnelIdentifier", tunnelIdentifier);	
+					}
 				} 
 				
 				if (GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.containsKey("sauceScreenResolution")) {
