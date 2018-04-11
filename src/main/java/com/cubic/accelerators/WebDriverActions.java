@@ -52,7 +52,8 @@ public class WebDriverActions {
 	private final String msgIsElementFoundSuccess = "Successfully Found Element ";
 	private final String msgIsElementFoundFailure = "Unable To Found Element ";
 	private final String msgCheckboxisnotChecked = "Checkbox is not Selected";
-
+	private static String tunnelIdentifier = GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("sauceTunnelIdentifier"); 
+	
 	private WebDriver webDriver = null;
 	private CustomReports customReports = null;
 	private String testCaseName = null;
@@ -356,6 +357,12 @@ public class WebDriverActions {
 				capabilities.setCapability(WebDriverConstants.PLATFORM,platform);
 				capabilities.setCapability(WebDriverConstants.VERSION,version);
 				capabilities.setCapability(WebDriverConstants.EXTENDEDDEBUGGING,true);
+				
+				tunnelIdentifier = (tunnelIdentifier==null) ? "" : tunnelIdentifier.trim();  
+				if (tunnelIdentifier.length() > 0) {
+					capabilities.setCapability("tunnelIdentifier", tunnelIdentifier);
+				} 
+				
 				if (GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.containsKey("sauceScreenResolution")) {
 					capabilities.setCapability("screenResolution", GenericConstants.GENERIC_FW_CONFIG_PROPERTIES.get("sauceScreenResolution"));
 				}
