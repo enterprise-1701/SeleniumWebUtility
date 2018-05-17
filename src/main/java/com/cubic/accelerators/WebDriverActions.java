@@ -3,6 +3,7 @@ package com.cubic.accelerators;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -2396,6 +2397,21 @@ public class WebDriverActions {
 		}
 	}
 
+	/**
+	 * This method is used to add a cookie with domain
+	 * @param name
+	 * @param value
+	 */
+	public void addCookieWithDomain(String name, String value, String domain, String path, Date expiry) {
+		try {
+			Cookie cookie = new Cookie(name, value, domain, path, expiry);
+			webDriver.manage().addCookie(cookie);
+			successReport("Add Cookie", "Successfully added the cookie with domain name" + "name:" + name + ",  value:" + value + ", Domain :"+domain);
+		} catch (Exception e) {
+			failureReport("Add cookie", "Unable to add the cookie with domain name" + "name:" + name + ",  value:" + value + ", Domain :"+domain);
+		}
+	}
+	
 	/**
 	 * This method is used to add a cookie to the current website
 	 * @param name
